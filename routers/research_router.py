@@ -17,6 +17,9 @@ from api.pubmed_client import search_pubmed
 from api.google_scholar_client import search_google_scholar
 from api.retraction_checker import check_papers_retraction
 from services.history_service import save_research_session
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -36,7 +39,7 @@ import threading
 
 @router.post("/")
 async def start_research(req: ResearchRequest, request: Request):
-    print("Received research request:", req.query)
+    logger.info(f"Received research request: {req.query}")
     q = queue.Queue()
 
     def background_task():

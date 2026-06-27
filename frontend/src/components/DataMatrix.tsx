@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { Table, Download, Loader, X } from 'lucide-react';
 
 export default function DataMatrix({ report }: { report: any }) {
@@ -47,8 +47,9 @@ export default function DataMatrix({ report }: { report: any }) {
 
   const handleDownload = () => {
     if (!data) return;
+    const escapeCsv = (val: string) => `"${String(val || '').replace(/"/g, '""')}"`;
     const headers = ['Title', 'Methodology', 'Sample Size', 'Key Metric', 'Limitations'];
-    let csv = headers.map(h => "").join(',') + '\n';
+    let csv = headers.map(escapeCsv).join(',') + '\n';
     
     for (const row of data) {
       const vals = [
@@ -57,7 +58,7 @@ export default function DataMatrix({ report }: { report: any }) {
         row.sample_size || '',
         row.key_metric || '',
         row.limitations || ''
-      ].map(v => "");
+      ].map(escapeCsv);
       csv += vals.join(',') + '\n';
     }
     

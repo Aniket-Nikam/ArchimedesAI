@@ -11,16 +11,28 @@ from routers.litreview_router import router as litreview_router
 from routers.extract_router import router as extract_router
 from routers.draft_router import router as draft_router
 import db.database as database
+import logging
+import os
+
+# Configure global logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 # Initialize DB
 database.init_db()
 
 app = FastAPI(title="Archimedes Backend")
 
-# Allow CORS for local development
+# Setup CORS with allowed origins from environment
+allowed_origins_str = os.environ.get("ALLOWED_ORIGINS", "http://localhost:5173")
+origins = [origin.strip() for origin in allowed_origins_str.split(",") if origin.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

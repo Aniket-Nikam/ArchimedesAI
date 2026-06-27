@@ -511,12 +511,12 @@ export default function Chat({ user, chatHistory, setChatHistory, onNewSession }
                             <div className="export-dropdown-wrapper" onClick={e => e.stopPropagation()}>
                               <button
                                 className="export-btn"
-                                onClick={() => setShowExportMenu(showExportMenu === idx ? null : idx)}
+                                onClick={() => setShowExportMenu(showExportMenu === msgIdx ? null : msgIdx)}
                               >
                                 <Download size={14} />
                                 Export
                               </button>
-                              {showExportMenu === idx && (
+                              {showExportMenu === msgIdx && (
                                 <div className="export-menu">
                                   <button onClick={() => handleExport('bibtex')}>
                                     <FileText size={14} />
@@ -546,7 +546,7 @@ export default function Chat({ user, chatHistory, setChatHistory, onNewSession }
                         </div>
 
                         {/* AI Synthesis */}
-                        {msg.report.ai_synthesis && renderSynthesis(msg.report.ai_synthesis, idx)}
+                        {msg.report.ai_synthesis && renderSynthesis(msg.report.ai_synthesis, msgIdx)}
 
                         {/* Knowledge Graph */}
                         <KnowledgeGraph report={msg.report} />

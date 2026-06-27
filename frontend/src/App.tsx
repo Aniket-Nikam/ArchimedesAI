@@ -13,7 +13,6 @@ export default function App() {
   const [chatHistory, setChatHistory] = useState<any[]>([]);
   const [activeView, setActiveView] = useState<'chat' | 'bookmarks' | 'studio'>('chat');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [showBookmarks, setShowBookmarks] = useState(false);
 
   // Load user from local storage
   useEffect(() => {
