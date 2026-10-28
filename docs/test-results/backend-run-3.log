@@ -1,0 +1,19 @@
+.................................                                        [100%]
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  <repository>\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================ slowest 10 durations =============================
+0.37s call     tests/test_security.py::test_caller_cannot_impersonate_other_user
+0.35s call     tests/test_tools.py::test_pdf_page_limit_enforced
+0.29s call     tests/test_exports.py::test_auth_endpoints_rate_limit
+0.21s call     tests/test_security.py::test_csrf_and_logout_revocation
+0.16s call     tests/test_research.py::test_timeout_stops_pipeline_before_sources_or_save
+0.16s call     tests/test_research.py::test_invalid_synthesis_never_becomes_saved_success
+0.13s call     tests/test_exports.py::test_all_saved_report_export_formats
+0.12s call     tests/test_tools.py::test_bookmark_notes_and_removal_roundtrip
+0.10s call     tests/test_research.py::test_research_stream_saves_deduplicated_report_and_real_id
+0.10s setup    tests/test_security.py::test_caller_cannot_impersonate_other_user
+33 passed, 1 warning in 4.82s

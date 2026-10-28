@@ -51,7 +51,7 @@ npm run build
 
 The Python suite uses a separate database under `data/tests` and fake providers. It never uses real credentials or developer research. The stream tests exercise arbitrary chunk boundaries, split Unicode, malformed responses and cancellation.
 
-See [verification notes](docs/VERIFICATION.md) for observed results and remaining release checks.
+See the [detailed test and reliability report](docs/TEST_REPORT.md) for all 37 distinct automated tests, three backend runs, live source checks, per-case explanations and limitations. [Machine-readable results and command logs](docs/test-results/) are included.
 
 ## Deployment and data
 

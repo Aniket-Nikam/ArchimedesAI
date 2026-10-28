@@ -1,0 +1,43 @@
+{
+  "executed_at_utc": "2026-10-28T06:18:55.416226+00:00",
+  "observations": [
+    {
+      "source": "arXiv",
+      "query": "retrieval augmented generation",
+      "requested": 1,
+      "returned": 1,
+      "has_title": true,
+      "http_statuses": [
+        200
+      ],
+      "elapsed_seconds": 0.797,
+      "interpretation": "Result retrieved"
+    },
+    {
+      "source": "PubMed",
+      "query": "retrieval augmented generation",
+      "requested": 1,
+      "returned": 1,
+      "has_title": true,
+      "http_statuses": [
+        200,
+        200
+      ],
+      "elapsed_seconds": 1.078,
+      "interpretation": "Result retrieved"
+    },
+    {
+      "source": "Semantic Scholar",
+      "query": "retrieval augmented generation",
+      "requested": 1,
+      "returned": 1,
+      "has_title": true,
+      "http_statuses": [
+        200
+      ],
+      "elapsed_seconds": 1.359,
+      "interpretation": "Result retrieved"
+    }
+  ],
+  "limit": "One snapshot per source, not a statistical uptime estimate. No live AI evaluation."
+}

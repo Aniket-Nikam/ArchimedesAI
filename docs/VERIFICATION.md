@@ -4,7 +4,7 @@
 
 | Check | Result |
 | --- | --- |
-| Backend integration/regression suite | 20 passed |
+| Backend integration/regression suite | Expanded to 33 passed in each of three runs; see [detailed report](TEST_REPORT.md) |
 | Frontend SSE tests | 4 passed |
 | Python Ruff lint and formatting | Passed |
 | Frontend Oxlint | Passed, no warnings |
@@ -42,7 +42,7 @@ The original broad environment freeze was replaced with direct runtime requireme
 - Public-API smoke query: `graph neural networks`, one result requested.
 - arXiv: returned a paper with a title.
 - PubMed: returned a paper with a title.
-- Semantic Scholar: returned no data during this run. The client cannot distinguish every empty response from provider refusal; UI coverage says `empty or unavailable`.
+- Semantic Scholar: returned no data during the initial run. The follow-up source check in the [detailed report](TEST_REPORT.md) returned a paper from all three providers; neither snapshot establishes uptime.
 - No Groq key was configured in this checkout. A full real-provider search → synthesis → save → literature-review/draft run remains **unverified**.
 - CI configuration was added, but hosted GitHub Actions has not run from this local branch.
 - The installed Starlette test client emitted a deprecation warning about its HTTPX transport; all integration tests passed.
