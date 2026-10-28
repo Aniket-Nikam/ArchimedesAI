@@ -2,10 +2,10 @@
 > frontend@0.0.0 test
 > node --experimental-strip-types --test tests/*.test.ts
 
-✔ preserves a JSON frame and unicode split at every byte boundary (21.8963ms)
-✔ supports coalesced events, comments, CRLF and multiline data (0.4256ms)
-✔ rejects truncated and malformed frames rather than claiming completion (1.0679ms)
-✔ cancels the reader when a consumer stops (0.6613ms)
+✔ preserves a JSON frame and unicode split at every byte boundary (28.7935ms)
+✔ supports coalesced events, comments, CRLF and multiline data (0.8863ms)
+✔ rejects truncated and malformed frames rather than claiming completion (1.5868ms)
+✔ cancels the reader when a consumer stops (1.2379ms)
 ℹ tests 4
 ℹ suites 0
 ℹ pass 4
@@ -13,4 +13,4 @@
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 316.2055
+ℹ duration_ms 210.5864

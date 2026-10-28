@@ -89,7 +89,7 @@ summary = {
     "source_base_commit": subprocess.check_output(
         ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
     ).strip(),
-    "working_tree_note": "Includes the expanded tests and verification scripts added after the base commit.",
+    "working_tree_note": "Any tested working-tree changes are included in the report commit; the base SHA precedes those changes.",
     "python": platform.python_version(),
     "node": subprocess.check_output(["node", "--version"], text=True).strip(),
     "platform": platform.system(),

@@ -6,14 +6,14 @@
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
 ============================ slowest 10 durations =============================
-0.49s call     tests/test_exports.py::test_auth_endpoints_rate_limit
-0.38s call     tests/test_tools.py::test_pdf_page_limit_enforced
-0.32s call     tests/test_research.py::test_research_stream_saves_deduplicated_report_and_real_id
-0.26s call     tests/test_exports.py::test_all_saved_report_export_formats
-0.21s call     tests/test_research.py::test_only_one_research_job_per_account
-0.21s call     tests/test_research.py::test_invalid_synthesis_never_becomes_saved_success
+0.41s call     tests/test_tools.py::test_pdf_page_limit_enforced
+0.21s call     tests/test_exports.py::test_auth_endpoints_rate_limit
 0.20s call     tests/test_security.py::test_caller_cannot_impersonate_other_user
-0.19s call     tests/test_research.py::test_empty_sources_and_failed_synthesis_never_save_fake_success
-0.18s call     tests/test_research.py::test_unconfigured_ai_returns_actionable_failure
-0.16s call     tests/test_research.py::test_timeout_stops_pipeline_before_sources_or_save
-33 passed, 1 warning in 6.16s
+0.15s call     tests/test_research.py::test_timeout_stops_pipeline_before_sources_or_save
+0.11s call     tests/test_research.py::test_only_one_research_job_per_account
+0.11s call     tests/test_tools.py::test_bookmark_notes_and_removal_roundtrip
+0.10s call     tests/test_research.py::test_invalid_synthesis_never_becomes_saved_success
+0.10s call     tests/test_exports.py::test_all_saved_report_export_formats
+0.10s call     tests/test_security.py::test_csrf_and_logout_revocation
+0.08s call     tests/test_research.py::test_research_stream_saves_deduplicated_report_and_real_id
+33 passed, 1 warning in 4.14s

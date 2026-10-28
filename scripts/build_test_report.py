@@ -210,7 +210,7 @@ def main():
         "## Method and evidence",
         "",
         f"- Environment: {summary['platform']}, Python {summary['python']}, Node {summary['node']}.",
-        f"- Application base commit: `{summary['source_base_commit']}`. Tests/scripts added after this base are included in the report's Git commit.",
+        f"- Application base commit: `{summary['source_base_commit']}`. Any tested working-tree changes after this base are included in the report's Git commit.",
         "- Backend requests exercise the real FastAPI routing, validation, sessions, CSRF and SQLite persistence through TestClient. Each case starts with cleaned isolated test tables, not developer research.",
         "- Provider-facing tests use explicit stubs, synthetic papers and fake keys. Password hashing uses reduced bcrypt rounds in tests, so durations do not predict production login latency.",
         "- The frontend tests run the real stream decoder under Node; they are not React component or full-browser tests.",
@@ -267,6 +267,31 @@ def main():
         lines.append(
             f"| {observation['source']} | {', '.join(map(str, observation['http_statuses']))} | {observation['returned']} | {observation['elapsed_seconds']:.3f}s | {observation['interpretation']} |"
         )
+    ci_path = RESULTS / "github-ci.json"
+    if ci_path.exists():
+        ci = json.loads(ci_path.read_text())
+        lines += [
+            "",
+            "## Hosted GitHub Actions verification",
+            "",
+            f"Public workflow state captured at {ci['captured_at_utc']}. These are separate Linux runner checks, not the local Windows runs above.",
+            "",
+            "| Commit | Workflow | Backend / frontend jobs |",
+            "|---|---|---|",
+        ]
+        for run in ci["runs"]:
+            jobs = "; ".join(
+                f"{job['name']}: {job['conclusion'] or job['status']}" for job in run["jobs"]
+            )
+            lines.append(
+                f"| `{run['head_sha'][:7]}` | [{run['conclusion'] or run['status']}]({run['html_url']}) | {jobs} |"
+            )
+        lines += [
+            "",
+            "The first hosted run passed the backend but failed frontend clean installation. The known Node 24.13.0 toolchain then passed both jobs. Investigation also found missing optional WASM peer entries under newer npm validation; the lockfile was completed and frontend CI expanded to the known version plus the latest Node 24 release. No direct application dependency versions were changed by this repair.",
+            "",
+            "CI passing supports clean installation, tests, lint and build on the listed runner/toolchains. It does not establish deployed uptime or live AI output quality.",
+        ]
     lines += [
         "",
         "All three sources returned a titled paper in this run. An earlier smoke run returned no Semantic Scholar data, so availability clearly can vary. These observations do not establish uptime, relevance, bibliographic accuracy, citation coverage or reproducible search ranking.",
