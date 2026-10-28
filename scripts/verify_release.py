@@ -36,7 +36,7 @@ def run(name, args, cwd=ROOT):
         errors="replace",
     )
     elapsed = round(time.monotonic() - start, 3)
-    (OUTPUT / f"{name}.log").write_text(redact(result.stdout), encoding="utf-8")
+    (OUTPUT / f"{name}.log").write_text(redact(result.stdout).rstrip() + "\n", encoding="utf-8")
     checks.append({"name": name, "exit_code": result.returncode, "elapsed_seconds": elapsed})
     print(f"{name}: {'PASS' if result.returncode == 0 else 'FAIL'} ({elapsed}s)", flush=True)
 
