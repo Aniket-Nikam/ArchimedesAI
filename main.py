@@ -1,5 +1,8 @@
+import asyncio
 import logging
 import os
+import sqlite3
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import Depends, FastAPI, Request
@@ -20,6 +23,8 @@ from routers.litreview_router import router as litreview_router
 from routers.project_router import router as project_router
 from routers.research_router import router as research_router
 from routers.upload_router import router as upload_router
+from services.body_limits import BodyLimits
+from services.job_service import dispatch
 
 # Configure global logging
 logging.basicConfig(
@@ -30,7 +35,24 @@ logger = logging.getLogger(__name__)
 # Initialize DB
 database.init_db()
 
-app = FastAPI(title="Archimedes Backend")
+
+@asynccontextmanager
+async def lifespan(app):
+    async def recover_jobs():
+        while True:
+            await asyncio.to_thread(dispatch)
+            await asyncio.sleep(1)
+
+    task = asyncio.create_task(recover_jobs())
+    yield
+    task.cancel()
+    try:
+        await task
+    except asyncio.CancelledError:
+        pass
+
+
+app = FastAPI(title="Archimedes Backend", lifespan=lifespan)
 
 # Setup CORS with allowed origins from environment
 allowed_origins_str = os.environ.get("ALLOWED_ORIGINS", "http://localhost:5173")
@@ -45,10 +67,19 @@ async def check_origin(request: Request, call_next):
         same_origin = str(request.base_url).rstrip("/")
         if origin not in origins and origin != same_origin:
             return JSONResponse({"detail": "Origin not allowed"}, status_code=403)
-    response = await call_next(request)
+    try:
+        response = await call_next(request)
+    except sqlite3.Error:
+        return JSONResponse(
+            {"detail": "Storage is temporarily unavailable. Please retry later."}, status_code=503
+        )
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["Referrer-Policy"] = "same-origin"
     response.headers["Cache-Control"] = "no-store"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'"
+    )
     return response
 
 
@@ -68,6 +99,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(BodyLimits)
 
 app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
 app.include_router(

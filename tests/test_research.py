@@ -7,7 +7,8 @@ import config
 from api import api_utils
 from api import retraction_checker as retractions
 from db.database import get_connection
-from routers import research_router as research
+from services import job_service
+from services import research_pipeline as research
 from services.paper_utils import unique_papers
 
 
@@ -79,11 +80,8 @@ def test_empty_sources_and_failed_synthesis_never_save_fake_success(client, monk
 def test_only_one_research_job_per_account(client, monkeypatch):
     user = register(client)
     mock_pipeline(monkeypatch)
-    research._users.add(user["id"])
-    try:
-        assert client.post("/api/research/", json={"query": "test evidence"}).status_code == 409
-    finally:
-        research._users.discard(user["id"])
+    job_service.enqueue(user["id"], {"query": "test evidence"})
+    assert client.post("/api/research/", json={"query": "test evidence"}).status_code == 409
 
 
 def test_invalid_synthesis_never_becomes_saved_success(client, monkeypatch):
@@ -103,16 +101,10 @@ def test_invalid_synthesis_never_becomes_saved_success(client, monkeypatch):
 def test_global_research_capacity_returns_retryable_error(client, monkeypatch):
     register(client)
     mock_pipeline(monkeypatch)
-    held = 0
-    try:
-        while research._slots.acquire(blocking=False):
-            held += 1
-        result = client.post("/api/research/", json={"query": "test evidence"})
-        assert result.status_code == 429
-        assert result.headers["retry-after"] == "10"
-    finally:
-        for _ in range(held):
-            research._slots.release()
+    monkeypatch.setattr(config, "MAX_CONCURRENT_RESEARCH", 0)
+    result = client.post("/api/research/", json={"query": "test evidence"})
+    assert result.status_code == 429
+    assert result.headers["retry-after"] == "10"
 
 
 def test_timeout_stops_pipeline_before_sources_or_save(client, monkeypatch):
@@ -123,9 +115,18 @@ def test_timeout_stops_pipeline_before_sources_or_save(client, monkeypatch):
     result = client.post("/api/research/", json={"query": "test evidence"})
     assert any(e["type"] == "error" for e in events(result))
     until = time.monotonic() + 2
-    while research._users and time.monotonic() < until:
+    while (
+        get_connection()
+        .execute("SELECT 1 FROM research_jobs WHERE status IN ('queued','running')")
+        .fetchone()
+        and time.monotonic() < until
+    ):
         time.sleep(0.01)
-    assert not research._users
+    assert (
+        not get_connection()
+        .execute("SELECT 1 FROM research_jobs WHERE status IN ('queued','running')")
+        .fetchone()
+    )
     assert get_connection().execute("SELECT COUNT(*) FROM research_sessions").fetchone()[0] == 0
 
 

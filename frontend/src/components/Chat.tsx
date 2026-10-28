@@ -13,8 +13,7 @@ const CitationTooltip = ({ sourceName, report }: { sourceName: string, report: a
   const allPapers = [...(report?.seminal || []), ...(report?.citations || [])];
   const paper = allPapers.find(p => 
     p.title && sourceName && (
-      p.title.toLowerCase().includes(sourceName.toLowerCase().substring(0, 15)) || 
-      sourceName.toLowerCase().includes(p.title.toLowerCase().substring(0, 15))
+      p.title.trim().toLowerCase() === sourceName.trim().toLowerCase()
     )
   );
   
@@ -153,74 +152,100 @@ export default function Chat({ user, chatHistory, setChatHistory, onNewSession }
     } catch (error) { setExportError((error as Error).message); }
   };
 
-  const submitQuery = async (query: string) => {
-    if (!query.trim() || isProcessing) return;
 
-    const userMsg = query.trim();
-    setInput('');
-    setChatHistory((prev: any[]) => [...prev, { role: 'user', content: userMsg }]);
-    setIsProcessing(true);
-    setAgentLogs([]);
-    setShowLogs(false);
+  const jobRef = useRef<string | null>(null);
+  const streamRef = useRef<(job: string, query: string, controller: AbortController) => Promise<void>>(async () => {});
+  const aliveRef = useRef(true);
+  useEffect(() => { aliveRef.current = true; return () => { aliveRef.current = false; }; }, []);
+  const historyState = useRef({length:chatHistory.length,set:setChatHistory});
+  historyState.current = {length:chatHistory.length,set:setChatHistory};
+  const storageKey = `archimedes_job_${user.id}`;
+  const [searchOnly, setSearchOnly] = useState(false);
 
-    // Find the last report in history to send as context for follow-ups
-    const lastReportMsg = [...chatHistory].reverse().find(m => m.report);
-    const existingReport = lastReportMsg ? lastReportMsg.report : null;
-
-    const controller = new AbortController();
+  const consumeJob = async (job: string, query: string, controller: AbortController) => {
+    jobRef.current = job;
     abortRef.current = controller;
+    sessionStorage.setItem(storageKey, job);
+    setIsProcessing(true);
     try {
-      const response = await apiFetch('/api/research/', {
-        method: 'POST',
-        signal: controller.signal,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          query: userMsg, 
-          user_id: user.id,
-          chat_history: chatHistory.slice(-10).map((m: any) => ({ role: m.role, content: m.content })),
-          existing_report: existingReport
-        }),
-      });
-
-      if (!response.body) throw new Error('ReadableStream not supported.');
-
-      let aiContent = '';
-      let reportData = null;
-      let isOffTopic = false;
+      const response = await apiFetch(`/api/research/jobs/${job}/events`, { signal: controller.signal });
+      if (!response.body) throw new Error('Streaming is unavailable.');
+      let answer = '';
+      let report = null;
       let terminal = false;
-      for await (const parsed of readEvents(response.body)) {
-        if (parsed.type === 'log') {
-          setAgentLogs(prev => [...prev.slice(-99), String(parsed.data)]);
-        } else if (parsed.type === 'error') {
-          terminal = true;
-          aiContent = String(parsed.data);
-        } else if (parsed.type === 'followup_complete') {
-          terminal = true;
-          aiContent = parsed.data.answer;
-        } else if (parsed.type === 'complete') {
-          terminal = true;
-          reportData = parsed.data;
-          aiContent = `Research saved. Found **${parsed.data.total_crawled} unique papers** for *"${userMsg}"* in **${parsed.data.elapsed_seconds}s**. Review source coverage and verify the linked evidence below.`;
+      for await (const event of readEvents(response.body)) {
+        if (!aliveRef.current || controller.signal.aborted) return;
+        if (event.type === 'log') setAgentLogs(previous => [...previous.slice(-99), String(event.data)]);
+        if (event.type === 'error') { terminal = true; answer = String(event.data); }
+        if (event.type === 'followup_complete') { terminal = true; answer = event.data.answer; }
+        if (event.type === 'complete') {
+          terminal = true; report = event.data;
+          answer = `Research saved: **${report.total_crawled} unique papers** for *"${query}"* in **${report.elapsed_seconds}s**. Inspect the evidence and source coverage below.`;
         }
       }
-      if (!terminal) throw new Error('The connection ended before research completed. Please retry.');
-
-      setChatHistory((prev: any[]) => [
-        ...prev,
-        { role: 'assistant', content: aiContent, report: reportData, offTopic: isOffTopic },
-      ]);
-      onNewSession();
-    } catch (err) {
-      console.error(err);
-      setChatHistory((prev: any[]) => [
-        ...prev,
-        { role: 'assistant', content: `${controller.signal.aborted ? 'Research stopped. You can start a new question.' : (err as Error).message}` },
-      ]);
+      if (!terminal) throw new Error('Connection interrupted. Reload to reconnect to the saved research job.');
+      sessionStorage.removeItem(storageKey);
+      if (aliveRef.current) {
+        setChatHistory((previous: any[]) => [...previous, { role: 'assistant', content: answer, report }]);
+        onNewSession();
+      }
+    } catch (error) {
+      if (aliveRef.current && !controller.signal.aborted) setChatHistory((previous: any[]) => [...previous, { role: 'assistant', content: (error as Error).message + ' Your job is retained; reload to reconnect.' }]);
     } finally {
+      if (aliveRef.current) { setIsProcessing(false); setAgentLogs([]); }
       abortRef.current = null;
-      setIsProcessing(false);
-      setAgentLogs([]);
+      jobRef.current = null;
     }
+  };
+  streamRef.current = consumeJob;
+
+  useEffect(() => {
+    const controller = new AbortController();
+    let active = true;
+    const restore = async () => {
+      try {
+        const remembered = sessionStorage.getItem(`archimedes_job_${user.id}`);
+        const response = await apiFetch(remembered ? `/api/research/jobs/${remembered}` : '/api/research/jobs/active', {signal: controller.signal});
+        const job = await response.json();
+        if (!active || !job) return;
+        if (historyState.current.length === 0) historyState.current.set([{role:'user',content:job.query}]);
+        await streamRef.current(job.id, job.query, controller);
+      } catch { /* a missing remembered job must not break the workspace */ }
+    };
+    void restore();
+    return () => { active = false; controller.abort(); };
+  }, [user.id]);
+
+  const submitQuery = async (query: string) => {
+    if (!query.trim() || isProcessing || jobRef.current) return;
+    const controller = new AbortController();
+    abortRef.current = controller;
+    setIsProcessing(true); setInput(''); setAgentLogs([]); setShowLogs(false);
+    setChatHistory((previous: any[]) => [...previous, {role:'user',content:query.trim()}]);
+    try {
+      const lastReport = [...chatHistory].reverse().find(message => message.report)?.report;
+      const response = await apiFetch('/api/research/jobs', {
+        method:'POST', signal:controller.signal, headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({query:query.trim(),mode:searchOnly ? 'search':'synthesis',chat_history:chatHistory.slice(-10).map((message: any) => ({role:message.role,content:message.content})),existing_report:lastReport}),
+      });
+      const {job_id} = await response.json();
+      if (!aliveRef.current) return;
+      await consumeJob(job_id,query.trim(),controller);
+    } catch (error) {
+      if (aliveRef.current && !controller.signal.aborted) setChatHistory((previous: any[]) => [...previous,{role:'assistant',content:(error as Error).message}]);
+      if (aliveRef.current) setIsProcessing(false);
+    }
+  };
+
+  const stopResearch = async () => {
+    if (!jobRef.current) return;
+    try {
+      await apiFetch(`/api/research/jobs/${jobRef.current}`,{method:'DELETE'});
+      abortRef.current?.abort();
+      sessionStorage.removeItem(storageKey);
+      setChatHistory((previous: any[]) => [...previous,{role:'assistant',content:'Research cancelled.'}]);
+      setIsProcessing(false);
+    } catch (error) { setExportError((error as Error).message); }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -457,6 +482,7 @@ export default function Chat({ user, chatHistory, setChatHistory, onNewSession }
                           <p>Retraction metadata is limited. An unknown status does not establish that a paper is safe.</p>
                         </div>
                         {/* AI Synthesis */}
+                        {msg.report.ai_synthesis?.evidence_review && <p className="workspace-caption">Citation identity checks: {msg.report.ai_synthesis.evidence_review.unmatched_citations} unmatched references. A matched paper does not by itself verify a claim; inspect the linked evidence.</p>}
                         {msg.report.ai_synthesis && renderSynthesis(msg.report.ai_synthesis, msgIdx)}
 
                         {/* Knowledge Graph */}
@@ -532,6 +558,7 @@ export default function Chat({ user, chatHistory, setChatHistory, onNewSession }
 
       {/* ── Input ── */}
       <div className="input-area">
+        <label className="research-mode"><input type="checkbox" checked={searchOnly} onChange={event => setSearchOnly(event.target.checked)} disabled={isProcessing} /> Paper search only (no AI synthesis)</label>
         <form onSubmit={handleSubmit} className="input-form">
           <textarea
             ref={textareaRef}
@@ -553,7 +580,7 @@ export default function Chat({ user, chatHistory, setChatHistory, onNewSession }
             <Send size={18} />
           </button>
         </form>
-        {isProcessing && <button type="button" className="stop-research" onClick={() => abortRef.current?.abort()}>Stop research</button>}
+        {isProcessing && <button type="button" className="stop-research" onClick={stopResearch}>Stop research</button>}
         <div className="input-footer">
           AI can make mistakes. Verify findings against the original papers.
         </div>

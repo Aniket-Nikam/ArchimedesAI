@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS provider_schedule(host TEXT PRIMARY KEY,next_at REAL NOT NULL);

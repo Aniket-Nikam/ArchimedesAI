@@ -1,0 +1,171 @@
+		20 container
+				21 button Find "A Programmable Dual-RNA-Guided DNA Endonuclease in Adaptive Bacterial Immunity" and explain the role of guide RNA.
+				22 button Help: Delete session, Description: Delete research: Find "A Programmable Dual-RNA-Guided DNA Endonuclease in Adaptive Bacterial Immunity" and explain the role of guide RNA.
+			23 container
+				24 button Find "Highly accurate protein structure prediction with AlphaFold" and explain the structure prediction approach.
+				25 button Help: Delete session, Description: Delete research: Find "Highly accurate protein structure prediction with AlphaFold" and explain the structure prediction approach.
+			26 container
+				27 button Find "Surface codes: Towards practical large-scale quantum computation" and explain the error-correction setting.
+				28 button Help: Delete session, Description: Delete research: Find "Surface codes: Towards practical large-scale quantum computation" and explain the error-correction setting.
+			29 container
+				30 button Find "A Programmable Dual-RNA-Guided DNA Endonuclease in Adaptive Bacterial Immunity" and explain the role of guide RNA.
+				31 button Help: Delete session, Description: Delete research: Find "A Programmable Dual-RNA-Guided DNA Endonuclease in Adaptive Bacterial Immunity" and explain the role of guide RNA.
+			32 container
+				33 button Find "Highly accurate protein structure prediction with AlphaFold" and explain the structure prediction approach.
+				34 button Help: Delete session, Description: Delete research: Find "Highly accurate protein structure prediction with AlphaFold" and explain the structure prediction approach.
+			35 container
+				36 button Find "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs" and explain the graph hierarchy.
+				37 button Help: Delete session, Description: Delete research: Find "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs" and explain the graph hierarchy.
+			38 container
+				39 button Find "Graph Attention Networks" and explain neighbourhood attention.
+				40 button Description: Delete research: Find "Graph Attention Networks" and explain neighbourhood attention., Help: Delete session
+			41 container
+				42 button Find "LoRA: Low-Rank Adaptation of Large Language Models" and explain which parameters are trained.
+				43 button Help: Delete session, Description: Delete research: Find "LoRA: Low-Rank Adaptation of Large Language Models" and explain which parameters are trained.
+			44 container
+				45 button Find "Deep Residual Learning for Image Recognition" and explain residual connections.
+				46 button Help: Delete session, Description: Delete research: Find "Deep Residual Learning for Image Recognition" and explain residual connections.
+			47 container
+				48 button Find "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks" and explain the retrieval and generation components.
+				49 button Help: Delete session, Description: Delete research: Find "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks" and explain the retrieval and generation components.
+			50 container
+				51 button Find "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding" and explain its pretraining objectives.
+				52 button Help: Delete session, Description: Delete research: Find "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding" and explain its pretraining objectives.
+			53 container
+				54 button Find "Attention Is All You Need" and explain self-attention in the Transformer architecture.
+				55 button Help: Delete session, Description: Delete research: Find "Attention Is All You Need" and explain self-attention in the Transformer architecture.
+			56 container
+				57 button Find Attention Is All You Need and explain self-attention in the Transformer architecture.
+				58 button Help: Delete session, Description: Delete research: Find Attention Is All You Need and explain self-attention in the Transformer architecture.
+			59 text R research_walkthrough research-walkthrough@example.com
+			60 button Sign out
+		61 container
+			62 text YOUR LIBRARY OF EVIDENCE
+			63 heading Research desk, Value: 1
+				64 text Research desk
+			65 text Discover · Connect · Synthesize
+			66 container
+				67 heading Follow a better question., Value: 2
+					68 text Follow a better question.
+				69 text Discover papers, connect the evidence, and make room for your next idea.
+				70 button Transformer attention mechanisms in NLP
+				71 button CRISPR gene editing recent advances
+				72 button Quantum computing error correction
+				73 button Climate change mitigation strategies
+				80 text Attention Is All You Need PDF Analysis
+				81 button
+				82 text LENGTH 15  pages RELATED WORK FOUND 6  papers
+				83 heading Abstract & Claims, Value: 4
+					84 text Abstract & Claims
+				85 text The dominant sequence transduction models are based on complex recurrent or convolutional neural networks that include an encoder and a decoder. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train. • Transformer architecture achieves 28.4 BLEU on WMT 2014 English‑to‑German, improving over existing best results by over 2 BLEU. • Transformer achieves 41.8 BLEU on WMT 2014 English‑to‑French, a new single‑model state‑of‑the‑art after training for 3.5 days on eight GPUs. • Transformer generalizes well to other tasks, successfully applied to English constituency parsing with both large and limited training data.
+				86 heading Literature Verification, Value: 4
+					87 text Literature Verification
+				88 text This comparison uses short text excerpts and limited related literature. It cannot establish missing citations or validate the full paper.
+				89 heading Excerpt‑Based Claim Comparison, Value: 1
+					90 text Excerpt‑Based Claim Comparison
+				91 text | Claim (from the excerpt) | Assessment | Supporting / Contradicting Evidence | |--------------------------|------------|-------------------------------------| |
+				92 text 1. The Transformer is a simple architecture based solely on attention, dispensing with recurrence and convolutions.
+				93 text  | ✅
+				94 text Supported
+				95 text  | The abstract of the paper itself (Evidence S1) states this explicitly. | |
+				96 text 2. The Transformer outperforms existing encoder‑decoder models on WMT 2014 English‑to‑German and English‑to‑French translation tasks.
+				97 text  | ✅
+				98 text Supported
+				99 text  | The excerpt reports 28.4 BLEU (German) and 41.8 BLEU (French) and claims improvement over the best results, including ensembles. Evidence S1 contains the same numbers. | |
+				100 text 3. The Transformer is more parallelizable and requires significantly less training time than previous models.
+				101 text  | ⚠️
+				102 text Partially Supported
+				103 text  | The excerpt claims faster training and higher parallelism, but no quantitative comparison is provided in the supplied text. Other literature (e.g., S5 on beam search) does not address training time, so the claim remains plausible but not fully substantiated here. | |
+				104 text 4. The Transformer generalizes well to other tasks, demonstrated on English constituency parsing.
+				105 text  | ⚠️
+				106 text Partially Supported
+				107 text  | The excerpt mentions successful application to parsing, but no results or comparison are shown. No supporting evidence in the supplied references. | |
+				108 text 5. The Transformer uses a parameter‑free positional representation.
+				109 text  | ✅
+				110 text Supported
+				111 text  | The abstract notes “parameter‑free position representation” and the authors’ contribution list mentions Noam’s design of this component. | |
+				112 text 6. The Transformer introduces scaled dot‑product attention, multi‑head attention, and a parameter‑free positional encoding.
+				113 text  | ✅
+				114 text Supported
+				115 text  | These are highlighted in the abstract and author contributions. | |
+				116 text 7. The Transformer achieves state‑of‑the‑art BLEU scores on WMT 2014 tasks with a single model trained for 3.5 days on eight GPUs.
+				117 text  | ✅
+				118 text Supported
+				119 text  | The excerpt provides the exact training time and hardware, matching the numbers in Evidence S1. | |
+				120 text 8. The Transformer can be applied successfully to tasks with both large and limited training data.
+				121 text  | ⚠️
+				122 text Partially Supported
+				123 text  | The excerpt claims success on parsing with varying data sizes, but no quantitative evidence is supplied. |
+				124 heading Missing Citations, Value: 1
+					125 text Missing Citations
+				126 text | Potentially Relevant Paper | Why It Might Be Relevant | |----------------------------|--------------------------| |
+				127 text S5 – Beam Search Strategies for Neural Machine Translation (2017)
+				128 text  | Discusses decoding strategies that could affect BLEU scores reported for the Transformer. | |
+				129 text S6 – Self‑Attention as Distributional Projection (2025)
+				130 text  | Provides a theoretical interpretation of self‑attention that could contextualize the Transformer’s design choices. | |
+				131 text S3 – Attention Guided CAM (2024)
+				132 text  | While focused on vision, it discusses attention visualization, which could be relevant if the paper later discusses interpretability. | |
+				133 text S4 – Primal‑Attention (2023)
+				134 text  | Offers a kernel‑based view of self‑attention, potentially useful for understanding the Transformer’s mathematical properties. |
+				135 heading Methodology Assessment, Value: 1
+					136 text Methodology Assessment
+				137 text | Aspect | Paper’s Approach | Common Field Approaches | Comments | |--------|------------------|------------------------|----------| |
+				138 text Model Architecture
+				139 text  | Purely attention‑based Transformer (encoder‑decoder) with multi‑head attention and positional encodings. | Prior state‑of‑the‑art models (e.g., LSTM, GRU, CNN‑based encoders) relied on recurrence or convolutions. | The shift to a fully attention‑based design was novel and has since become standard. | |
+				140 text Training Regimen
+				141 text  | Trained on WMT 2014 datasets, 3.5 days on eight GPUs. | Earlier models often required weeks on larger GPU clusters. | Demonstrates significant efficiency gains. | |
+				142 text Evaluation Metrics
+				143 text  | BLEU scores on WMT 2014 English‑to‑German and English‑to‑French. | BLEU is the de‑facto standard for MT evaluation. | No mention of other metrics (e.g., METEOR, TER) in the excerpt. | |
+				144 text Generalization Experiments
+				145 text  | Applied to English constituency parsing. | Few papers at the time extended MT models to syntactic parsing. | Shows versatility but lacks detailed results in the excerpt. |
+				146 heading Suggested Improvements / Questions for the Full Paper, Value: 1
+					147 text Suggested Improvements / Questions for the Full Paper
+				148 content list
+					149 container
+						150 AXListMarker 1.
+						151 text Quantitative Training Efficiency
+						152 text How does the Transformer’s training time compare to the best recurrent or convolutional models on the same hardware?
+						153 text What are the exact batch sizes, learning rates, and optimizer settings used?
+					154 container
+						155 AXListMarker 2.
+						156 text Beam Search Details
+						157 text What beam width and length‑penalty settings were used during decoding?
+						158 text Did the authors experiment with alternative search strategies (e.g., sampling, top‑k)?
+					159 container
+						160 AXListMarker 3.
+						161 text Positional Encoding Analysis
+						162 text How does the parameter‑free positional encoding affect performance compared to learned positional embeddings?
+						163 text Is there an ablation study showing its contribution?
+					164 container
+						165 AXListMarker 4.
+						166 text Parsing Experiment Results
+						167 text What parsing metrics (e.g., F1, UAS/LAS) were achieved?
+						168 text How does the Transformer‑based parser compare to traditional constituency parsers?
+					169 container
+						170 AXListMarker 5.
+						171 text Generalization to Other Tasks
+						172 text Beyond parsing, were other NLP tasks (e.g., summarization, question answering) evaluated?
+						173 text If so, what were the results?
+					174 container
+						175 AXListMarker 6.
+						176 text Model Size and Parameter Count
+						177 text What is the total number of parameters in the reported models?
+						178 text How does this scale with depth and width?
+					179 container
+						180 AXListMarker 7.
+						181 text Ablation of Multi‑Head Attention
+						182 text What happens if the number of heads is reduced or increased?
+						183 text Is there a trade‑off between performance and computational cost?
+					184 container
+						185 AXListMarker 8.
+						186 text Reproducibility
+						187 text Are the code and hyperparameters publicly available?
+						188 text What version of the Tensor2Tensor library was used?
+				189 text Addressing these points would strengthen the paper’s claims and provide a clearer picture of the Transformer’s advantages and limitations.
+			75 checkbox (settable, integer) Description: Paper search only (no AI synthesis), Value: 0
+			76 container
+				77 text entry area (settable) Research question
+				78 button (disabled) Start research
+			79 text AI can make mistakes. Verify findings against the original papers.
+
+The focused UI element is 1 AXWebArea ArchimedesAI · Research workspace, URL: 127.0.0.1:8010/

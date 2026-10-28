@@ -1,5 +1,5 @@
-import { useMemo, useState, useRef, useEffect, useCallback } from 'react';
-import ForceGraph2D from 'react-force-graph-2d';
+import { useMemo, useState, useRef, useCallback } from 'react';
+import {graphId,graphLayout} from '../graphLayout';
 import { Search, ZoomIn, ZoomOut, Maximize2, X, ExternalLink, Copy } from 'lucide-react';
 
 interface GraphNode {
@@ -20,6 +20,8 @@ interface GraphLink {
   target: string;
 }
 
+
+
 const groupColors: Record<number, string> = {
   1: '#f38ba8',  // Seminal — rose
   2: '#89b4fa',  // Depth-1 — blue
@@ -27,20 +29,22 @@ const groupColors: Record<number, string> = {
 };
 
 const groupLabels: Record<number, string> = {
-  1: 'Seminal',
+  1: 'Search results',
   2: 'Depth-1',
   3: 'Depth-2',
 };
 
 export default function KnowledgeGraph({ report }: { report: any }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const graphRef = useRef<any>(null);
-  const [dimensions, setDimensions] = useState({ width: 600, height: 500 });
+  const [mapPan,setMapPan] = useState({x:0,y:0});
+  const dragRef = useRef<{x:number;y:number;panX:number;panY:number}|null>(null);
+
   const [selectedNode, setSelectedNode] = useState<GraphNode | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [visibleGroups, setVisibleGroups] = useState({ 1: true, 2: true, 3: true });
-  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+
   const [copiedCitation, setCopiedCitation] = useState(false);
+  const [mapZoom, setMapZoom] = useState(1);
   const [exploredNodes, setExploredNodes] = useState<Set<string>>(() => {
     try {
       const stored = localStorage.getItem('archimedes_explored_nodes');
@@ -61,32 +65,6 @@ export default function KnowledgeGraph({ report }: { report: any }) {
       });
     }
   }, []);
-
-  // ── Auto-size via ResizeObserver ──
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const observer = new ResizeObserver(entries => {
-      for (const entry of entries) {
-        const { width, height } = entry.contentRect;
-        if (width > 0 && height > 0) {
-          setDimensions({ width: Math.floor(width), height: Math.floor(height) });
-        }
-      }
-    });
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  // ── Spread out nodes to prevent overlap ──
-  useEffect(() => {
-    if (graphRef.current) {
-      const chargeForce = graphRef.current.d3Force('charge');
-      if (chargeForce) chargeForce.strength(-400); // Stronger repulsion
-
-      const linkForce = graphRef.current.d3Force('link');
-      if (linkForce) linkForce.distance(100); // Longer links
-    }
-  }, [report]);
 
   const { nodes, links } = useMemo(() => {
     if (!report) return { nodes: [], links: [] };
@@ -154,30 +132,14 @@ export default function KnowledgeGraph({ report }: { report: any }) {
       return true;
     });
     const visibleIds = new Set(visibleNodes.map(n => n.id));
-    const visibleLinks = links.filter(l => visibleIds.has(l.source) && visibleIds.has(l.target));
+    const visibleLinks = links.map(link => ({source:graphId(link.source),target:graphId(link.target)})).filter(link => visibleIds.has(link.source) && visibleIds.has(link.target));
     return { nodes: visibleNodes, links: visibleLinks };
   }, [nodes, links, visibleGroups, searchTerm]);
 
-  // ── Zoom controls ──
-  const handleZoomIn = useCallback(() => {
-    if (graphRef.current) {
-      const currentZoom = graphRef.current.zoom();
-      graphRef.current.zoom(currentZoom * 1.4, 300);
-    }
-  }, []);
-
-  const handleZoomOut = useCallback(() => {
-    if (graphRef.current) {
-      const currentZoom = graphRef.current.zoom();
-      graphRef.current.zoom(currentZoom / 1.4, 300);
-    }
-  }, []);
-
-  const handleFitView = useCallback(() => {
-    if (graphRef.current) {
-      graphRef.current.zoomToFit(400, 60);
-    }
-  }, []);
+  const handleZoomIn = () => setMapZoom(value=>Math.min(3,value*1.2));
+  const handleZoomOut = () => setMapZoom(value=>Math.max(.5,value/1.2));
+  const handleFitView = () => {setMapZoom(1);setMapPan({x:0,y:0});};
+  const positions = useMemo(()=>graphLayout(filteredData.nodes,filteredData.links.length>0),[filteredData]);
 
   // ── Copy citation ──
   const copyCitation = useCallback((node: GraphNode) => {
@@ -194,50 +156,6 @@ export default function KnowledgeGraph({ report }: { report: any }) {
     setTimeout(() => setCopiedCitation(false), 2000);
   }, []);
 
-  // ── Node paint function ──
-  const paintNode = useCallback((node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
-    const color = groupColors[node.group] || '#888';
-    const isHighlighted = searchTerm && node.name?.toLowerCase().includes(searchTerm.toLowerCase());
-    const isHovered = hoveredNode === node.id;
-    const isSelected = selectedNode?.id === node.id;
-    const isExplored = exploredNodes.has(node.id);
-    const radius = node.val * 1.2;
-
-    // Glow effect for hovered/selected/highlighted
-    if (isHovered || isSelected || isHighlighted) {
-      ctx.beginPath();
-      ctx.arc(node.x, node.y, radius + 4, 0, 2 * Math.PI);
-      ctx.fillStyle = color.replace(')', ', 0.25)').replace('rgb', 'rgba');
-      ctx.fill();
-    }
-
-    // Main node
-    ctx.beginPath();
-    ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI);
-    // Dim the node if it has been explored, unless it's actively hovered or selected
-    const opacity = (isHovered || isSelected) ? '' : (isExplored ? '40' : 'cc');
-    ctx.fillStyle = color + opacity;
-    ctx.fill();
-
-    // Border for seminal papers
-    if (node.group === 1) {
-      ctx.strokeStyle = '#fff';
-      ctx.lineWidth = 0.8;
-      ctx.stroke();
-    }
-
-    // Label for seminal papers or when zoomed in
-    if (node.group === 1 || globalScale > 1.8) {
-      const label = node.name?.length > 30 ? node.name.substring(0, 30) + '…' : node.name;
-      const fontSize = Math.max(10 / globalScale, 2.5);
-      ctx.font = `${fontSize}px 'Outfit', sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillStyle = 'rgba(232, 230, 240, 0.9)';
-      ctx.fillText(label || '', node.x, node.y + radius + 3);
-    }
-  }, [searchTerm, hoveredNode, selectedNode, exploredNodes]);
-
   if (!nodes.length) return null;
 
   return (
@@ -246,7 +164,7 @@ export default function KnowledgeGraph({ report }: { report: any }) {
         <div className="kg-title">
           <span className="kg-title-icon">🕸️</span>
           Citation Network
-          <span className="kg-node-count">{filteredData.nodes.length} nodes · {filteredData.links.length} edges</span>
+          <span className="kg-node-count">{filteredData.nodes.length} papers · {filteredData.links.length} citation links</span>
         </div>
         <div className="kg-controls">
           <div className="kg-search">
@@ -286,39 +204,25 @@ export default function KnowledgeGraph({ report }: { report: any }) {
         ))}
       </div>
 
+      {links.length === 0 && <p className="kg-status" role="status">No citation links were retrieved{report.citation_status?.status==='rate_limited' ? ' because the citation service rate-limited this lookup' : ''}. These papers are shown as separate results; this does not establish that they are unrelated.</p>}
+      {filteredData.nodes.length === 0 && <p className="kg-status" role="status">No papers match the current search and filters.</p>}
       <div className="kg-graph-area" ref={containerRef}>
-        <ForceGraph2D
-          ref={graphRef}
-          graphData={filteredData}
-          nodeLabel=""
-          nodeCanvasObject={paintNode}
-          nodePointerAreaPaint={(node: any, color: string, ctx: CanvasRenderingContext2D) => {
-            const r = node.val * 1.2 + 4;
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, r, 0, 2 * Math.PI);
-            ctx.fillStyle = color;
-            ctx.fill();
-          }}
-          onNodeClick={handleNodeClick}
-          onNodeHover={(node: any) => setHoveredNode(node?.id || null)}
-          linkColor={() => 'rgba(255,255,255,0.1)'}
-          linkWidth={1}
-          linkDirectionalArrowLength={3.5}
-          linkDirectionalArrowRelPos={1}
-          linkDirectionalParticles={1}
-          linkDirectionalParticleWidth={2}
-          linkDirectionalParticleSpeed={0.004}
-          linkDirectionalParticleColor={() => 'rgba(108, 99, 255, 0.6)'}
-          width={dimensions.width}
-          height={dimensions.height}
-          backgroundColor="transparent"
-          cooldownTicks={80}
-          d3AlphaDecay={0.03}
-          d3VelocityDecay={0.25}
-          enableZoomInteraction={true}
-          enablePanInteraction={true}
-        />
+        <svg className="kg-paper-map" viewBox="0 0 840 450" role="img" aria-label={filteredData.links.length ? 'Citation network showing retrieved relationships':'Paper map: results without retrieved citation links'}
+          onPointerDown={event=>{if((event.target as Element).closest('[role="button"]'))return;dragRef.current={x:event.clientX,y:event.clientY,panX:mapPan.x,panY:mapPan.y};event.currentTarget.setPointerCapture(event.pointerId);}}
+          onPointerMove={event=>{const drag=dragRef.current;if(drag)setMapPan({x:drag.panX+(event.clientX-drag.x),y:drag.panY+(event.clientY-drag.y)});}}
+          onPointerUp={()=>{dragRef.current=null;}} onPointerCancel={()=>{dragRef.current=null;}}>
+          <defs><marker id="citation-arrow" markerWidth="7" markerHeight="7" refX="12" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#8da5b0"/></marker></defs>
+          <g transform={`translate(${420+mapPan.x} ${225+mapPan.y}) scale(${mapZoom}) translate(-420 -225)`}>
+            {filteredData.links.map((link,index)=>{const source=positions.get(graphId(link.source));const target=positions.get(graphId(link.target));return source&&target ? <line key={index} x1={source.x} y1={source.y} x2={target.x} y2={target.y} stroke="#8da5b0" strokeOpacity=".5" strokeWidth="1.2" markerEnd="url(#citation-arrow)"/>:null;})}
+            {filteredData.nodes.map(node=>{const position=positions.get(node.id)!;return <g key={node.id} role="button" tabIndex={0} aria-label={`Inspect paper: ${node.name}`} onClick={()=>handleNodeClick(node)} onKeyDown={event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();handleNodeClick(node);}}} className="kg-map-node">
+              <title>{node.name}</title><circle cx={position.x} cy={position.y} r={selectedNode?.id===node.id?12:9} fill={groupColors[node.group]} stroke={exploredNodes.has(node.id)?'#80cbb8':'#eeeae1'} strokeWidth="1.5"/>
+              <text x={position.x} y={position.y+24} textAnchor="middle" fill="#eeeae1" fontSize="10">{node.name?.length>27?node.name.slice(0,25)+'…':node.name}</text>
+              <text x={position.x} y={position.y+37} textAnchor="middle" fill="#b8c6cc" fontSize="9">{node.year||'Year unavailable'}</text>
+            </g>;})}
+          </g>
+        </svg>
       </div>
+      {filteredData.links.length>0 && <p className="kg-status">Arrows run from a paper to retrieved works that cite it. Drag to pan, use the zoom controls, and select a paper for details.</p>}
 
       {/* Node Detail Panel */}
       {selectedNode && (

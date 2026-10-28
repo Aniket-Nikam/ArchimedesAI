@@ -1,17 +1,18 @@
 import os
 import secrets
 from dotenv import load_dotenv
+from utils.secret_store import load_groq
 
 # Load environment variables
 load_dotenv()
 
 # --- API Keys ---
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+GROQ_API_KEY = os.environ["GROQ_API_KEY"] if "GROQ_API_KEY" in os.environ else load_groq()
 
 # --- LLM Fallback Models ---
 FALLBACK_MODELS = [
-    "llama-3.3-70b-versatile",
-    "llama-3.1-8b-instant",
+    "openai/gpt-oss-20b",
+    "openai/gpt-oss-120b",
 ]
 
 # --- Database ---

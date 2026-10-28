@@ -1,0 +1,47 @@
+[
+  {
+    "title": "Saved history survives browser reload",
+    "result": "Passed: the active surface-code research reconnected after a normal browser reload and displayed its saved report.",
+    "screenshot": "screenshots/workflow-reload-recovery.jpg"
+  },
+  {
+    "title": "Buffering, split events and server restart",
+    "result": "Passed with manual reconnection: a local proxy buffered two seconds and split SSE bytes into 37-byte chunks with 5 ms delays. A server restart interrupted the connection; the UI retained the job and reload recovered the metadata-only result.",
+    "screenshot": "screenshots/workflow-proxy-reconnect.jpg"
+  },
+  {
+    "title": "Paper-search mode",
+    "result": "Passed: the recovered report explicitly says no AI synthesis was requested. The checkbox affects synthesis, not whether papers or citation metadata can be searched.",
+    "screenshot": "screenshots/workflow-proxy-reconnect.jpg"
+  },
+  {
+    "title": "Reading list and research notes",
+    "result": "Passed: the original CRISPR paper was bookmarked through its paper card and a verification note was saved in the reading list.",
+    "screenshot": "screenshots/workflow-reading-list.jpg"
+  },
+  {
+    "title": "Evidence extraction matrix",
+    "result": "Passed for output generation: six BERT-related rows appeared. The BERT benchmark values match its original abstract; missing fields were marked Not stated. Other rows were not exhaustively validated.",
+    "screenshot": "screenshots/workflow-extraction-matrix.jpg"
+  },
+  {
+    "title": "Keyboard-accessible paper graph",
+    "result": "Passed: filtering for Attention Is All You Need and pressing Enter on its graph node opened the original paper details. Zero-link results remained visible.",
+    "screenshot": "screenshots/workflow-graph-details.jpg"
+  },
+  {
+    "title": "BibTeX export",
+    "result": "Passed: the normal Export menu produced archimedes_3.bib. The downloaded file contained the BERT title, authors, year and paper URL.",
+    "detail": "The file was opened from the browser download location and its bibliographic fields inspected. Publication version/year conventions still need checking for a final bibliography. Other export formats have automated endpoint coverage; this study does not claim every format was manually downloaded."
+  },
+  {
+    "title": "Manuscript drafting and its limits",
+    "result": "Output generated, scientific review required: a CRISPR introduction appeared, but one sentence blurred PAM recognition and RNA roles, and missing excerpt details were phrased as absent study work. Instructions were tightened after this observation.",
+    "screenshot": "screenshots/workflow-manuscript.jpg"
+  },
+  {
+    "title": "Original-paper PDF upload",
+    "result": "Passed for file parsing and output generation: a 15-page Transformer paper was uploaded through the normal file chooser. The revised output distinguishes excerpt limitations and asks questions about the full paper; scientific accuracy remains unvalidated.",
+    "screenshot": "screenshots/workflow-pdf-upload.jpg"
+  }
+]

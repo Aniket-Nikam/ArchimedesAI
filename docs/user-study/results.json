@@ -1,0 +1,3626 @@
+{
+  "collected_at_utc": "2026-10-28T15:09:34.759557+00:00",
+  "method": "Research initiated and observed via the normal browser UI; this script only reads the isolated study database.",
+  "cases": [
+    {
+      "id": "UC01",
+      "topic": "Transformer attention",
+      "query": "Find \"Attention Is All You Need\" and explain self-attention in the Transformer architecture.",
+      "expected_title": "Attention Is All You Need",
+      "reference": "https://arxiv.org/abs/1706.03762",
+      "review_focus": "The original proposes an attention-based architecture without recurrent or convolutional sequence modelling; related-paper summaries must not be mistaken for the original.",
+      "state": "complete",
+      "session_id": 2,
+      "created_at": "2026-10-28 07:07:31",
+      "elapsed_seconds": 16.6,
+      "papers": 16,
+      "expected_paper_found": true,
+      "expected_rank": 1,
+      "source_status": [
+        {
+          "source": "PubMed",
+          "status": "results",
+          "requests": [],
+          "count": 1
+        },
+        {
+          "source": "Semantic Scholar",
+          "status": "results",
+          "requests": [],
+          "count": 8
+        },
+        {
+          "source": "arXiv",
+          "status": "results",
+          "requests": [],
+          "count": 5
+        },
+        {
+          "source": "arXiv (title lookup)",
+          "status": "results",
+          "requests": [
+            {
+              "host": "export.arxiv.org",
+              "status": 200,
+              "seconds": 0.422
+            }
+          ],
+          "count": 3
+        },
+        {
+          "source": "Semantic Scholar (title lookup)",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.453
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.844
+            }
+          ],
+          "count": 0
+        }
+      ],
+      "citation_status": null,
+      "citation_edges": 0,
+      "overview": "The Transformer architecture introduced in \"Attention Is All You Need\" (S1) replaces recurrent and convolutional components with multi‑head self‑attention and positional encodings, enabling parallel processing and achieving state‑of‑the‑art results on machine translation. Subsequent work has applied self‑attention to a variety of domains: video classification using space‑time attention (S8), blind room‑volume estimation in audio (S3), long‑time quantum dynamics prediction (S6), and retrieval tasks where performance depends entirely on self‑attention layers (S2). Recent studies also explore efficiency‑focused variants such as linear attention and state‑space models (S5), recurrent‑augmented heads (S7), and methods for interpreting attention maps (S12, S13).",
+      "findings": [
+        {
+          "text": "Self‑attention alone enables high‑quality machine translation, outperforming recurrent and convolutional baselines (S1).",
+          "confidence": "HIGH",
+          "sources": [
+            "Attention Is All You Need"
+          ],
+          "source_ids": [
+            "S1"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "Retrieval performance in hybrid SSM‑Transformer models depends entirely on self‑attention layers; ablating them yields 0% accuracy (S2).",
+          "confidence": "HIGH",
+          "sources": [
+            "Some Attention is All You Need for Retrieval"
+          ],
+          "source_ids": [
+            "S2"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "Sparsifying self‑attention to 15% of heads retains near‑perfect retrieval while preserving 84% MMLU performance (S2).",
+          "confidence": "MEDIUM",
+          "sources": [
+            "Some Attention is All You Need for Retrieval"
+          ],
+          "source_ids": [
+            "S2"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "Linear attention and state‑space models achieve reduced computational complexity compared to full self‑attention (S5).",
+          "confidence": "MEDIUM",
+          "sources": [
+            "Element-wise Attention Is All You Need"
+          ],
+          "source_ids": [
+            "S5"
+          ],
+          "unverified_sources": []
+        }
+      ],
+      "evidence_review": {
+        "unmatched_citations": 0,
+        "method": "Exact membership in the retrieved evidence set",
+        "limitation": "A matched citation establishes identity, not that the paper supports the claim. Review original sources."
+      },
+      "paper_metadata": [
+        {
+          "evidence_id": "S1",
+          "title": "Attention Is All You Need",
+          "year": "2017",
+          "url": "http://arxiv.org/abs/1706.03762v7",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S2",
+          "title": "Some Attention is All You Need for Retrieval",
+          "year": 2025,
+          "url": "https://www.semanticscholar.org/paper/406705ffa93d1ae8a43c458b0a4fc02777b785b9",
+          "doi": "10.48550/arXiv.2510.19861",
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Incomplete retraction metadata; verify original sources",
+            "observations": [
+              {
+                "source": "Crossref",
+                "status": "unknown"
+              },
+              {
+                "source": "OpenAlex",
+                "status": "no_notice_found"
+              }
+            ],
+            "checked_at": "2026-10-28T07:07:22.878714+00:00"
+          }
+        },
+        {
+          "evidence_id": "S3",
+          "title": "Attention Is All You Need For Blind Room Volume Estimation",
+          "year": 2023,
+          "url": "https://www.semanticscholar.org/paper/1dfcf8401952771a35ca9d465bd2361729ad01ca",
+          "doi": "10.1109/ICASSP48485.2024.10447723",
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": false,
+            "status": "no_notice_found",
+            "retraction_reason": "No notice in queried records; this is not proof of safety",
+            "observations": [
+              {
+                "source": "Crossref",
+                "status": "no_notice_found"
+              },
+              {
+                "source": "OpenAlex",
+                "status": "no_notice_found"
+              }
+            ],
+            "checked_at": "2026-10-28T07:07:24.563643+00:00"
+          }
+        },
+        {
+          "evidence_id": "S4",
+          "title": "Not All Attention Is All You Need",
+          "year": "2021",
+          "url": "http://arxiv.org/abs/2104.04692v3",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S5",
+          "title": "Element-wise Attention Is All You Need",
+          "year": "2025",
+          "url": "http://arxiv.org/abs/2501.05730v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S6",
+          "title": "A short trajectory is all you need: A transformer-based model for long-time dissipative quantum dynamics.",
+          "year": "2024",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39484891/",
+          "doi": "10.1063/5.0232871",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": false,
+            "status": "no_notice_found",
+            "retraction_reason": "No notice in queried records; this is not proof of safety",
+            "observations": [
+              {
+                "source": "Crossref",
+                "status": "no_notice_found"
+              },
+              {
+                "source": "OpenAlex",
+                "status": "no_notice_found"
+              }
+            ],
+            "checked_at": "2026-10-28T07:07:26.567311+00:00"
+          }
+        },
+        {
+          "evidence_id": "S7",
+          "title": "RecurFormer: Not All Transformer Heads Need Self-Attention",
+          "year": 2024,
+          "url": "https://www.semanticscholar.org/paper/642dbe8e74c94a61488414e3182b6e31e36f7f37",
+          "doi": "10.48550/arXiv.2410.12850",
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S8",
+          "title": "Is Space-Time Attention All You Need for Video Understanding?",
+          "year": 2021,
+          "url": "https://www.semanticscholar.org/paper/fa08b41ccdfc5d8771adfbc34c176fa237d4646c",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S9",
+          "title": "Do we really need Self-Attention for Streaming Automatic Speech Recognition?",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/15d8dcdc31eb595bfcbe9afc625c0e58fef5c877",
+          "doi": "10.48550/arXiv.2601.19960",
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S10",
+          "title": "SpectFormer: Frequency and Attention is what you need in a Vision Transformer",
+          "year": 2023,
+          "url": "https://www.semanticscholar.org/paper/c57467e652f3f9131b3e7e40c23059abe395f01d",
+          "doi": "10.1109/WACV61041.2025.00924",
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S11",
+          "title": "Equivariant Transformer is all you need",
+          "year": 2023,
+          "url": "https://www.semanticscholar.org/paper/86a3bad8c07db0a291463336b80b83d176a9d18d",
+          "doi": "10.48550/arXiv.2310.13222",
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S12",
+          "title": "Attention Guided CAM: Visual Explanations of Vision Transformer Guided by Self-Attention",
+          "year": "2024",
+          "url": "http://arxiv.org/abs/2402.04563v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S13",
+          "title": "Self-Attention as Distributional Projection: A Unified Interpretation of Transformer Architecture",
+          "year": "2025",
+          "url": "http://arxiv.org/abs/2511.13780v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S14",
+          "title": "Primal-Attention: Self-attention through Asymmetric Kernel SVD in Primal Representation",
+          "year": "2023",
+          "url": "http://arxiv.org/abs/2305.19798v2",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S15",
+          "title": "Toward Interpretable Music Tagging with Self-Attention",
+          "year": "2019",
+          "url": "http://arxiv.org/abs/1906.04972v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S16",
+          "title": "Beyond Self-attention: External Attention using Two Linear Layers for Visual Tasks",
+          "year": "2021",
+          "url": "http://arxiv.org/abs/2105.02358v2",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        }
+      ]
+    },
+    {
+      "id": "UC02",
+      "topic": "BERT pretraining",
+      "query": "Find \"BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding\" and explain its pretraining objectives.",
+      "expected_title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+      "reference": "https://arxiv.org/abs/1810.04805",
+      "review_focus": "Distinguish bidirectional pretraining and masked language modelling from generic Transformer discussion.",
+      "state": "complete",
+      "session_id": 3,
+      "created_at": "2026-10-28 07:09:32",
+      "elapsed_seconds": 8.3,
+      "papers": 6,
+      "expected_paper_found": true,
+      "expected_rank": 1,
+      "source_status": [
+        {
+          "source": "arXiv (title lookup)",
+          "status": "results",
+          "requests": [
+            {
+              "host": "export.arxiv.org",
+              "status": 200,
+              "seconds": 0.407
+            }
+          ],
+          "count": 1
+        },
+        {
+          "source": "arXiv",
+          "status": "results",
+          "requests": [
+            {
+              "host": "export.arxiv.org",
+              "status": 200,
+              "seconds": 1.297
+            }
+          ],
+          "count": 5
+        },
+        {
+          "source": "PubMed",
+          "status": "results",
+          "requests": [
+            {
+              "host": "eutils.ncbi.nlm.nih.gov",
+              "status": 200,
+              "seconds": 0.547
+            },
+            {
+              "host": "eutils.ncbi.nlm.nih.gov",
+              "status": 200,
+              "seconds": 1.219
+            }
+          ],
+          "count": 1
+        },
+        {
+          "source": "Semantic Scholar (title lookup)",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.735
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.797
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "Semantic Scholar",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.812
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.813
+            }
+          ],
+          "count": 0
+        }
+      ],
+      "citation_status": null,
+      "citation_edges": 0,
+      "overview": "BERT introduced a bidirectional transformer pre‑training paradigm that learns contextual representations from unlabeled text by predicting masked tokens. The model can be fine‑tuned for a variety of downstream NLP tasks with a single output layer. Subsequent work has adapted the core idea of masked prediction to other modalities, such as vision (BEiT) and vision‑language (Kaleido‑BERT).",
+      "findings": [
+        {
+          "text": "BERT’s masked language modeling objective enables bidirectional contextual representations that can be fine‑tuned for diverse NLP tasks.",
+          "confidence": "HIGH",
+          "sources": [
+            "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"
+          ],
+          "source_ids": [
+            "S1"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "BEiT demonstrates that a masked image modeling objective, analogous to MLM, can be used to pre‑train vision transformers by predicting discrete visual tokens.",
+          "confidence": "MEDIUM",
+          "sources": [
+            "BEiT: BERT Pre-Training of Image Transformers"
+          ],
+          "source_ids": [
+            "S2"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "Kaleido‑BERT introduces alignment‑guided masking and multiple self‑supervised tasks to enhance cross‑modal representation learning in the fashion domain.",
+          "confidence": "MEDIUM",
+          "sources": [
+            "Kaleido-BERT: Vision-Language Pre-training on Fashion Domain"
+          ],
+          "source_ids": [
+            "S5"
+          ],
+          "unverified_sources": []
+        }
+      ],
+      "evidence_review": {
+        "unmatched_citations": 0,
+        "method": "Exact membership in the retrieved evidence set",
+        "limitation": "A matched citation establishes identity, not that the paper supports the claim. Review original sources."
+      },
+      "paper_metadata": [
+        {
+          "evidence_id": "S1",
+          "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+          "year": "2018",
+          "url": "http://arxiv.org/abs/1810.04805v2",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S2",
+          "title": "BEiT: BERT Pre-Training of Image Transformers",
+          "year": "2021",
+          "url": "http://arxiv.org/abs/2106.08254v2",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S3",
+          "title": "VLP: A Survey on Vision-Language Pre-training",
+          "year": "2022",
+          "url": "http://arxiv.org/abs/2202.09061v4",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S4",
+          "title": "Pre-training technique to localize medical BERT and enhance biomedical BERT",
+          "year": "2020",
+          "url": "http://arxiv.org/abs/2005.07202v3",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S5",
+          "title": "Kaleido-BERT: Vision-Language Pre-training on Fashion Domain",
+          "year": "2021",
+          "url": "http://arxiv.org/abs/2103.16110v3",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S6",
+          "title": "Attention-Based Models for Classifying Small Data Sets Using Community-Engaged Research Protocols: Classification System Development and Validation Pilot Study.",
+          "year": "2022",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/36066925/",
+          "doi": "10.2196/32460",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": false,
+            "status": "no_notice_found",
+            "retraction_reason": "No notice in queried records; this is not proof of safety",
+            "observations": [
+              {
+                "source": "Crossref",
+                "status": "no_notice_found"
+              },
+              {
+                "source": "OpenAlex",
+                "status": "no_notice_found"
+              }
+            ],
+            "checked_at": "2026-10-28T07:09:29.760523+00:00"
+          }
+        }
+      ]
+    },
+    {
+      "id": "UC03",
+      "topic": "Retrieval-augmented generation",
+      "query": "Find \"Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks\" and explain the retrieval and generation components.",
+      "expected_title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+      "reference": "https://arxiv.org/abs/2005.11401",
+      "review_focus": "Separate retrieved non-parametric evidence from the generator; avoid inventing benchmark improvements.",
+      "state": "complete",
+      "session_id": 4,
+      "created_at": "2026-10-28 07:17:31",
+      "elapsed_seconds": 13.9,
+      "papers": 14,
+      "expected_paper_found": true,
+      "expected_rank": 1,
+      "source_status": [
+        {
+          "source": "arXiv (title lookup)",
+          "status": "results",
+          "requests": [
+            {
+              "host": "export.arxiv.org",
+              "status": 200,
+              "seconds": 0.453
+            }
+          ],
+          "count": 1
+        },
+        {
+          "source": "PubMed",
+          "status": "empty_or_unavailable",
+          "requests": [
+            {
+              "host": "eutils.ncbi.nlm.nih.gov",
+              "status": 200,
+              "seconds": 0.5
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "Semantic Scholar",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.828
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.813
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "Semantic Scholar (title lookup)",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.843
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.812
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "arXiv",
+          "status": "results",
+          "requests": [
+            {
+              "host": "export.arxiv.org",
+              "status": 200,
+              "seconds": 1.547
+            }
+          ],
+          "count": 5
+        }
+      ],
+      "citation_status": {
+        "status": "results",
+        "root_title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+        "requests": [
+          {
+            "host": "api.semanticscholar.org",
+            "status": 429,
+            "seconds": 0.828
+          },
+          {
+            "host": "api.semanticscholar.org",
+            "status": 200,
+            "seconds": 0.406
+          },
+          {
+            "host": "api.semanticscholar.org",
+            "status": 200,
+            "seconds": 0.813
+          }
+        ],
+        "depth1_count": 8,
+        "depth2_count": 0
+      },
+      "citation_edges": 8,
+      "overview": "Retrieval‑Augmented Generation (RAG) is a paradigm that combines an external retrieval module with a language‑model generator to produce grounded text.  The 2020 study (S1) observes that large pre‑trained language models store factual knowledge in their parameters but still lag behind task‑specific architectures on knowledge‑intensive tasks, and it identifies the provision of provenance and the ability to update world knowledge as open research problems.  Subsequent work has explored different retrieval strategies and application domains.  The 2024 EVOR pipeline (S4) introduces a synchronous evolution of queries and diverse knowledge bases to adapt to domain‑specific knowledge, while the 2022 Multi‑Task RAG study (S5) demonstrates that relevance sampling can clean training data and enable a single Fusion‑in‑Decoder (FiD) generator to perform well across multiple knowledge‑intensive tasks.  These studies collectively illustrate the flexibility of RAG and highlight remaining challenges such as retrieval latency, dynamic knowledge base management, and robustness to adversarial retrieval attacks.",
+      "findings": [
+        {
+          "text": "Large pre‑trained language models store factual knowledge but still lag behind task‑specific architectures on knowledge‑intensive tasks, and providing provenance remains an open problem.",
+          "confidence": "HIGH",
+          "sources": [
+            "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks"
+          ],
+          "source_ids": [
+            "S1"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "Dynamic, context‑aware retrieval that evolves queries and knowledge bases during generation can adapt to domain‑specific knowledge, as demonstrated by the EVOR pipeline.",
+          "confidence": "MEDIUM",
+          "sources": [
+            "EVOR: Evolving Retrieval for Code Generation"
+          ],
+          "source_ids": [
+            "S4"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "Relevance sampling can clean training data and enable a single Fusion‑in‑Decoder generator to perform well across multiple knowledge‑intensive tasks.",
+          "confidence": "MEDIUM",
+          "sources": [
+            "Multi-Task Retrieval-Augmented Text Generation with Relevance Sampling"
+          ],
+          "source_ids": [
+            "S5"
+          ],
+          "unverified_sources": []
+        }
+      ],
+      "evidence_review": {
+        "unmatched_citations": 0,
+        "method": "Exact membership in the retrieved evidence set",
+        "limitation": "A matched citation establishes identity, not that the paper supports the claim. Review original sources."
+      },
+      "paper_metadata": [
+        {
+          "evidence_id": "S1",
+          "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+          "year": "2020",
+          "url": "http://arxiv.org/abs/2005.11401v4",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S2",
+          "title": "AR-RAG: Autoregressive Retrieval Augmentation for Image Generation",
+          "year": "2025",
+          "url": "http://arxiv.org/abs/2506.06962v3",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S3",
+          "title": "Automated Literature Review Using NLP Techniques and LLM-Based Retrieval-Augmented Generation",
+          "year": "2024",
+          "url": "http://arxiv.org/abs/2411.18583v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S4",
+          "title": "EVOR: Evolving Retrieval for Code Generation",
+          "year": "2024",
+          "url": "http://arxiv.org/abs/2402.12317v2",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S5",
+          "title": "Multi-Task Retrieval-Augmented Text Generation with Relevance Sampling",
+          "year": "2022",
+          "url": "http://arxiv.org/abs/2207.03030v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S6",
+          "title": "Riddle Me This! Stealthy Membership Inference for Retrieval-Augmented Generation",
+          "year": "2025",
+          "url": "http://arxiv.org/abs/2502.00306v2",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S7",
+          "title": "SafeMachine: An evidence-centric architecture for traceable and context-aware machine safety assessment",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/bb7e62acf1a3c94ab4e980d4f5461ce4b6b3b0e9",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S8",
+          "title": "STPAgent: A Writer-Reviewer multi-agent architecture for AI-assisted Unsafe Control Action identification",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/026352aeba69b30ca3c514de764c14aebbe74c86",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S9",
+          "title": "Knowledge-guided retrieval-augmented generation for semantic interaction tasks in data-scarce industrial vertical fields",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/e9a82d33ce0f75def10f1f1e7d9d20345af55804",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S10",
+          "title": "Epeditor: A scalable platform for large-ensemble building energy simulation enabling agent-assisted automation",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/17840ea9a42d08023c05a59734f6223785cf6aec",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S11",
+          "title": "LLM-assisted dynamic graph reconfiguration for post-disaster compute-power collaborative resilience in energy-informatics systems",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/68ad11d6e3645fb78020ae1939cdb864eb25f7ef",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S12",
+          "title": "MRIF: Verifiable meta-reasoning for risk-controlled tool use in LLM agents",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/dc005389c5199909db5c1b099e64937c8ee395eb",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S13",
+          "title": "SecAgentSched: Secure agentic LLM scheduling for privacy-preserving UAV operations",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/ae1c4dcd1b9a4993ae835d34df40e479635fb193",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S14",
+          "title": "Constraint-first energy-efficient indoor environmental control with multi-agent device coordination and knowledge-graph memory",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/2e428ae25eb04f49e01712d447d62add6adea8cc",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        }
+      ]
+    },
+    {
+      "id": "UC04",
+      "topic": "Residual image recognition",
+      "query": "Find \"Deep Residual Learning for Image Recognition\" and explain residual connections.",
+      "expected_title": "Deep Residual Learning for Image Recognition",
+      "reference": "https://arxiv.org/abs/1512.03385",
+      "review_focus": "Explain residual learning and optimization without claiming every deeper network is automatically better.",
+      "state": "complete",
+      "session_id": 5,
+      "created_at": "2026-10-28 07:19:49",
+      "elapsed_seconds": 18.3,
+      "papers": 11,
+      "expected_paper_found": true,
+      "expected_rank": 1,
+      "source_status": [
+        {
+          "source": "arXiv",
+          "status": "results",
+          "requests": [
+            {
+              "host": "export.arxiv.org",
+              "status": 200,
+              "seconds": 1.016
+            }
+          ],
+          "count": 5
+        },
+        {
+          "source": "PubMed",
+          "status": "results",
+          "requests": [
+            {
+              "host": "eutils.ncbi.nlm.nih.gov",
+              "status": 200,
+              "seconds": 1.093
+            },
+            {
+              "host": "eutils.ncbi.nlm.nih.gov",
+              "status": 200,
+              "seconds": 0.813
+            }
+          ],
+          "count": 5
+        },
+        {
+          "source": "Semantic Scholar (title lookup)",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.843
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.89
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "arXiv (title lookup)",
+          "status": "results",
+          "requests": [
+            {
+              "host": "export.arxiv.org",
+              "status": 200,
+              "seconds": 0.797
+            }
+          ],
+          "count": 1
+        },
+        {
+          "source": "Semantic Scholar",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.828
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.828
+            }
+          ],
+          "count": 0
+        }
+      ],
+      "citation_status": {
+        "status": "rate_limited",
+        "root_title": "Deep Residual Learning for Image Recognition",
+        "requests": [
+          {
+            "host": "api.semanticscholar.org",
+            "status": 429,
+            "seconds": 0.875
+          },
+          {
+            "host": "api.semanticscholar.org",
+            "status": 429,
+            "seconds": 0.812
+          }
+        ],
+        "depth1_count": 0,
+        "depth2_count": 0
+      },
+      "citation_edges": 0,
+      "overview": "Residual learning was introduced to ease the training of very deep neural networks by reformulating layers as learning residual functions relative to their inputs (S1). This concept has been adapted to various tasks beyond image classification, including image compression (S4) and dense feature enhancement for character recognition (S3). The abstracts indicate that residual connections facilitate optimization and can improve performance when integrated with task‑specific architectural components.",
+      "findings": [
+        {
+          "text": "Residual connections enable easier optimization of very deep networks and improve classification accuracy.",
+          "confidence": "MEDIUM",
+          "sources": [
+            "Deep Residual Learning for Image Recognition"
+          ],
+          "source_ids": [
+            "S1"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "A network that enhances dense feature flow by exploiting hierarchical features across layers improves character recognition performance.",
+          "confidence": "MEDIUM",
+          "sources": [
+            "Dense Residual Network: Enhancing Global Dense Feature Flow for Character Recognition"
+          ],
+          "source_ids": [
+            "S3"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "Applying residual learning within an image compression framework achieves high MS‑SSIM scores at low bitrates.",
+          "confidence": "MEDIUM",
+          "sources": [
+            "Deep Residual Learning for Image Compression"
+          ],
+          "source_ids": [
+            "S4"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "Evidential deep learning requires non‑negative evidence and specialized activation functions, but does not address residual connections.",
+          "confidence": "MEDIUM",
+          "sources": [
+            "Learn to Accumulate Evidence from All Training Samples: Theory and Practice"
+          ],
+          "source_ids": [
+            "S5"
+          ],
+          "unverified_sources": []
+        }
+      ],
+      "evidence_review": {
+        "unmatched_citations": 0,
+        "method": "Exact membership in the retrieved evidence set",
+        "limitation": "A matched citation establishes identity, not that the paper supports the claim. Review original sources."
+      },
+      "paper_metadata": [
+        {
+          "evidence_id": "S1",
+          "title": "Deep Residual Learning for Image Recognition",
+          "year": "2015",
+          "url": "http://arxiv.org/abs/1512.03385v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S2",
+          "title": "Deep Lossy Plus Residual Coding for Lossless and Near-lossless Image Compression",
+          "year": "2022",
+          "url": "http://arxiv.org/abs/2209.04847v2",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S3",
+          "title": "Dense Residual Network: Enhancing Global Dense Feature Flow for Character Recognition",
+          "year": "2020",
+          "url": "http://arxiv.org/abs/2001.09021v4",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S4",
+          "title": "Deep Residual Learning for Image Compression",
+          "year": "2019",
+          "url": "http://arxiv.org/abs/1906.09731v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S5",
+          "title": "Learn to Accumulate Evidence from All Training Samples: Theory and Practice",
+          "year": "2023",
+          "url": "http://arxiv.org/abs/2306.11113v2",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S6",
+          "title": "The Modern Mathematics of Deep Learning",
+          "year": "2021",
+          "url": "http://arxiv.org/abs/2105.04026v2",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S7",
+          "title": "LEFTNet: low-frequency enhanced feature transmission network for dual-branch collaborative single image dehazing.",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42846477/",
+          "doi": "10.3389/frai.2026.1938382",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": false,
+            "status": "no_notice_found",
+            "retraction_reason": "No notice in queried records; this is not proof of safety",
+            "observations": [
+              {
+                "source": "Crossref",
+                "status": "no_notice_found"
+              },
+              {
+                "source": "OpenAlex",
+                "status": "no_notice_found"
+              }
+            ],
+            "checked_at": "2026-10-28T07:19:40.734019+00:00"
+          }
+        },
+        {
+          "evidence_id": "S8",
+          "title": "[Establishment and validation of serum quality identification model].",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42736146/",
+          "doi": "10.3760/cma.j.cn112150-20260114-00040",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Incomplete retraction metadata; verify original sources",
+            "observations": [
+              {
+                "source": "Crossref",
+                "status": "unknown"
+              },
+              {
+                "source": "OpenAlex",
+                "status": "no_notice_found"
+              }
+            ],
+            "checked_at": "2026-10-28T07:19:42.541861+00:00"
+          }
+        },
+        {
+          "evidence_id": "S9",
+          "title": "DMRNet: a dynamic multi-scale residual network for Shamrock view and lumbar plexus segmentation.",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42284483/",
+          "doi": "10.1080/24699322.2026.2677269",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": false,
+            "status": "no_notice_found",
+            "retraction_reason": "No notice in queried records; this is not proof of safety",
+            "observations": [
+              {
+                "source": "Crossref",
+                "status": "no_notice_found"
+              },
+              {
+                "source": "OpenAlex",
+                "status": "no_notice_found"
+              }
+            ],
+            "checked_at": "2026-10-28T07:19:44.295660+00:00"
+          }
+        },
+        {
+          "evidence_id": "S10",
+          "title": "Precise delineation of glioma margins in hyperspectral images using cross-channel spectral feature fusion.",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42145684/",
+          "doi": "10.1364/BOE.590877",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S11",
+          "title": "ReMA: a residual gated multi-head attention module for MobileViT in sugarcane diseases and disease recognition.",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42040307/",
+          "doi": "10.3389/fpls.2026.1746368",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        }
+      ]
+    },
+    {
+      "id": "UC05",
+      "topic": "Parameter-efficient adaptation",
+      "query": "Find \"LoRA: Low-Rank Adaptation of Large Language Models\" and explain which parameters are trained.",
+      "expected_title": "LoRA: Low-Rank Adaptation of Large Language Models",
+      "reference": "https://arxiv.org/abs/2106.09685",
+      "review_focus": "Distinguish frozen pretrained weights from trainable low-rank update matrices; verify any numeric savings.",
+      "state": "complete",
+      "session_id": 6,
+      "created_at": "2026-10-28 07:23:03",
+      "elapsed_seconds": 18.0,
+      "papers": 10,
+      "expected_paper_found": true,
+      "expected_rank": 1,
+      "source_status": [
+        {
+          "source": "arXiv",
+          "status": "results",
+          "requests": [
+            {
+              "host": "export.arxiv.org",
+              "status": 200,
+              "seconds": 1.25
+            }
+          ],
+          "count": 5
+        },
+        {
+          "source": "PubMed",
+          "status": "results",
+          "requests": [
+            {
+              "host": "eutils.ncbi.nlm.nih.gov",
+              "status": 200,
+              "seconds": 1.031
+            },
+            {
+              "host": "eutils.ncbi.nlm.nih.gov",
+              "status": 200,
+              "seconds": 1.36
+            }
+          ],
+          "count": 5
+        },
+        {
+          "source": "Semantic Scholar (title lookup)",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.828
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.813
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "arXiv (title lookup)",
+          "status": "results",
+          "requests": [
+            {
+              "host": "export.arxiv.org",
+              "status": 200,
+              "seconds": 0.828
+            }
+          ],
+          "count": 1
+        },
+        {
+          "source": "Semantic Scholar",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.813
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.829
+            }
+          ],
+          "count": 0
+        }
+      ],
+      "citation_status": {
+        "status": "rate_limited",
+        "root_title": "LoRA: Low-Rank Adaptation of Large Language Models",
+        "requests": [
+          {
+            "host": "api.semanticscholar.org",
+            "status": 429,
+            "seconds": 0.828
+          },
+          {
+            "host": "api.semanticscholar.org",
+            "status": 429,
+            "seconds": 0.891
+          }
+        ],
+        "depth1_count": 0,
+        "depth2_count": 0
+      },
+      "citation_edges": 0,
+      "overview": "LoRA (Low‑Rank Adaptation) is a parameter‑efficient fine‑tuning technique that freezes the pre‑trained weights of a large language model and injects trainable low‑rank matrices into selected layers, dramatically reducing the number of trainable parameters while preserving strong downstream performance (S1). Subsequent work has built on this core idea to address remaining gaps: Task‑Relevant Feature Enhancement augments LoRA with additional modules to capture task‑specific signals (S2); Dynamic Tangent‑Space LoRA expands the update space beyond the static tangent of the low‑rank factors (S3); Bias‑Alleviating LoRA introduces components to mitigate the propagation of pre‑training biases (S4); SPIRA proposes sparse, structured rank adaptations for more targeted updates (S9); and DPAC presents a tri‑dimensional framework that decomposes weight updates into magnitude and direction components to improve parameter efficiency (S10).",
+      "findings": [
+        {
+          "text": "LoRA trains only the added low‑rank matrices (A and B) while freezing all pre‑trained weights (S1).",
+          "confidence": "HIGH",
+          "sources": [
+            "LoRA: Low-Rank Adaptation of Large Language Models"
+          ],
+          "source_ids": [
+            "S1"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "Dynamic Tangent‑Space LoRA shows that residual gradient components outside the low‑rank tangent space contain most gradient energy, indicating a performance gap with full fine‑tuning (S3).",
+          "confidence": "MEDIUM",
+          "sources": [
+            "DT-LoRA: Reaching Beyond the Tangent Space of Low-Rank Adaptation"
+          ],
+          "source_ids": [
+            "S3"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "Bias‑Alleviating LoRA identifies catastrophic inheritance as a risk of standard LoRA, motivating bias‑mitigation modules (S4).",
+          "confidence": "MEDIUM",
+          "sources": [
+            "BA-LoRA: Bias-Alleviating Low-Rank Adaptation to Mitigate Catastrophic Inheritance in Large Language Models"
+          ],
+          "source_ids": [
+            "S4"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "SPIRA replaces dense low‑rank updates with sparse, structured adaptations, targeting task‑salient regions (S9).",
+          "confidence": "MEDIUM",
+          "sources": [
+            "SPIRA: Sparse Information-Geometric Rank Adaptation for Parameter-Efficient Fine-Tuning of Large Pretrained Models."
+          ],
+          "source_ids": [
+            "S9"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "DPAC proposes a tri‑dimensional framework that decomposes weight updates into magnitude and direction components to improve parameter efficiency (S10).",
+          "confidence": "MEDIUM",
+          "sources": [
+            "DPAC: A tri-dimensional coordinated framework for breaking the efficiency ceiling in parameter-efficient fine-tuning."
+          ],
+          "source_ids": [
+            "S10"
+          ],
+          "unverified_sources": []
+        }
+      ],
+      "evidence_review": {
+        "unmatched_citations": 0,
+        "method": "Exact membership in the retrieved evidence set",
+        "limitation": "A matched citation establishes identity, not that the paper supports the claim. Review original sources."
+      },
+      "paper_metadata": [
+        {
+          "evidence_id": "S1",
+          "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+          "year": "2021",
+          "url": "http://arxiv.org/abs/2106.09685v2",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S2",
+          "title": "Low-Rank Adaptation with Task-Relevant Feature Enhancement for Fine-tuning Language Models",
+          "year": "2024",
+          "url": "http://arxiv.org/abs/2412.09827v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S3",
+          "title": "DT-LoRA: Reaching Beyond the Tangent Space of Low-Rank Adaptation",
+          "year": "2026",
+          "url": "http://arxiv.org/abs/2610.17730v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S4",
+          "title": "BA-LoRA: Bias-Alleviating Low-Rank Adaptation to Mitigate Catastrophic Inheritance in Large Language Models",
+          "year": "2024",
+          "url": "http://arxiv.org/abs/2408.04556v8",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S5",
+          "title": "A Holistic Assessment of the Carbon Footprint of Noor, a Very Large Arabic Language Model",
+          "year": "2026",
+          "url": "http://arxiv.org/abs/2610.00223v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S6",
+          "title": "Personality Inference From Semistructured Interviews Using Large Language Models: Comparative Evaluation Study.",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42886570/",
+          "doi": "10.2196/87129",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": false,
+            "status": "no_notice_found",
+            "retraction_reason": "No notice in queried records; this is not proof of safety",
+            "observations": [
+              {
+                "source": "Crossref",
+                "status": "no_notice_found"
+              },
+              {
+                "source": "OpenAlex",
+                "status": "no_notice_found"
+              }
+            ],
+            "checked_at": "2026-10-28T07:22:55.240995+00:00"
+          }
+        },
+        {
+          "evidence_id": "S7",
+          "title": "Optimizing Clinical Temporal Relation Extraction With Large Language Models: Comparative Analysis.",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42886042/",
+          "doi": "10.2196/89957",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": false,
+            "status": "no_notice_found",
+            "retraction_reason": "No notice in queried records; this is not proof of safety",
+            "observations": [
+              {
+                "source": "Crossref",
+                "status": "no_notice_found"
+              },
+              {
+                "source": "OpenAlex",
+                "status": "no_notice_found"
+              }
+            ],
+            "checked_at": "2026-10-28T07:22:56.601791+00:00"
+          }
+        },
+        {
+          "evidence_id": "S8",
+          "title": "PeruMedQA: Benchmarking Large Language Models (LLMs) on Peruvian Medical Exams-Dataset Construction and Evaluation.",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42756282/",
+          "doi": "10.1007/s40670-026-02692-w",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": false,
+            "status": "no_notice_found",
+            "retraction_reason": "No notice in queried records; this is not proof of safety",
+            "observations": [
+              {
+                "source": "Crossref",
+                "status": "no_notice_found"
+              },
+              {
+                "source": "OpenAlex",
+                "status": "no_notice_found"
+              }
+            ],
+            "checked_at": "2026-10-28T07:22:57.967870+00:00"
+          }
+        },
+        {
+          "evidence_id": "S9",
+          "title": "SPIRA: Sparse Information-Geometric Rank Adaptation for Parameter-Efficient Fine-Tuning of Large Pretrained Models.",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42640767/",
+          "doi": "10.1109/TPAMI.2026.3724606",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S10",
+          "title": "DPAC: A tri-dimensional coordinated framework for breaking the efficiency ceiling in parameter-efficient fine-tuning.",
+          "year": "2027",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42636718/",
+          "doi": "10.1016/j.neunet.2026.109524",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        }
+      ]
+    },
+    {
+      "id": "UC06",
+      "topic": "Graph neural networks",
+      "query": "Find \"Graph Attention Networks\" and explain neighbourhood attention.",
+      "expected_title": "Graph Attention Networks",
+      "reference": "https://arxiv.org/abs/1710.10903",
+      "review_focus": "Neighbour weighting through attention should be grounded in the retrieved GAT paper.",
+      "state": "complete",
+      "session_id": 7,
+      "created_at": "2026-10-28 07:26:57",
+      "elapsed_seconds": 22.7,
+      "papers": 21,
+      "expected_paper_found": true,
+      "expected_rank": 1,
+      "source_status": [
+        {
+          "source": "arXiv (title lookup)",
+          "status": "results",
+          "requests": [
+            {
+              "host": "export.arxiv.org",
+              "status": 200,
+              "seconds": 0.859
+            }
+          ],
+          "count": 3
+        },
+        {
+          "source": "PubMed",
+          "status": "results",
+          "requests": [
+            {
+              "host": "eutils.ncbi.nlm.nih.gov",
+              "status": 200,
+              "seconds": 0.532
+            },
+            {
+              "host": "eutils.ncbi.nlm.nih.gov",
+              "status": 200,
+              "seconds": 0.859
+            }
+          ],
+          "count": 5
+        },
+        {
+          "source": "Semantic Scholar (title lookup)",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.812
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.797
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "Semantic Scholar",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.844
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.875
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "arXiv",
+          "status": "results",
+          "requests": [
+            {
+              "host": "export.arxiv.org",
+              "status": 200,
+              "seconds": 1.109
+            }
+          ],
+          "count": 5
+        }
+      ],
+      "citation_status": {
+        "status": "results",
+        "root_title": "Graph Attention Networks",
+        "requests": [
+          {
+            "host": "api.semanticscholar.org",
+            "status": 200,
+            "seconds": 0.906
+          },
+          {
+            "host": "api.semanticscholar.org",
+            "status": 429,
+            "seconds": 0.875
+          },
+          {
+            "host": "api.semanticscholar.org",
+            "status": 429,
+            "seconds": 0.796
+          }
+        ],
+        "depth1_count": 8,
+        "depth2_count": 0
+      },
+      "citation_edges": 8,
+      "overview": "Graph Attention Networks (GATs) introduced by Veliček et al. (2017) propose masked self‑attentional layers that let each node compute a weighted combination of its immediate neighbours' features, learning edge‑specific attention coefficients without requiring costly spectral matrix operations (S1). Subsequent extensions have adapted the core attention mechanism to new settings: Signed Graph Attention Networks incorporate sign‑aware aggregation for positive and negative edges (S2); DeepGAT addresses over‑smoothing in deep GAT stacks by proposing a layer‑wise depth‑adaptive scheme (S3); Spiking GATs replace dense softmax attention with spike‑based gating to reduce computation (S11); and Simplicial Attention Networks generalize attention to higher‑order simplicial complexes, attending over nodes, edges, and triangles (S13). These works collectively demonstrate the flexibility of neighbourhood‑centric attention across diverse graph modalities and application domains.",
+      "findings": [
+        {
+          "text": "GATs learn edge‑specific attention coefficients via masked self‑attention, enabling adaptive weighting of 1‑hop neighbours without spectral matrix operations (S1).",
+          "confidence": "HIGH",
+          "sources": [
+            "Graph Attention Networks"
+          ],
+          "source_ids": [
+            "S1"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "Signed Graph Attention Networks extend the GAT formulation to handle positive and negative edges, improving performance on signed network tasks (S2).",
+          "confidence": "MEDIUM",
+          "sources": [
+            "Signed Graph Attention Networks"
+          ],
+          "source_ids": [
+            "S2"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "DeepGAT introduces a depth‑adaptive mechanism to mitigate over‑smoothing in deep GAT stacks, allowing effective training of many attention layers (S3).",
+          "confidence": "MEDIUM",
+          "sources": [
+            "Deep Graph Attention Networks"
+          ],
+          "source_ids": [
+            "S3"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "Spiking GATs replace dense softmax attention with spike‑based gating, achieving lower computational cost while preserving attention dynamics (S11).",
+          "confidence": "MEDIUM",
+          "sources": [
+            "Spiking GATs: Learning Graph Attentions via Spiking Neural Network"
+          ],
+          "source_ids": [
+            "S11"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "Simplicial Attention Networks generalize attention to nodes, edges, and higher‑order simplices, demonstrating the versatility of masked self‑attention beyond standard graphs (S13).",
+          "confidence": "MEDIUM",
+          "sources": [
+            "Simplicial Attention Neural Networks"
+          ],
+          "source_ids": [
+            "S13"
+          ],
+          "unverified_sources": []
+        }
+      ],
+      "evidence_review": {
+        "unmatched_citations": 0,
+        "method": "Exact membership in the retrieved evidence set",
+        "limitation": "A matched citation establishes identity, not that the paper supports the claim. Review original sources."
+      },
+      "paper_metadata": [
+        {
+          "evidence_id": "S1",
+          "title": "Graph Attention Networks",
+          "year": "2017",
+          "url": "http://arxiv.org/abs/1710.10903v3",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S2",
+          "title": "Signed Graph Attention Networks",
+          "year": "2019",
+          "url": "http://arxiv.org/abs/1906.10958v3",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S3",
+          "title": "Deep Graph Attention Networks",
+          "year": "2024",
+          "url": "http://arxiv.org/abs/2410.15640v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S4",
+          "title": "GAT-BiGRU: explainable multi-task temporal graph learning for glucose forecasting, hypoglycemia risk, and counterfactual insulin adjustment.",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42314749/",
+          "doi": "10.1093/jamia/ocag104",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": false,
+            "status": "no_notice_found",
+            "retraction_reason": "No notice in queried records; this is not proof of safety",
+            "observations": [
+              {
+                "source": "Crossref",
+                "status": "no_notice_found"
+              },
+              {
+                "source": "OpenAlex",
+                "status": "no_notice_found"
+              }
+            ],
+            "checked_at": "2026-10-28T07:26:46.252049+00:00"
+          }
+        },
+        {
+          "evidence_id": "S5",
+          "title": "Simulation of long-term spatio-temporal environmental dynamics using a unified benchmark of neighbor augmenting, LSTM and graph attention models.",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42286150/",
+          "doi": "10.1038/s41598-026-56762-5",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": false,
+            "status": "no_notice_found",
+            "retraction_reason": "No notice in queried records; this is not proof of safety",
+            "observations": [
+              {
+                "source": "Crossref",
+                "status": "no_notice_found"
+              },
+              {
+                "source": "OpenAlex",
+                "status": "no_notice_found"
+              }
+            ],
+            "checked_at": "2026-10-28T07:26:48.099424+00:00"
+          }
+        },
+        {
+          "evidence_id": "S6",
+          "title": "OMNI: Optimized Multiview Network Integration with Heterogeneous Graph Attention for Biomedical Interaction Prediction.",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42275468/",
+          "doi": "10.1021/acs.jcim.6c00441",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": false,
+            "status": "no_notice_found",
+            "retraction_reason": "No notice in queried records; this is not proof of safety",
+            "observations": [
+              {
+                "source": "Crossref",
+                "status": "no_notice_found"
+              },
+              {
+                "source": "OpenAlex",
+                "status": "no_notice_found"
+              }
+            ],
+            "checked_at": "2026-10-28T07:26:49.504133+00:00"
+          }
+        },
+        {
+          "evidence_id": "S7",
+          "title": "A Multi-Branch Training Strategy for Enhancing Neighborhood Signals in GNNs for Community Detection.",
+          "year": "2025",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41593953/",
+          "doi": "10.3390/e28010046",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S8",
+          "title": "PepGraphormer: an ESM-GAT hybrid deep learning framework for antimicrobial peptide prediction.",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41491543/",
+          "doi": "10.1186/s13321-025-01144-8",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S9",
+          "title": "Robust Hierarchical Graph Classification with Subgraph Attention",
+          "year": "2020",
+          "url": "http://arxiv.org/abs/2007.10908v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S10",
+          "title": "Hierarchical Attentional Hybrid Neural Networks for Document Classification",
+          "year": "2019",
+          "url": "http://arxiv.org/abs/1901.06610v2",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S11",
+          "title": "Spiking GATs: Learning Graph Attentions via Spiking Neural Network",
+          "year": "2022",
+          "url": "http://arxiv.org/abs/2209.13539v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S12",
+          "title": "Learning Universal Graph Neural Network Embeddings With Aid Of Transfer Learning",
+          "year": "2019",
+          "url": "http://arxiv.org/abs/1909.10086v3",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S13",
+          "title": "Simplicial Attention Neural Networks",
+          "year": "2022",
+          "url": "http://arxiv.org/abs/2203.07485v2",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S14",
+          "title": "Spatial-temporal fusion transformer for cultural participation prediction: Unveiling inter-city spillovers and network effects",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/d3e56fda9b56ee297968b8f2f89958b7cede5cbe",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S15",
+          "title": "HM-GraphSwin: Hierarchical multi-magnification graph-augmented swin transformer with stain-contrastive pretraining for breast cancer grade classification",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/15ed59474a0c343efbc79fc56633467ded14765a",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S16",
+          "title": "Latent bounded-order interaction attention",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/4539f161bfaa2506324880fa67b9ede5aa59e52d",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S17",
+          "title": "Spatio-temporal large language model for zero-shot EV charging demand prediction: Beneficial to station energy management under data scarcity",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/af36b7b2dbfdd4313a969bc0287f9f7092d056bf",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S18",
+          "title": "Interactive bi-space embedding based temporal graph learning framework",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/2f077af80e739fbb697367c1b4dc6a21c580181a",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S19",
+          "title": "Graph attention-based odor source proximity estimation with angle–concentration fusion for a rotating sensor array",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/65d1791559ebb6f13efa78e6466c9c0791bb9d7f",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S20",
+          "title": "Conformalized graph neural networks for distribution system state estimation with finite-sample-valid uncertainty quantification",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/a0a5fd11c831ad0bdd6011d4f9ed67706054e8c0",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S21",
+          "title": "Artificial intelligence for signal processing in semiconductor gas sensors: Advances, comparisons, and future perspectives",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/fdb50e082d10493e157b28a51df32e5dfcb49b3b",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        }
+      ]
+    },
+    {
+      "id": "UC07",
+      "topic": "Approximate vector search",
+      "query": "Find \"Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs\" and explain the graph hierarchy.",
+      "expected_title": "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs",
+      "reference": "https://arxiv.org/abs/1603.09320",
+      "review_focus": "Explain approximate search and hierarchical navigable graphs; do not imply exact nearest-neighbour guarantees.",
+      "state": "complete",
+      "session_id": 8,
+      "created_at": "2026-10-28 14:59:40",
+      "elapsed_seconds": 14.4,
+      "papers": 5,
+      "expected_paper_found": true,
+      "expected_rank": 1,
+      "source_status": [
+        {
+          "source": "arXiv",
+          "status": "results",
+          "requests": [
+            {
+              "host": "export.arxiv.org",
+              "status": 200,
+              "seconds": 1.078
+            }
+          ],
+          "count": 5
+        },
+        {
+          "source": "PubMed",
+          "status": "results",
+          "requests": [
+            {
+              "host": "eutils.ncbi.nlm.nih.gov",
+              "status": 200,
+              "seconds": 1.062
+            },
+            {
+              "host": "eutils.ncbi.nlm.nih.gov",
+              "status": 200,
+              "seconds": 1.0
+            }
+          ],
+          "count": 1
+        },
+        {
+          "source": "Semantic Scholar",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.797
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.765
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "arXiv (title lookup)",
+          "status": "results",
+          "requests": [
+            {
+              "host": "export.arxiv.org",
+              "status": 200,
+              "seconds": 0.406
+            }
+          ],
+          "count": 1
+        },
+        {
+          "source": "Semantic Scholar (title lookup)",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.797
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.765
+            }
+          ],
+          "count": 0
+        }
+      ],
+      "citation_status": {
+        "status": "rate_limited",
+        "root_title": "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs",
+        "requests": [
+          {
+            "host": "api.semanticscholar.org",
+            "status": 429,
+            "seconds": 0.766
+          },
+          {
+            "host": "api.semanticscholar.org",
+            "status": 429,
+            "seconds": 0.781
+          }
+        ],
+        "depth1_count": 0,
+        "depth2_count": 0
+      },
+      "citation_edges": 0,
+      "overview": "Graph‑based approximate nearest neighbor (ANN) research has focused on constructing navigable proximity graphs that enable efficient greedy routing. 2016’s HNSW paper introduced a multi‑layer hierarchical NSW structure that eliminates the need for separate coarse search stages, while 2016’s EFANNA leveraged a kNN graph to accelerate search. 2024’s study on navigable graphs formalizes the notion of navigability and explores construction limits, and 2026’s I/O‑optimizations examine practical bottlenecks of disk‑resident ANN indices. 2025’s HENN proposes a hierarchical ε‑net navigation graph that aims to provide theoretical guarantees for graph‑based ANN methods.",
+      "findings": [
+        {
+          "text": "HNSW (S1) eliminates the need for separate coarse search structures by using a multi‑layer hierarchical NSW graph.",
+          "confidence": "HIGH",
+          "sources": [
+            "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs"
+          ],
+          "source_ids": [
+            "S1"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "EFANNA (S3) constructs a kNN graph and uses a two‑phase search to accelerate ANN search.",
+          "confidence": "HIGH",
+          "sources": [
+            "EFANNA : An Extremely Fast Approximate Nearest Neighbor Search Algorithm Based on kNN Graph"
+          ],
+          "source_ids": [
+            "S3"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "HENN (S2) introduces a hierarchical ε‑net navigation graph that aims to provide theoretical query time guarantees for graph‑based ANN methods.",
+          "confidence": "MEDIUM",
+          "sources": [
+            "HENN: A Hierarchical Epsilon Net Navigation Graph for Approximate Nearest Neighbor Search"
+          ],
+          "source_ids": [
+            "S2"
+          ],
+          "unverified_sources": []
+        }
+      ],
+      "evidence_review": {
+        "unmatched_citations": 0,
+        "method": "Exact membership in the retrieved evidence set",
+        "limitation": "A matched citation establishes identity, not that the paper supports the claim. Review original sources."
+      },
+      "paper_metadata": [
+        {
+          "evidence_id": "S1",
+          "title": "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs",
+          "year": "2016",
+          "url": "http://arxiv.org/abs/1603.09320v4",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S2",
+          "title": "HENN: A Hierarchical Epsilon Net Navigation Graph for Approximate Nearest Neighbor Search",
+          "year": "2025",
+          "url": "http://arxiv.org/abs/2505.17368v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S3",
+          "title": "EFANNA : An Extremely Fast Approximate Nearest Neighbor Search Algorithm Based on kNN Graph",
+          "year": "2016",
+          "url": "http://arxiv.org/abs/1609.07228v3",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S4",
+          "title": "Navigable Graphs for High-Dimensional Nearest Neighbor Search: Constructions and Limits",
+          "year": "2024",
+          "url": "http://arxiv.org/abs/2405.18680v4",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S5",
+          "title": "I/O Optimizations for Graph-Based Disk-Resident Approximate Nearest Neighbor Search: A Design Space Exploration",
+          "year": "2026",
+          "url": "http://arxiv.org/abs/2602.21514v2",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        }
+      ]
+    },
+    {
+      "id": "UC08",
+      "topic": "Protein structure prediction",
+      "query": "Find \"Highly accurate protein structure prediction with AlphaFold\" and explain the structure prediction approach.",
+      "expected_title": "Highly accurate protein structure prediction with AlphaFold",
+      "reference": "https://doi.org/10.1038/s41586-021-03819-2",
+      "review_focus": "Describe a computational structure-prediction result; do not turn it into clinical or experimental validation claims.",
+      "state": "complete",
+      "session_id": 14,
+      "created_at": "2026-10-28 15:07:06",
+      "elapsed_seconds": 20.5,
+      "papers": 19,
+      "expected_paper_found": true,
+      "expected_rank": 1,
+      "source_status": [
+        {
+          "source": "PubMed",
+          "status": "results",
+          "requests": [],
+          "count": 5
+        },
+        {
+          "source": "arXiv (title lookup)",
+          "status": "empty_or_unavailable",
+          "requests": [
+            {
+              "host": "export.arxiv.org",
+              "status": 200,
+              "seconds": 0.109
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "arXiv",
+          "status": "results",
+          "requests": [],
+          "count": 5
+        },
+        {
+          "source": "PubMed (title lookup)",
+          "status": "empty_or_unavailable",
+          "requests": [
+            {
+              "host": "eutils.ncbi.nlm.nih.gov",
+              "status": 200,
+              "seconds": 0.422
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "Semantic Scholar",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.843
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.829
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "Semantic Scholar (title lookup)",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.781
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.797
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "Crossref (title lookup)",
+          "status": "results",
+          "requests": [
+            {
+              "host": "api.crossref.org",
+              "status": 200,
+              "seconds": 4.281
+            }
+          ],
+          "count": 1
+        }
+      ],
+      "citation_status": {
+        "status": "results",
+        "root_title": "Highly accurate protein structure prediction with AlphaFold",
+        "requests": [
+          {
+            "host": "api.semanticscholar.org",
+            "status": 200,
+            "seconds": 1.031
+          },
+          {
+            "host": "api.semanticscholar.org",
+            "status": 429,
+            "seconds": 0.782
+          },
+          {
+            "host": "api.semanticscholar.org",
+            "status": 429,
+            "seconds": 0.781
+          }
+        ],
+        "depth1_count": 8,
+        "depth2_count": 0
+      },
+      "citation_edges": 8,
+      "overview": "AlphaFold (2021) demonstrated that deep‑learning‑based prediction can reach near‑experimental accuracy for a large fraction of proteins (S1). Subsequent advances such as AlphaFold 3 introduced multi‑scale transformer architectures and geometry‑aware, differentiable optimization, further improving generalization across diverse families (S8). At the same time, analyses of proteins with alternative folds reveal that AlphaFold often assigns high confidence to a single conformation and provides low‑confidence or missing predictions for other biologically relevant states (S10). Together these works portray a rapidly advancing field that combines remarkable accuracy with emerging challenges in conformational diversity and complex assemblies.",
+      "findings": [
+        {
+          "text": "AlphaFold achieves near‑experimental accuracy for many proteins (S1).",
+          "confidence": "HIGH",
+          "sources": [
+            "Highly accurate protein structure prediction with AlphaFold"
+          ],
+          "source_ids": [
+            "S1"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "AlphaFold 3 adds multi‑scale transformers and differentiable simulation, enhancing generalization across protein families (S8).",
+          "confidence": "MEDIUM",
+          "sources": [
+            "From Prediction to Simulation: AlphaFold 3 as a Differentiable Framework for Structural Biology"
+          ],
+          "source_ids": [
+            "S8"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "AlphaFold often provides a single high‑confidence structure and may miss or assign low confidence to alternative folds (S10).",
+          "confidence": "MEDIUM",
+          "sources": [
+            "Proteins with alternative folds reveal blind spots in AlphaFold-based protein structure prediction"
+          ],
+          "source_ids": [
+            "S10"
+          ],
+          "unverified_sources": []
+        }
+      ],
+      "evidence_review": {
+        "unmatched_citations": 0,
+        "method": "Exact membership in the retrieved evidence set",
+        "limitation": "A matched citation establishes identity, not that the paper supports the claim. Review original sources."
+      },
+      "paper_metadata": [
+        {
+          "evidence_id": "S1",
+          "title": "Highly accurate protein structure prediction with AlphaFold",
+          "year": 2021,
+          "url": "https://doi.org/10.1038/s41586-021-03819-2",
+          "doi": "10.1038/s41586-021-03819-2",
+          "source": "Crossref",
+          "retraction_status": {
+            "is_retracted": false,
+            "status": "no_notice_found",
+            "retraction_reason": "No notice in queried records; this is not proof of safety",
+            "observations": [
+              {
+                "source": "Crossref",
+                "status": "no_notice_found"
+              },
+              {
+                "source": "OpenAlex",
+                "status": "no_notice_found"
+              }
+            ],
+            "checked_at": "2026-10-28T15:06:58.618788+00:00"
+          }
+        },
+        {
+          "evidence_id": "S2",
+          "title": "Challenges in AI-based structural modeling of host-pathogen protein interactions.",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42906359/",
+          "doi": "10.1016/j.coviro.2026.101587",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": false,
+            "status": "no_notice_found",
+            "retraction_reason": "No notice in queried records; this is not proof of safety",
+            "observations": [
+              {
+                "source": "Crossref",
+                "status": "no_notice_found"
+              },
+              {
+                "source": "OpenAlex",
+                "status": "no_notice_found"
+              }
+            ],
+            "checked_at": "2026-10-28T15:07:00.491778+00:00"
+          }
+        },
+        {
+          "evidence_id": "S3",
+          "title": "Multi-state Structure Prediction of G Protein-Coupled Receptor Proteins via Prompting on AlphaFold.",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42724007/",
+          "doi": "10.34133/csbj.0179",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": false,
+            "status": "no_notice_found",
+            "retraction_reason": "No notice in queried records; this is not proof of safety",
+            "observations": [
+              {
+                "source": "Crossref",
+                "status": "no_notice_found"
+              },
+              {
+                "source": "OpenAlex",
+                "status": "no_notice_found"
+              }
+            ],
+            "checked_at": "2026-10-28T15:07:02.229630+00:00"
+          }
+        },
+        {
+          "evidence_id": "S4",
+          "title": "DirectContacts2: a wiring diagram of human physical protein interactions.",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42642434/",
+          "doi": "10.1038/s41467-026-75863-3",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S5",
+          "title": "Benchmarking sequence-based and AlphaFold-based methods for pMHC-II binding core prediction: distinct strengths and consensus approaches.",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42509551/",
+          "doi": "10.1186/s12920-026-02432-4",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S6",
+          "title": "1D-2D hybrid based electrochemical sensor for nano-architected sensing of ASFV p32 - an early phosphoprotein.",
+          "year": "2026",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42425003/",
+          "doi": "10.1016/j.bios.2026.118999",
+          "source": "PubMed",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S7",
+          "title": "AlphaFold predicts the most complex protein knot and composite protein knots",
+          "year": "2022",
+          "url": "http://arxiv.org/abs/2207.07410v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S8",
+          "title": "From Prediction to Simulation: AlphaFold 3 as a Differentiable Framework for Structural Biology",
+          "year": "2025",
+          "url": "http://arxiv.org/abs/2508.18446v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S9",
+          "title": "A Novel Approach for Protein Structure Prediction",
+          "year": "2012",
+          "url": "http://arxiv.org/abs/1206.3509v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S10",
+          "title": "Proteins with alternative folds reveal blind spots in AlphaFold-based protein structure prediction",
+          "year": "2024",
+          "url": "http://arxiv.org/abs/2410.14898v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S11",
+          "title": "Applications of Knot Theory for the Improvement of the AlphaFold Protein Database",
+          "year": "2024",
+          "url": "http://arxiv.org/abs/2412.11229v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S12",
+          "title": "Multi-bioactivity of sesquiterpenes from Zanthoxylum piasezkii: contact toxicity, repellent and antifeedant effects against Tribolium castaneum via odorant receptor modulation",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/55353922ff7a20ca2e25d09c317eef5e8ba14e10",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S13",
+          "title": "AI-guided design of personalized nanocarriers based on single-cell transcriptomics for cancer treatment",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/70b332504432d4ef0f5f91bfcacb752738e9927e",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S14",
+          "title": "A plant-derived volatile blend for dual-stage attraction of Lasioderma serricorne: Optimization, behavioral evaluation, and molecular insights",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/00343ad95d766c229fa381c9aa72958dc1fb60b8",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S15",
+          "title": "TechNowNet: A contemporary multi-domain knowledge semantic network through cross-domain embedding fusion",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/eab938a61e950dec7ef6e37157a56f95efbdf5e0",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S16",
+          "title": "AI-assisted academic writing: Balancing linguistic enhancement with legal and ethical oversight",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/f7239b00c907431683634ca87a8f5e7f0c58afee",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S17",
+          "title": "Systematic benchmarking of AlphaFold and SWISS-MODEL kinase structures for structure-based drug discovery.",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/1550029b073378b5427585a3aae76f6486cfc67c",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S18",
+          "title": "A Review on ANN-Based Behavioral Modeling Techniques for High-Efficiency Power Amplifiers",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/3ae59e33b7d72dbe958c1a9a3d284b67f6455e55",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S19",
+          "title": "AI boosts publication output more at non-elite institutions: Evidence from AlphaFold",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/77005d407950603165a28bf041c9cd82b40591dd",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        }
+      ]
+    },
+    {
+      "id": "UC09",
+      "topic": "Programmable genome editing",
+      "query": "Find \"A Programmable Dual-RNA-Guided DNA Endonuclease in Adaptive Bacterial Immunity\" and explain the role of guide RNA.",
+      "expected_title": "A Programmable Dual-RNA-Guided DNA Endonuclease in Adaptive Bacterial Immunity",
+      "reference": "https://doi.org/10.1126/science.1225829",
+      "review_focus": "Check the paper identity and RNA-guided mechanism; no medical treatment or safety conclusions are evaluated.",
+      "state": "complete",
+      "session_id": 15,
+      "created_at": "2026-10-28 15:07:39",
+      "elapsed_seconds": 14.0,
+      "papers": 14,
+      "expected_paper_found": true,
+      "expected_rank": 1,
+      "source_status": [
+        {
+          "source": "arXiv",
+          "status": "results",
+          "requests": [],
+          "count": 5
+        },
+        {
+          "source": "arXiv (title lookup)",
+          "status": "empty_or_unavailable",
+          "requests": [
+            {
+              "host": "export.arxiv.org",
+              "status": 200,
+              "seconds": 0.063
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "PubMed (title lookup)",
+          "status": "empty_or_unavailable",
+          "requests": [
+            {
+              "host": "eutils.ncbi.nlm.nih.gov",
+              "status": 200,
+              "seconds": 0.391
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "PubMed",
+          "status": "empty_or_unavailable",
+          "requests": [
+            {
+              "host": "eutils.ncbi.nlm.nih.gov",
+              "status": 200,
+              "seconds": 1.046
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "Crossref (title lookup)",
+          "status": "results",
+          "requests": [
+            {
+              "host": "api.crossref.org",
+              "status": 200,
+              "seconds": 2.11
+            }
+          ],
+          "count": 1
+        },
+        {
+          "source": "Semantic Scholar",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.797
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.313
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "Semantic Scholar (title lookup)",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.735
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.828
+            }
+          ],
+          "count": 0
+        }
+      ],
+      "citation_status": {
+        "status": "results",
+        "root_title": "A Programmable Dual-RNA–Guided DNA Endonuclease in Adaptive Bacterial Immunity",
+        "requests": [
+          {
+            "host": "api.semanticscholar.org",
+            "status": 200,
+            "seconds": 0.453
+          },
+          {
+            "host": "api.semanticscholar.org",
+            "status": 429,
+            "seconds": 0.312
+          },
+          {
+            "host": "api.semanticscholar.org",
+            "status": 200,
+            "seconds": 0.813
+          }
+        ],
+        "depth1_count": 8,
+        "depth2_count": 0
+      },
+      "citation_edges": 8,
+      "overview": "The 2012 study by Jinek et al. reported the discovery of a programmable dual‑RNA‑guided DNA endonuclease that forms part of the CRISPR adaptive immune system in bacteria and archaea. The work highlighted how RNA molecules can direct a Cas protein to cleave foreign DNA, establishing a mechanistic basis for sequence‑specific immunity.",
+      "findings": [
+        {
+          "text": "A dual‑RNA‑guided DNA endonuclease provides programmable sequence‑specific cleavage in the CRISPR immune system (S1).",
+          "confidence": "MEDIUM",
+          "sources": [
+            "A Programmable Dual-RNA–Guided DNA Endonuclease in Adaptive Bacterial Immunity"
+          ],
+          "source_ids": [
+            "S1"
+          ],
+          "unverified_sources": []
+        }
+      ],
+      "evidence_review": {
+        "unmatched_citations": 0,
+        "method": "Exact membership in the retrieved evidence set",
+        "limitation": "A matched citation establishes identity, not that the paper supports the claim. Review original sources."
+      },
+      "paper_metadata": [
+        {
+          "evidence_id": "S1",
+          "title": "A Programmable Dual-RNA–Guided DNA Endonuclease in Adaptive Bacterial Immunity",
+          "year": 2012,
+          "url": "https://doi.org/10.1126/science.1225829",
+          "doi": "10.1126/science.1225829",
+          "source": "Crossref",
+          "retraction_status": {
+            "is_retracted": false,
+            "status": "no_notice_found",
+            "retraction_reason": "No notice in queried records; this is not proof of safety",
+            "observations": [
+              {
+                "source": "Crossref",
+                "status": "no_notice_found"
+              },
+              {
+                "source": "OpenAlex",
+                "status": "no_notice_found"
+              }
+            ],
+            "checked_at": "2026-10-28T15:07:36.520371+00:00"
+          }
+        },
+        {
+          "evidence_id": "S2",
+          "title": "Towards de novo RNA 3D structure prediction",
+          "year": "2015",
+          "url": "http://arxiv.org/abs/1502.05667v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S3",
+          "title": "A Possible Mechanism of DNA to DNA Transcription in Eukaryotic Cells : Endonuclease Dependent Transcript Cutout",
+          "year": "2016",
+          "url": "http://arxiv.org/abs/1605.05853v3",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S4",
+          "title": "Screening Genome Sequences for Known RNA Genes and Motifs",
+          "year": "2015",
+          "url": "http://arxiv.org/abs/1512.06979v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S5",
+          "title": "Machine Learning for RNA Secondary Structure Prediction: a review of current methods and challenges",
+          "year": "2025",
+          "url": "http://arxiv.org/abs/2511.02622v2",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S6",
+          "title": "Modeling Bacterial DNA: Simulation of Self-avoiding Supercoiled Worm-Like Chains Including Structural Transitions of the Helix",
+          "year": "2017",
+          "url": "http://arxiv.org/abs/1708.02194v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S7",
+          "title": "CRISPR/Cas13a-driven toehold-mediated strand-displacement reaction for ultrasensitive detection of miRNA related to papillary thyroid carcinoma",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/67a22524172fa5746e9552185143141303abb9cf",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S8",
+          "title": "Engineering crop genomes: Implications for increasing food security and addressing the relevant sustainable development goals in Sub-Saharan Africa",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/b63cf939005cfb5ef9f594525f04816454d9cb3b",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S9",
+          "title": "Proximity-inducible CRISPR/Cas13a trans-cleavage activity and hydrogel-assisted paper-based distance sensor for the detection of aflatoxin M1.",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/46f6ad3c0c16b5d0b7690ddaec5bf1e440773b83",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S10",
+          "title": "miR-138-5p: From Multidimensional Tumor-Suppressive Regulatory Networks to Nanocarrier-Based Delivery for Solid Tumor Therapy",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/550864799cf54b8bc834481ce2961c58ca057aed",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S11",
+          "title": "A heat-assisted ttLbCas12a workflow incorporating crRNA 3’-tailing enables efficient multiplex biallelic genome editing in hybrid poplar",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/4c1f11dae55ad99af5eaf55e6141f4c023d92987",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S12",
+          "title": "In Vivo Continuous Evolution Systems: Overview, Principles and Applications",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/3cd1e52090d12d7638f711518b2d1a7c342031a8",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S13",
+          "title": "Innovations and emerging trends in adoptive cell therapies for solid tumors: engineering strategies and clinical translation",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/7ef39f1c5b80b28c772087e0002e045b6a425301",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S14",
+          "title": "Precision Gene Therapy for Monogenic Neurological Disorders: Emerging Technologies, Safety, and Mechanism–Modality Matching",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/15b11996293ea89a363de70389f0f6a1df204c78",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        }
+      ]
+    },
+    {
+      "id": "UC10",
+      "topic": "Quantum error correction",
+      "query": "Find \"Surface codes: Towards practical large-scale quantum computation\" and explain the error-correction setting.",
+      "expected_title": "Surface codes: Towards practical large-scale quantum computation",
+      "reference": "https://arxiv.org/abs/1208.0928",
+      "review_focus": "Distinguish theoretical error-correction requirements from a claim of deployed fault-tolerant quantum computing.",
+      "state": "complete",
+      "session_id": 11,
+      "created_at": "2026-10-28 15:02:24",
+      "elapsed_seconds": 22.9,
+      "papers": 14,
+      "expected_paper_found": true,
+      "expected_rank": 1,
+      "source_status": [
+        {
+          "source": "arXiv (title lookup)",
+          "status": "results",
+          "requests": [
+            {
+              "host": "export.arxiv.org",
+              "status": 200,
+              "seconds": 0.375
+            }
+          ],
+          "count": 1
+        },
+        {
+          "source": "PubMed",
+          "status": "empty_or_unavailable",
+          "requests": [
+            {
+              "host": "eutils.ncbi.nlm.nih.gov",
+              "status": 200,
+              "seconds": 0.484
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "Semantic Scholar",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.812
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.516
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "Semantic Scholar (title lookup)",
+          "status": "rate_limited",
+          "requests": [
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.859
+            },
+            {
+              "host": "api.semanticscholar.org",
+              "status": 429,
+              "seconds": 0.922
+            }
+          ],
+          "count": 0
+        },
+        {
+          "source": "arXiv",
+          "status": "results",
+          "requests": [
+            {
+              "host": "export.arxiv.org",
+              "status": 200,
+              "seconds": 4.0
+            }
+          ],
+          "count": 5
+        }
+      ],
+      "citation_status": {
+        "status": "results",
+        "root_title": "Surface codes: Towards practical large-scale quantum computation",
+        "requests": [
+          {
+            "host": "api.semanticscholar.org",
+            "status": 200,
+            "seconds": 1.094
+          },
+          {
+            "host": "api.semanticscholar.org",
+            "status": 429,
+            "seconds": 0.797
+          },
+          {
+            "host": "api.semanticscholar.org",
+            "status": 200,
+            "seconds": 0.828
+          }
+        ],
+        "depth1_count": 8,
+        "depth2_count": 0
+      },
+      "citation_edges": 8,
+      "overview": "Surface codes are a prominent family of quantum error‑correcting codes that encode logical qubits in a two‑dimensional array of physical qubits using stabilizer measurements. The 2012 article (S1) introduces the stabilizer formalism for surface codes, describes how logical qubits are formed from boundary defects, and provides numerical estimates of the resources required for fault‑tolerant operation, emphasizing compatibility with nearest‑neighbor hardware. Subsequent works explore complementary approaches: continuous‑time quantum error correction (CTQEC) that uses weak measurements and feedback (S3), error‑suppression techniques for adiabatic quantum computation (S6), and experimental demonstrations of surface‑code logical qubits with logical error per round below 1 % for distance‑3 and distance‑5 codes on a superconducting processor (S14). Additional studies address decoding and performance estimation, including a Markov‑chain Monte Carlo splitting method for rare‑event logical error rate estimation (S10) and analyses of distributed fault‑tolerant architectures (S11).",
+      "findings": [
+        {
+          "text": "Surface codes encode logical qubits in a 2‑D stabilizer lattice and provide numerical estimates of fault‑tolerance and resource requirements for large‑scale quantum computers (S1).",
+          "confidence": "HIGH",
+          "sources": [
+            "Surface codes: Towards practical large-scale quantum computation"
+          ],
+          "source_ids": [
+            "S1"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "Continuous‑time quantum error correction protects quantum information via weak measurements and real‑time feedback, offering an alternative to discrete syndrome extraction (S3).",
+          "confidence": "MEDIUM",
+          "sources": [
+            "Continuous-time quantum error correction"
+          ],
+          "source_ids": [
+            "S3"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "Adiabatic quantum computation can employ energy‑gap protection and dynamical decoupling to suppress errors, representing a distinct error‑handling paradigm from circuit‑model codes (S6).",
+          "confidence": "MEDIUM",
+          "sources": [
+            "Error suppression and error correction in adiabatic quantum computation I: techniques and challenges"
+          ],
+          "source_ids": [
+            "S6"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "Markov‑chain Monte Carlo splitting methods enable estimation of logical error rates deep in the rare‑event regime, though proposal trapping can affect sampling efficiency (S10).",
+          "confidence": "MEDIUM",
+          "sources": [
+            "Fast and accurate rare-event simulation by Markov chain Monte Carlo for general quantum codes"
+          ],
+          "source_ids": [
+            "S10"
+          ],
+          "unverified_sources": []
+        },
+        {
+          "text": "Experimental surface‑code implementations on a 120‑qubit superconducting processor achieve logical error per round below 1 % for distance‑3 and distance‑5 codes (S14).",
+          "confidence": "HIGH",
+          "sources": [
+            "Entangled logical qubits on a superconducting quantum processor"
+          ],
+          "source_ids": [
+            "S14"
+          ],
+          "unverified_sources": []
+        }
+      ],
+      "evidence_review": {
+        "unmatched_citations": 0,
+        "method": "Exact membership in the retrieved evidence set",
+        "limitation": "A matched citation establishes identity, not that the paper supports the claim. Review original sources."
+      },
+      "paper_metadata": [
+        {
+          "evidence_id": "S1",
+          "title": "Surface codes: Towards practical large-scale quantum computation",
+          "year": "2012",
+          "url": "http://arxiv.org/abs/1208.0928v2",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S2",
+          "title": "Entanglement-Assisted Quantum Error-Correcting Codes",
+          "year": "2016",
+          "url": "http://arxiv.org/abs/1610.04013v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S3",
+          "title": "Continuous-time quantum error correction",
+          "year": "2013",
+          "url": "http://arxiv.org/abs/1311.2485v2",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S4",
+          "title": "Quantum Computing and Error Correction",
+          "year": "2003",
+          "url": "http://arxiv.org/abs/quant-ph/0304016v2",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S5",
+          "title": "An Introduction to Error-Correcting Codes: From Classical to Quantum",
+          "year": "2006",
+          "url": "http://arxiv.org/abs/quant-ph/0602157v1",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S6",
+          "title": "Error suppression and error correction in adiabatic quantum computation I: techniques and challenges",
+          "year": "2013",
+          "url": "http://arxiv.org/abs/1307.5893v3",
+          "doi": null,
+          "source": "arXiv",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S7",
+          "title": "A hybrid quantum–classical lattice Boltzmann method for advection–diffusion–settling transport",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/5a2862acedb4b3f4fb3f9ef7b57e2c8fd394e956",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S8",
+          "title": "Gravitational redshift as a template for correlated dephasing in quantum processors",
+          "year": 2027,
+          "url": "https://www.semanticscholar.org/paper/428a18266b7a5fb1ac1eacf56c7d2728eb8d5a7a",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S9",
+          "title": "A Control Line Multiplexing Framework for Scalable Quantum Computing",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/eca57f65064fea03fb0dff67a1f22805b0ec6459",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S10",
+          "title": "Fast and accurate rare-event simulation by Markov chain Monte Carlo for general quantum codes",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/d5ef396a062a6e3e482bd880cb1dfd5821bdbda1",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S11",
+          "title": "Feasibility of Distributed Fault-Tolerant Quantum Computing: From Quantum Links to Algorithms",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/e895115a41f2d8f7a052824fe82b6e64f8983a19",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S12",
+          "title": "Competing Fault Histories in Lattice-Surgery Decoding",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/3615ae788ae7bf9013db87fcb141f5a04cb00234",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S13",
+          "title": "Modular optical fault-tolerant quantum computation via an interface between verified resources and online logical operations",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/52094297bf943631473efcb453d10d522991499a",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        },
+        {
+          "evidence_id": "S14",
+          "title": "Entangled logical qubits on a superconducting quantum processor",
+          "year": 2026,
+          "url": "https://www.semanticscholar.org/paper/e0d91b8670be62f9419c29f840cc4b5137e21882",
+          "doi": null,
+          "source": "Semantic Scholar",
+          "retraction_status": {
+            "is_retracted": null,
+            "status": "unknown",
+            "retraction_reason": "Not checked: no DOI or lookup budget exhausted"
+          }
+        }
+      ]
+    }
+  ],
+  "attempts": [
+    {
+      "id": "78b4f213ba4a4bf588663bf1645ffe23",
+      "status": "error",
+      "attempts": 1,
+      "created_at": 1793170555.8668556,
+      "updated_at": 1793170559.6067502,
+      "session_id": null,
+      "query": "Find Attention Is All You Need and explain self-attention in the Transformer architecture."
+    },
+    {
+      "id": "7a8ebe73372d4bb1912e5bdcdef54246",
+      "status": "error",
+      "attempts": 1,
+      "created_at": 1793170704.1532745,
+      "updated_at": 1793170716.9373775,
+      "session_id": null,
+      "query": "Find Attention Is All You Need and explain self-attention in the Transformer architecture."
+    },
+    {
+      "id": "c7e137f0c9ab41d486ec638fa5d78351",
+      "status": "error",
+      "attempts": 1,
+      "created_at": 1793170893.4288378,
+      "updated_at": 1793170921.3412275,
+      "session_id": null,
+      "query": "Find Attention Is All You Need and explain self-attention in the Transformer architecture."
+    },
+    {
+      "id": "e17e42cabc54421ba08681fcd236f5ed",
+      "status": "complete",
+      "attempts": 1,
+      "created_at": 1793171051.2753775,
+      "updated_at": 1793171069.612843,
+      "session_id": 1,
+      "query": "Find Attention Is All You Need and explain self-attention in the Transformer architecture."
+    },
+    {
+      "id": "118f142cac7947cd9776834f46c80e16",
+      "status": "complete",
+      "attempts": 1,
+      "created_at": 1793171232.2808754,
+      "updated_at": 1793171251.7754748,
+      "session_id": 2,
+      "query": "Find \"Attention Is All You Need\" and explain self-attention in the Transformer architecture."
+    },
+    {
+      "id": "5ecf2bed69b04f24af3b609e69dd8484",
+      "status": "complete",
+      "attempts": 1,
+      "created_at": 1793171361.8717642,
+      "updated_at": 1793171372.9849646,
+      "session_id": 3,
+      "query": "Find \"BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding\" and explain its pretraining objectives."
+    },
+    {
+      "id": "e6674884ea0c4309ae64ade58ebf8328",
+      "status": "complete",
+      "attempts": 1,
+      "created_at": 1793171834.8057594,
+      "updated_at": 1793171851.3991556,
+      "session_id": 4,
+      "query": "Find \"Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks\" and explain the retrieval and generation components."
+    },
+    {
+      "id": "6193da0492e3488891933c3d5d26bcb5",
+      "status": "complete",
+      "attempts": 1,
+      "created_at": 1793171968.2007294,
+      "updated_at": 1793171989.0672233,
+      "session_id": 5,
+      "query": "Find \"Deep Residual Learning for Image Recognition\" and explain residual connections."
+    },
+    {
+      "id": "0df10bd3f64340599468b17658321962",
+      "status": "complete",
+      "attempts": 1,
+      "created_at": 1793172162.9340096,
+      "updated_at": 1793172183.3848212,
+      "session_id": 6,
+      "query": "Find \"LoRA: Low-Rank Adaptation of Large Language Models\" and explain which parameters are trained."
+    },
+    {
+      "id": "0f9042d1c0b24c44a6e117089c48472c",
+      "status": "complete",
+      "attempts": 1,
+      "created_at": 1793172391.4850712,
+      "updated_at": 1793172417.0832179,
+      "session_id": 7,
+      "query": "Find \"Graph Attention Networks\" and explain neighbourhood attention."
+    },
+    {
+      "id": "bfbae020ec5747218b30833bda3b4054",
+      "status": "complete",
+      "attempts": 1,
+      "created_at": 1793199561.1035466,
+      "updated_at": 1793199580.836832,
+      "session_id": 8,
+      "query": "Find \"Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs\" and explain the graph hierarchy."
+    },
+    {
+      "id": "bb9594e3623b4576b855049c85b2c25a",
+      "status": "complete",
+      "attempts": 1,
+      "created_at": 1793199637.3470545,
+      "updated_at": 1793199662.4513454,
+      "session_id": 9,
+      "query": "Find \"Highly accurate protein structure prediction with AlphaFold\" and explain the structure prediction approach."
+    },
+    {
+      "id": "a1bed8166a464c76ad8b43e9819c5453",
+      "status": "complete",
+      "attempts": 1,
+      "created_at": 1793199678.9504097,
+      "updated_at": 1793199695.702491,
+      "session_id": 10,
+      "query": "Find \"A Programmable Dual-RNA-Guided DNA Endonuclease in Adaptive Bacterial Immunity\" and explain the role of guide RNA."
+    },
+    {
+      "id": "ef8a109bcadf4721a70fb61b59f8ce8c",
+      "status": "complete",
+      "attempts": 1,
+      "created_at": 1793199716.9448156,
+      "updated_at": 1793199744.1007068,
+      "session_id": 11,
+      "query": "Find \"Surface codes: Towards practical large-scale quantum computation\" and explain the error-correction setting."
+    },
+    {
+      "id": "59ee2c4d9d0345fd81a4b3198a3b167a",
+      "status": "complete",
+      "attempts": 1,
+      "created_at": 1793199776.6808245,
+      "updated_at": 1793199802.490231,
+      "session_id": 12,
+      "query": "Find \"Highly accurate protein structure prediction with AlphaFold\" and explain the structure prediction approach."
+    },
+    {
+      "id": "24f63c50aa344dbaabe7d5974fed8981",
+      "status": "complete",
+      "attempts": 1,
+      "created_at": 1793199861.0830884,
+      "updated_at": 1793199875.5538187,
+      "session_id": 13,
+      "query": "Find \"A Programmable Dual-RNA-Guided DNA Endonuclease in Adaptive Bacterial Immunity\" and explain the role of guide RNA."
+    },
+    {
+      "id": "e2971da6e18f42fea2a148a4085557fe",
+      "status": "complete",
+      "attempts": 1,
+      "created_at": 1793200000.3793356,
+      "updated_at": 1793200026.5528994,
+      "session_id": 14,
+      "query": "Find \"Highly accurate protein structure prediction with AlphaFold\" and explain the structure prediction approach."
+    },
+    {
+      "id": "c26ddc4a17a746f4aab654c8af503cb7",
+      "status": "complete",
+      "attempts": 1,
+      "created_at": 1793200042.3290286,
+      "updated_at": 1793200059.7045317,
+      "session_id": 15,
+      "query": "Find \"A Programmable Dual-RNA-Guided DNA Endonuclease in Adaptive Bacterial Immunity\" and explain the role of guide RNA."
+    }
+  ]
+}

@@ -11,14 +11,19 @@ assert config.DATABASE_DIR == _environment.DATA_DIR
 
 @pytest.fixture(autouse=True)
 def clean_db(monkeypatch):
-    from auth.rate_limit import _attempts
+    from services import job_service
 
-    _attempts.clear()
+    monkeypatch.setattr(job_service, "INLINE_TESTING", True)
     monkeypatch.setattr(config, "BCRYPT_ROUNDS", 4)
     monkeypatch.setattr(config, "GROQ_API_KEY", None)
     conn = get_connection()
     with conn:
         for table in (
+            "provider_schedule",
+            "work_leases",
+            "research_job_events",
+            "research_jobs",
+            "rate_limit_events",
             "auth_sessions",
             "research_sessions",
             "bookmarks",

@@ -1,0 +1,61 @@
+haFold" and explain the structure prediction approach.
+			40 container
+				41 button Find "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs" and explain the graph hierarchy.
+				42 button Help: Delete session, Description: Delete research: Find "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs" and explain the graph hierarchy.
+			43 container
+				44 button Find "Graph Attention Networks" and explain neighbourhood attention.
+				45 button Description: Delete research: Find "Graph Attention Networks" and explain neighbourhood attention., Help: Delete session
+			46 container
+				47 button Find "LoRA: Low-Rank Adaptation of Large Language Models" and explain which parameters are trained.
+				48 button Help: Delete session, Description: Delete research: Find "LoRA: Low-Rank Adaptation of Large Language Models" and explain which parameters are trained.
+			49 container
+				50 button Find "Deep Residual Learning for Image Recognition" and explain residual connections.
+				51 button Help: Delete session, Description: Delete research: Find "Deep Residual Learning for Image Recognition" and explain residual connections.
+			52 container
+				53 button Find "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks" and explain the retrieval and generation components.
+				54 button Help: Delete session, Description: Delete research: Find "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks" and explain the retrieval and generation components.
+			55 container
+				56 button Find "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding" and explain its pretraining objectives.
+				57 button Help: Delete session, Description: Delete research: Find "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding" and explain its pretraining objectives.
+			58 container
+				59 button Find "Attention Is All You Need" and explain self-attention in the Transformer architecture.
+				60 button Help: Delete session, Description: Delete research: Find "Attention Is All You Need" and explain self-attention in the Transformer architecture.
+			61 container
+				62 button Find Attention Is All You Need and explain self-attention in the Transformer architecture.
+				63 button Help: Delete session, Description: Delete research: Find Attention Is All You Need and explain self-attention in the Transformer architecture.
+			64 text R research_walkthrough research-walkthrough@example.com
+			11 button Sign out
+		12 container
+			13 text YOUR LIBRARY OF EVIDENCE
+			14 heading Manuscript studio, Value: 1
+				15 text Manuscript studio
+			16 text Discover · Connect · Synthesize
+			133 button Back to Research
+			134 text Manuscript Studio
+			135 heading Select References, Value: 3
+				136 text Select References
+			137 text These bookmarked papers will be used for in-text citations.
+			138 checkbox A Programmable Dual-RNA–Guided DNA Endonuclease in Adaptive Bacterial Immunity, Value: 1
+				139 text A Programmable Dual-RNA–Guided DNA Endonuclease in Adaptive Bacterial Immunity
+			140 pop up button (collapsed, settable) Description: Manuscript section, Value: Introduction, Secondary Actions: Expand
+				141 menu
+					142 (selected) Introduction
+					143 Literature Review
+					144 Discussion
+					145 Conclusion
+			146 text entry area (settable) Description: Manuscript notes, Value: Write a cautious introduction explaining the 2012 dual-RNA-guided endonuclease mechanism. Use only this selected paper. Do not infer clinical safety or later experimental results. Mark missing details as not stated.
+			147 button Generate Draft
+			148 heading Draft: Introduction, Value: 3
+				149 text Draft:  Introduction
+			150 button Export .md
+			151 heading Introduction, Value: 2
+				152 text Introduction
+			153 text Clustered regularly interspaced short palindromic repeats (CRISPR) and CRISPR-associated (Cas) proteins constitute an adaptive immune system in bacteria and archaea that protects against invading nucleic acids (S1). In 2012, a seminal study described a programmable dual‑RNA‑guided DNA endonuclease that represents a distinct mechanistic class within the CRISPR/Cas family (S1). This enzyme requires two guide RNAs: a CRISPR RNA (crRNA) that base‑pairs with the target DNA and a trans‑activating CRISPR RNA (tracrRNA) that forms a duplex with the crRNA and facilitates recruitment of the Cas protein (S1). The dual‑RNA architecture enables precise recognition of protospacer adjacent motifs (PAMs) and subsequent cleavage of the target strand, thereby conferring sequence‑specific immunity (S1).
+			154 text The 2012 work demonstrated that the dual‑RNA complex can be reconstituted in vitro and that the Cas protein exhibits robust endonucleolytic activity when guided by both RNAs (S1). The study also highlighted the modularity of the system, suggesting that the RNA components could be engineered to target diverse DNA sequences (S1). However, detailed mechanistic insights into the catalytic cycle, the structural basis of RNA–protein interactions, and the fidelity of target recognition remain to be fully elucidated (Not stated). Moreover, the study did not address potential off‑target effects or the behavior of the enzyme in cellular contexts (Not stated).
+			155 text In summary, the 2012 dual‑RNA‑guided endonuclease provides a foundational understanding of a programmable CRISPR/Cas system that relies on two distinct RNA guides for DNA targeting. While the paper establishes the core principles of RNA‑mediated DNA cleavage, many mechanistic and functional aspects remain to be explored in subsequent research.
+			156 heading References, Value: 2
+				157 text References
+			158 container
+				159 text S1.  A Programmable Dual‑RNA–Guided DNA Endonuclease in Adaptive Bacterial Immunity  (2012). Crossref.
+
+The focused UI element is 1 AXWebArea ArchimedesAI · Research workspace, URL: 127.0.0.1:8010/

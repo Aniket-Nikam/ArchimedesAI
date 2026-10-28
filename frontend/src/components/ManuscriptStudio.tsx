@@ -141,6 +141,7 @@ export default function ManuscriptStudio({ user, onClose }: { user: any, onClose
 
           {draft && (
             <div className="studio-result">
+              <p className="workspace-notice">Provisional draft based on supplied excerpts. Verify each claim and citation against the original papers before using it.</p>
               <div className="studio-result-header">
                 <h3>Draft: {section}</h3>
                 <button className="studio-export-btn" onClick={handleExport}>

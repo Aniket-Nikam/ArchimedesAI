@@ -1,5 +1,5 @@
 import { apiFetch, setCsrfToken } from './api';
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { PanelLeft } from 'lucide-react';
 import Auth from './components/Auth';
 import Sidebar from './components/Sidebar';
@@ -10,6 +10,7 @@ import './App.css';
 import './workspace.css';
 
 export default function App() {
+  const identityEpoch = useRef(0);
   const [user, setUser] = useState<any>(null);
   const [history, setHistory] = useState<any[]>([]);
   const [chatHistory, setChatHistory] = useState<any[]>([]);
@@ -26,12 +27,13 @@ export default function App() {
     apiFetch('/api/auth/session').then(res => res.json()).then(data => {
       if (alive) { setCsrfToken(data.csrf_token); setUser(data.user); }
     }).catch(() => {}).finally(() => { if (alive) setRestoring(false); });
-    const expire = () => { setUser(null); setHistory([]); setChatHistory([]); setCsrfToken(''); };
+    const expire = () => { identityEpoch.current++; setUser(null); setHistory([]); setChatHistory([]); setCsrfToken(''); };
     window.addEventListener('archimedes:session-expired', expire);
     return () => { alive = false; window.removeEventListener('archimedes:session-expired', expire); };
   }, []);
 
   const handleLogin = (userData: any) => {
+    identityEpoch.current++;
     setUser(userData);
     setNotice('');
   };
@@ -40,6 +42,7 @@ export default function App() {
     try { await apiFetch('/api/auth/logout', { method: 'POST' }); }
     catch (error) { setNotice((error as Error).message); return; }
     setCsrfToken('');
+    identityEpoch.current++;
     setUser(null);
     setHistory([]);
     setChatHistory([]);
@@ -47,11 +50,12 @@ export default function App() {
   };
 
   const fetchHistory = async (userId: number) => {
+    const epoch = identityEpoch.current;
     try {
       const res = await apiFetch(`/api/history/?user_id=${userId}`);
       if (res.ok) {
         const data = await res.json();
-        setHistory(data);
+        if (epoch === identityEpoch.current) setHistory(data);
       }
     } catch (e) {
       console.error(e);
@@ -63,10 +67,12 @@ export default function App() {
   }, [user]);
 
   const handleLoadSession = async (sessionId: number) => {
+    const epoch = identityEpoch.current;
     try {
       const res = await apiFetch(`/api/history/${sessionId}?user_id=${user.id}`);
       if (res.ok) {
         const data = await res.json();
+        if (epoch !== identityEpoch.current) return;
         setActiveView('chat');
         setChatEpoch(epoch => epoch + 1);
         setChatHistory([

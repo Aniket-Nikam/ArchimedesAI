@@ -31,7 +31,7 @@ Open [the research workspace](http://127.0.0.1:8000). FastAPI serves the built f
 1. Sign in through an expiring, revocable, HttpOnly cookie session.
 2. Ask a research question. Semantic Scholar, arXiv and PubMed run in parallel.
 3. Deduplicate source results and trace Semantic Scholar citation links up to two levels when available.
-4. Inspect source coverage, limited Crossref retraction metadata, and AI-assisted synthesis.
+4. Inspect source coverage, limited Crossref/OpenAlex retraction metadata, and AI-assisted synthesis. Named titles are looked up separately; missing citation links are explained without inventing relationships.
 5. Reopen saved reports, bookmark papers, and export BibTeX, CSV, APA-style text or RIS.
 6. Use bookmarked papers in Manuscript Studio, generate an extraction matrix, or upload a readable PDF.
 
@@ -51,11 +51,11 @@ npm run build
 
 The Python suite uses a separate database under `data/tests` and fake providers. It never uses real credentials or developer research. The stream tests exercise arbitrary chunk boundaries, split Unicode, malformed responses and cancellation.
 
-See the [detailed test and reliability report](docs/TEST_REPORT.md) for all 37 distinct automated tests, three backend runs, live source checks, per-case explanations and limitations. [Machine-readable results and command logs](docs/test-results/) are included.
+The [earlier automated report](docs/TEST_REPORT.md) is historical. Current live-browser evidence is in [the user study](docs/user-study/), with an illustrated walkthrough under `output/pdf/`. The current suite includes durable-job recovery, cross-process limits, backup restoration, storage failures and bounded input fuzzing.
 
 ## Deployment and data
 
-- Use one backend worker for the current process-local admission limits: two research jobs globally, one per account, and two utility AI jobs. A shared queue/rate limiter is required before using multiple backend processes.
+- Research admission, authentication rate windows and utility leases are coordinated through SQLite. Research runs in isolated worker subprocesses with persisted events and bounded recovery. This is for one machine sharing the same SQLite data directory; distributed hosting remains unverified.
 - Put HTTPS in front of the app and set `COOKIE_SECURE=1`. Set `ALLOWED_ORIGINS` to your own frontend origin. Configure a reverse-proxy body-size limit (25 MB maximum for uploads, a lower limit for JSON APIs).
 - Keep the SQLite data directory on persistent storage and back it up before upgrades. `ARCHIMEDES_DATA_DIR` changes its location.
 - Existing integer user IDs, bcrypt passwords, bookmarks and research history are preserved. Startup applies additive, idempotent SQL migrations from `db/migrations`. Each has a corresponding downgrade file; rolling back sessions signs all browsers out.
@@ -68,4 +68,8 @@ This is a research aid, not a systematic-review or publication-validation servic
 
 Crossref metadata is incomplete. “No notice found” does not establish that a paper is safe; failed and unperformed checks remain **unknown**. AI can misread abstracts and invent claims or citations despite a review pass. Read and verify the original papers before using generated findings or drafts.
 
-Cancellation is cooperative: active HTTP calls finish within their own timeouts, then the pipeline stops. Jobs are not durable across server restarts. PDF analysis currently examines text excerpts and supports at most 20 MB / 100 pages; scanned PDFs need OCR outside this app.
+Stopping research terminates the owned subprocess; workers also monitor persisted cancellation and deadlines. A restarted dispatcher can recover an expired worker lease, with up to three attempts within the original deadline. Recovery restarts computation rather than resuming an individual provider request. Browser reloads reconnect to persisted events. PDF analysis examines text excerpts and supports at most 20 MB / 100 pages; scanned PDFs need OCR outside this app.
+
+On Windows, an optional current-user DPAPI encrypted Groq credential can be stored under the ignored `data/secrets` directory. An explicit `GROQ_API_KEY` environment value takes precedence. Never commit plaintext or encrypted credentials.
+
+Create and verify SQLite snapshots with `python scripts/database_backup.py backup SOURCE.db NEW_BACKUP.db`. Restore with `python scripts/database_backup.py restore BACKUP.db NEW_RESTORED.db`; retain the checksum sidecar. Restoration refuses existing destinations. Stop the app and deliberately select the restored data directory before using it. See [operations and verification limits](docs/OPERATIONS_REVIEW.md).

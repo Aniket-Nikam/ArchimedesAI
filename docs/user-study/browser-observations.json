@@ -1,0 +1,87 @@
+[
+  {
+    "id": "UC01",
+    "query": "Find \"Attention Is All You Need\" and explain self-attention in the Transformer architecture.",
+    "observed_at": "2026-10-28T07:09:21.154Z",
+    "overview": "The Transformer architecture introduced in \"Attention Is All You Need\" (S1) replaces recurrent and convolutional components with multi‑head self‑attention and positional encodings, enabling parallel processing and achieving state‑of‑the‑art results on machine translation. Subsequent work has applied self‑attention to a variety of domains: video classification using space‑time attention (S8), blind room‑volume estimation in audio (S3), long‑time quantum dynamics prediction (S6), and retrieval tasks where performance depends entirely on self‑attention layers (S2). Recent studies also explore efficiency‑focused variants such as linear attention and state‑space models (S5), recurrent‑augmented heads (S7), and methods for interpreting attention maps (S12, S13).",
+    "source_coverage": "PubMed: 1 results\nSemantic Scholar: 8 results\narXiv: 5 results\narXiv (title lookup): 3 results\nSemantic Scholar (title lookup): rate limited\n\nRetraction metadata is limited. An unknown status does not establish that a paper is safe.",
+    "screenshot": "screenshots/UC01-overview.jpg",
+    "overview_origin": "Latest saved output reconciled with observed browser screenshot; collected separately from UI actions."
+  },
+  {
+    "id": "UC02",
+    "query": "Find \"BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding\" and explain its pretraining objectives.",
+    "observed_at": "2026-10-28T07:15:26.349Z",
+    "overview": "BERT introduced a bidirectional transformer pre‑training paradigm that learns contextual representations from unlabeled text by predicting masked tokens. The model can be fine‑tuned for a variety of downstream NLP tasks with a single output layer. Subsequent work has adapted the core idea of masked prediction to other modalities, such as vision (BEiT) and vision‑language (Kaleido‑BERT).",
+    "source_coverage": "arXiv (title lookup): 1 results\narXiv: 5 results\nPubMed: 1 results\nSemantic Scholar (title lookup): rate limited\nSemantic Scholar: rate limited\n\nRetraction metadata is limited. An unknown status does not establish that a paper is safe.",
+    "screenshot": "screenshots/UC02-overview.jpg",
+    "overview_origin": "Latest saved output reconciled with observed browser screenshot; collected separately from UI actions."
+  },
+  {
+    "id": "UC03",
+    "query": "Find \"Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks\" and explain the retrieval and generation components.",
+    "observed_at": "2026-10-28T07:19:13.726Z",
+    "overview": "Retrieval‑Augmented Generation (RAG) is a paradigm that combines an external retrieval module with a language‑model generator to produce grounded text.  The 2020 study (S1) observes that large pre‑trained language models store factual knowledge in their parameters but still lag behind task‑specific architectures on knowledge‑intensive tasks, and it identifies the provision of provenance and the ability to update world knowledge as open research problems.  Subsequent work has explored different retrieval strategies and application domains.  The 2024 EVOR pipeline (S4) introduces a synchronous evolution of queries and diverse knowledge bases to adapt to domain‑specific knowledge, while the 2022 Multi‑Task RAG study (S5) demonstrates that relevance sampling can clean training data and enable a single Fusion‑in‑Decoder (FiD) generator to perform well across multiple knowledge‑intensive tasks.  These studies collectively illustrate the flexibility of RAG and highlight remaining challenges such as retrieval latency, dynamic knowledge base management, and robustness to adversarial retrieval attacks.",
+    "source_coverage": "arXiv (title lookup): 1 results\nPubMed: empty or unavailable\nSemantic Scholar: rate limited\nSemantic Scholar (title lookup): rate limited\narXiv: 5 results\n\nRetraction metadata is limited. An unknown status does not establish that a paper is safe.",
+    "screenshot": "screenshots/UC03-overview.jpg",
+    "overview_origin": "Latest saved output reconciled with observed browser screenshot; collected separately from UI actions."
+  },
+  {
+    "id": "UC04",
+    "query": "Find \"Deep Residual Learning for Image Recognition\" and explain residual connections.",
+    "observed_at": "2026-10-28T07:22:39.769Z",
+    "overview": "Residual learning was introduced to ease the training of very deep neural networks by reformulating layers as learning residual functions relative to their inputs (S1). This concept has been adapted to various tasks beyond image classification, including image compression (S4) and dense feature enhancement for character recognition (S3). The abstracts indicate that residual connections facilitate optimization and can improve performance when integrated with task‑specific architectural components.",
+    "source_coverage": "arXiv: 5 results\nPubMed: 5 results\nSemantic Scholar (title lookup): rate limited\narXiv (title lookup): 1 results\nSemantic Scholar: rate limited\n\nRetraction metadata is limited. An unknown status does not establish that a paper is safe.",
+    "screenshot": "screenshots/UC04-overview.jpg",
+    "overview_origin": "Latest saved output reconciled with observed browser screenshot; collected separately from UI actions."
+  },
+  {
+    "id": "UC05",
+    "query": "Find \"LoRA: Low-Rank Adaptation of Large Language Models\" and explain which parameters are trained.",
+    "observed_at": "2026-10-28T07:26:30.902Z",
+    "overview": "LoRA (Low‑Rank Adaptation) is a parameter‑efficient fine‑tuning technique that freezes the pre‑trained weights of a large language model and injects trainable low‑rank matrices into selected layers, dramatically reducing the number of trainable parameters while preserving strong downstream performance (S1). Subsequent work has built on this core idea to address remaining gaps: Task‑Relevant Feature Enhancement augments LoRA with additional modules to capture task‑specific signals (S2); Dynamic Tangent‑Space LoRA expands the update space beyond the static tangent of the low‑rank factors (S3); Bias‑Alleviating LoRA introduces components to mitigate the propagation of pre‑training biases (S4); SPIRA proposes sparse, structured rank adaptations for more targeted updates (S9); and DPAC presents a tri‑dimensional framework that decomposes weight updates into magnitude and direction components to improve parameter efficiency (S10).",
+    "source_coverage": "arXiv: 5 results\nPubMed: 5 results\nSemantic Scholar (title lookup): rate limited\narXiv (title lookup): 1 results\nSemantic Scholar: rate limited\n\nRetraction metadata is limited. An unknown status does not establish that a paper is safe.",
+    "screenshot": "screenshots/UC05-overview.jpg",
+    "overview_origin": "Latest saved output reconciled with observed browser screenshot; collected separately from UI actions."
+  },
+  {
+    "id": "UC06",
+    "query": "Find \"Graph Attention Networks\" and explain neighbourhood attention.",
+    "observed_at": "2026-10-28T14:59:20.158Z",
+    "overview": "Graph Attention Networks (GATs) introduced by Veliček et al. (2017) propose masked self‑attentional layers that let each node compute a weighted combination of its immediate neighbours' features, learning edge‑specific attention coefficients without requiring costly spectral matrix operations (S1). Subsequent extensions have adapted the core attention mechanism to new settings: Signed Graph Attention Networks incorporate sign‑aware aggregation for positive and negative edges (S2); DeepGAT addresses over‑smoothing in deep GAT stacks by proposing a layer‑wise depth‑adaptive scheme (S3); Spiking GATs replace dense softmax attention with spike‑based gating to reduce computation (S11); and Simplicial Attention Networks generalize attention to higher‑order simplicial complexes, attending over nodes, edges, and triangles (S13). These works collectively demonstrate the flexibility of neighbourhood‑centric attention across diverse graph modalities and application domains.",
+    "screenshot": "screenshots/UC06-overview.jpg",
+    "overview_origin": "Latest saved output reconciled with observed browser screenshot; collected separately from UI actions."
+  },
+  {
+    "id": "UC07",
+    "query": "Find \"Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs\" and explain the graph hierarchy.",
+    "observed_at": "2026-10-28T15:00:36.613Z",
+    "overview": "Graph‑based approximate nearest neighbor (ANN) research has focused on constructing navigable proximity graphs that enable efficient greedy routing. 2016’s HNSW paper introduced a multi‑layer hierarchical NSW structure that eliminates the need for separate coarse search stages, while 2016’s EFANNA leveraged a kNN graph to accelerate search. 2024’s study on navigable graphs formalizes the notion of navigability and explores construction limits, and 2026’s I/O‑optimizations examine practical bottlenecks of disk‑resident ANN indices. 2025’s HENN proposes a hierarchical ε‑net navigation graph that aims to provide theoretical guarantees for graph‑based ANN methods.",
+    "screenshot": "screenshots/UC07-overview.jpg",
+    "overview_origin": "Latest saved output reconciled with observed browser screenshot; collected separately from UI actions."
+  },
+  {
+    "id": "UC10",
+    "query": "Find \"Surface codes: Towards practical large-scale quantum computation\" and explain the error-correction setting.",
+    "observed_at": "2026-10-28T15:02:56.047Z",
+    "overview": "Surface codes are a prominent family of quantum error‑correcting codes that encode logical qubits in a two‑dimensional array of physical qubits using stabilizer measurements. The 2012 article (S1) introduces the stabilizer formalism for surface codes, describes how logical qubits are formed from boundary defects, and provides numerical estimates of the resources required for fault‑tolerant operation, emphasizing compatibility with nearest‑neighbor hardware. Subsequent works explore complementary approaches: continuous‑time quantum error correction (CTQEC) that uses weak measurements and feedback (S3), error‑suppression techniques for adiabatic quantum computation (S6), and experimental demonstrations of surface‑code logical qubits with logical error per round below 1 % for distance‑3 and distance‑5 codes on a superconducting processor (S14). Additional studies address decoding and performance estimation, including a Markov‑chain Monte Carlo splitting method for rare‑event logical error rate estimation (S10) and analyses of distributed fault‑tolerant architectures (S11).",
+    "screenshot": "screenshots/UC10-overview.jpg",
+    "overview_origin": "Latest saved output reconciled with observed browser screenshot; collected separately from UI actions."
+  },
+  {
+    "id": "UC09",
+    "query": "Find \"A Programmable Dual-RNA-Guided DNA Endonuclease in Adaptive Bacterial Immunity\" and explain the role of guide RNA.",
+    "observed_at": "2026-10-28T15:06:37.747Z",
+    "overview": "The 2012 study by Jinek et al. reported the discovery of a programmable dual‑RNA‑guided DNA endonuclease that forms part of the CRISPR adaptive immune system in bacteria and archaea. The work highlighted how RNA molecules can direct a Cas protein to cleave foreign DNA, establishing a mechanistic basis for sequence‑specific immunity.",
+    "screenshot": "screenshots/UC09-overview.jpg",
+    "overview_origin": "Latest saved output reconciled with observed browser screenshot; collected separately from UI actions."
+  },
+  {
+    "id": "UC08",
+    "query": "Find \"Highly accurate protein structure prediction with AlphaFold\" and explain the structure prediction approach.",
+    "observed_at": "2026-10-28T15:07:21.878Z",
+    "overview": "AlphaFold (2021) demonstrated that deep‑learning‑based prediction can reach near‑experimental accuracy for a large fraction of proteins (S1). Subsequent advances such as AlphaFold 3 introduced multi‑scale transformer architectures and geometry‑aware, differentiable optimization, further improving generalization across diverse families (S8). At the same time, analyses of proteins with alternative folds reveal that AlphaFold often assigns high confidence to a single conformation and provides low‑confidence or missing predictions for other biologically relevant states (S10). Together these works portray a rapidly advancing field that combines remarkable accuracy with emerging challenges in conformational diversity and complex assemblies.",
+    "screenshot": "screenshots/UC08-overview.jpg",
+    "overview_origin": "Latest saved output reconciled with observed browser screenshot; collected separately from UI actions."
+  }
+]

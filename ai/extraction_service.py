@@ -35,4 +35,4 @@ Return ONLY the JSON array."""
     elif isinstance(parsed, dict) and "papers" in parsed:
         return parsed["papers"]
 
-    return []
+    raise RuntimeError("AI extraction returned an invalid response.")

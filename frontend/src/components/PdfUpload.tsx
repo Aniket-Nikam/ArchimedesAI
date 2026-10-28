@@ -117,6 +117,7 @@ export default function PdfUpload({ user, onComplete }: { user: any, onComplete:
             <div className="pdf-analysis-section">
               <h4>Literature Verification</h4>
               <div className="pdf-markdown">
+                <p className="workspace-notice">This comparison uses short text excerpts and limited related literature. It cannot establish missing citations or validate the full paper.</p>
                 <ReactMarkdown>{results.claim_analysis}</ReactMarkdown>
               </div>
             </div>
