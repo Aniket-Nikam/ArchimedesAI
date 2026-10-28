@@ -1,0 +1,67 @@
+{
+  "captured_at_utc": "2026-10-28T06:32:32.673220+00:00",
+  "runs": [
+    {
+      "id": 40644354479,
+      "head_sha": "b8691b305b7fdffbc4cec0bad7ad5f89739c107d",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Aniket-Nikam/ArchimedesAI/actions/runs/40644354479",
+      "jobs": [
+        {
+          "name": "frontend (24.13.0)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "frontend (24)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "backend",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 40643979656,
+      "head_sha": "bc487866bd8ed475ab853baf36af9ffac4a0cdcf",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Aniket-Nikam/ArchimedesAI/actions/runs/40643979656",
+      "jobs": [
+        {
+          "name": "frontend",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "backend",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 40643473159,
+      "head_sha": "f5482574a2cbc5ef4cfbc6a94a8e2e1d4887d90f",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/Aniket-Nikam/ArchimedesAI/actions/runs/40643473159",
+      "jobs": [
+        {
+          "name": "frontend",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "name": "backend",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ]
+}

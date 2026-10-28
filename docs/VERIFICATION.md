@@ -44,7 +44,7 @@ The original broad environment freeze was replaced with direct runtime requireme
 - PubMed: returned a paper with a title.
 - Semantic Scholar: returned no data during the initial run. The follow-up source check in the [detailed report](TEST_REPORT.md) returned a paper from all three providers; neither snapshot establishes uptime.
 - No Groq key was configured in this checkout. A full real-provider search → synthesis → save → literature-review/draft run remains **unverified**.
-- CI configuration was added, but hosted GitHub Actions has not run from this local branch.
+- Hosted GitHub Actions passed the Linux backend plus frontend jobs on Node 24.13.0 and latest Node 24. The [detailed report](TEST_REPORT.md) retains the initial failed install and the subsequent fixes.
 - The installed Starlette test client emitted a deprecation warning about its HTTPX transport; all integration tests passed.
 - Google Scholar scraping, production hosting, load testing and multi-process operation were not verified.
 

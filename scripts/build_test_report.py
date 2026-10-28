@@ -182,6 +182,20 @@ def main():
     live = json.loads((RESULTS / "live-sources.json").read_text())
     runs = [ET.parse(RESULTS / f"backend-run-{n}.xml").getroot() for n in range(1, 4)]
     cases = list(runs[0].iter("testcase"))
+    if not summary["all_checks_passed"]:
+        raise SystemExit(
+            "Verification failed; inspect test-results. Refusing to generate a pass report."
+        )
+    for run in runs:
+        observed = list(run.iter("testcase"))
+        if len(observed) != len(CATALOG) or any(
+            case.find(tag) is not None
+            for case in observed
+            for tag in ("failure", "error", "skipped")
+        ):
+            raise SystemExit(
+                "A backend run is incomplete or not fully passing; inspect XML evidence."
+            )
     names = {case.get("name") for case in cases}
     if names != set(CATALOG):
         raise SystemExit(f"Catalog mismatch: {names.symmetric_difference(CATALOG)}")
@@ -307,7 +321,7 @@ def main():
         "| Academic retrieval | All default providers responded in one current snapshot. | Rate limits/outages and search quality can vary; no uptime or relevance benchmark. |",
         "| AI research quality | Unverified with live models. Stubbed tests prove data handoff and error behavior only. | Hallucinations, unsupported conclusions, citation correctness, extraction accuracy and draft quality require a labelled evaluation set and human review. |",
         "| Retraction integrity | Unknown states are preserved in the tested failure/budget cases. | Crossref is incomplete; no notice is not proof of safety. |",
-        "| Deployment readiness | The local production build passes; CI is configured. | Hosted CI outcome is recorded separately after push. Deployment, HTTPS/cookies, persistent storage and load remain unverified. |",
+        "| Deployment readiness | The local production build and captured Linux CI backend/frontend jobs pass. | Deployment, HTTPS/cookies, persistent storage and load remain unverified. |",
         "",
         "**I would trust this revision for further development and a controlled local demonstration. I would not yet describe it as a scientifically validated or production-proven autonomous research product.** The automated pass rate is 100% for these cases; that is not an overall reliability percentage.",
         "",

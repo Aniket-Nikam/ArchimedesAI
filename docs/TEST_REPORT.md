@@ -105,6 +105,20 @@ Executed: 2026-10-28T06:18:55.416226+00:00. One fresh, isolated query per source
 | PubMed | 200, 200 | 1 | 1.078s | Result retrieved |
 | Semantic Scholar | 200 | 1 | 1.359s | Result retrieved |
 
+## Hosted GitHub Actions verification
+
+Public workflow state captured at 2026-10-28T06:32:32.673220+00:00. These are separate Linux runner checks, not the local Windows runs above.
+
+| Commit | Workflow | Backend / frontend jobs |
+|---|---|---|
+| `b8691b3` | [success](https://github.com/Aniket-Nikam/ArchimedesAI/actions/runs/40644354479) | frontend (24.13.0): success; frontend (24): success; backend: success |
+| `bc48786` | [success](https://github.com/Aniket-Nikam/ArchimedesAI/actions/runs/40643979656) | frontend: success; backend: success |
+| `f548257` | [failure](https://github.com/Aniket-Nikam/ArchimedesAI/actions/runs/40643473159) | frontend: failure; backend: success |
+
+The first hosted run passed the backend but failed frontend clean installation. The known Node 24.13.0 toolchain then passed both jobs. Investigation also found missing optional WASM peer entries under newer npm validation; the lockfile was completed and frontend CI expanded to the known version plus the latest Node 24 release. No direct application dependency versions were changed by this repair.
+
+CI passing supports clean installation, tests, lint and build on the listed runner/toolchains. It does not establish deployed uptime or live AI output quality.
+
 All three sources returned a titled paper in this run. An earlier smoke run returned no Semantic Scholar data, so availability clearly can vary. These observations do not establish uptime, relevance, bibliographic accuracy, citation coverage or reproducible search ranking.
 
 ## How reliable is it?
@@ -118,7 +132,7 @@ All three sources returned a titled paper in this run. An earlier smoke run retu
 | Academic retrieval | All default providers responded in one current snapshot. | Rate limits/outages and search quality can vary; no uptime or relevance benchmark. |
 | AI research quality | Unverified with live models. Stubbed tests prove data handoff and error behavior only. | Hallucinations, unsupported conclusions, citation correctness, extraction accuracy and draft quality require a labelled evaluation set and human review. |
 | Retraction integrity | Unknown states are preserved in the tested failure/budget cases. | Crossref is incomplete; no notice is not proof of safety. |
-| Deployment readiness | The local production build passes; CI is configured. | Hosted CI outcome is recorded separately after push. Deployment, HTTPS/cookies, persistent storage and load remain unverified. |
+| Deployment readiness | The local production build and captured Linux CI backend/frontend jobs pass. | Deployment, HTTPS/cookies, persistent storage and load remain unverified. |
 
 **I would trust this revision for further development and a controlled local demonstration. I would not yet describe it as a scientifically validated or production-proven autonomous research product.** The automated pass rate is 100% for these cases; that is not an overall reliability percentage.
 
