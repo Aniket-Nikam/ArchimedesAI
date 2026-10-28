@@ -1,7 +1,7 @@
 import { apiFetch } from '../api';
 import { useState, useRef, useEffect, useCallback, lazy, Suspense } from 'react';
 import { Send, ChevronDown, Sparkles, Clock, Download, FileText, Table, BookOpen } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from './ResearchMarkdown';
 import { readEvents } from '../sse';
 const KnowledgeGraph = lazy(() => import('./KnowledgeGraph'));
 import PaperList from './PaperList';
@@ -366,7 +366,7 @@ export default function Chat({ user, chatHistory, setChatHistory, onNewSession }
               </button>
             ))}
           </div>
-          <div style={{ marginTop: '32px', width: '100%', maxWidth: '520px' }}>
+          <div className="research-upload">
             <PdfUpload user={user} onComplete={() => setAgentLogs([])} />
           </div>
         </div>

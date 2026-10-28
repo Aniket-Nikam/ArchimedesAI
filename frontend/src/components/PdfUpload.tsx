@@ -1,7 +1,7 @@
 import { apiFetch } from '../api';
 import { useState, useCallback } from 'react';
 import { UploadCloud, FileText, XCircle, X, ChevronDown, ChevronUp } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from './ResearchMarkdown';
 
 export default function PdfUpload({ user, onComplete }: { user: any, onComplete: () => void }) {
   const [isDragging, setIsDragging] = useState(false);

@@ -1,7 +1,7 @@
 import { apiFetch } from '../api';
 import { useState, useEffect } from 'react';
 import { PenTool, CheckSquare, Square, Loader, ChevronLeft, Save } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from './ResearchMarkdown';
 
 export default function ManuscriptStudio({ user, onClose }: { user: any, onClose: () => void }) {
   const [bookmarks, setBookmarks] = useState<any[]>([]);
