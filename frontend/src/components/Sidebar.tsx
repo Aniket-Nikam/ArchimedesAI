@@ -1,4 +1,4 @@
-import { LogOut, Plus, MessageSquare, Trash2, Star, PenTool } from 'lucide-react';
+import { LogOut, Plus, MessageSquare, Trash2, Star, PenTool, PanelLeftClose } from 'lucide-react';
 
 export default function Sidebar({
   user,
@@ -8,14 +8,16 @@ export default function Sidebar({
   onDeleteSession,
   onNewChat,
   collapsed,
+  onToggle,
   onToggleBookmarks,
   onToggleStudio,
   showBookmarks,
   showStudio,
 }: any) {
   return (
-    <div className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
+    <div className={`sidebar ${collapsed ? 'collapsed' : ''}`} inert={collapsed} aria-hidden={collapsed}>
       <div className="sidebar-inner">
+        <div className="workspace-brand"><span><b>A.</b> Archimedes<span className="workspace-edition">RESEARCH WORKSPACE</span></span><button onClick={onToggle} aria-label="Close sidebar"><PanelLeftClose size={18} /></button></div>
         {/* New Research Button */}
         <button className="new-research-btn" onClick={onNewChat}>
           <Plus size={18} />
@@ -55,6 +57,7 @@ export default function Sidebar({
                     className="history-del"
                     onClick={() => onDeleteSession(session.id)}
                     title="Delete session"
+                    aria-label={`Delete research: ${session.query}`}
                   >
                     <Trash2 size={14} />
                   </button>
@@ -74,7 +77,7 @@ export default function Sidebar({
               <div className="profile-name">{user.username}</div>
               <div className="profile-email">{user.email}</div>
             </div>
-            <button className="logout-btn" onClick={onLogout} title="Sign out">
+            <button className="logout-btn" onClick={onLogout} title="Sign out" aria-label="Sign out">
               <LogOut size={16} />
             </button>
           </div>

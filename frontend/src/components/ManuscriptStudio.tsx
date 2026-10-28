@@ -1,3 +1,4 @@
+import { apiFetch } from '../api';
 import { useState, useEffect } from 'react';
 import { PenTool, CheckSquare, Square, Loader, ChevronLeft, Save } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
@@ -12,12 +13,13 @@ export default function ManuscriptStudio({ user, onClose }: { user: any, onClose
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/bookmarks/?user_id=${user.id}`)
+    apiFetch(`/api/bookmarks/?user_id=${user.id}`)
       .then(res => res.json())
       .then(data => {
-        setBookmarks(data);
+        const papers = data.map((bookmark: any) => bookmark.paper);
+        setBookmarks(papers);
         // Select all by default
-        setSelectedPapers(new Set(data.map((p: any) => p.title)));
+        setSelectedPapers(new Set(papers.map((p: any) => p.title)));
       })
       .catch(err => console.error("Failed to load bookmarks", err));
   }, [user.id]);
@@ -41,7 +43,7 @@ export default function ManuscriptStudio({ user, onClose }: { user: any, onClose
     const papersToInclude = bookmarks.filter(p => selectedPapers.has(p.title));
 
     try {
-      const res = await fetch('http://localhost:8000/api/draft/', {
+      const res = await apiFetch('/api/draft/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -94,14 +96,15 @@ export default function ManuscriptStudio({ user, onClose }: { user: any, onClose
               <div className="studio-empty">No bookmarked papers found. Please bookmark papers in your research chat first!</div>
             ) : (
               bookmarks.map((p, i) => (
-                <div 
+                <button type="button"
                   key={i} 
                   className={`studio-paper-item ${selectedPapers.has(p.title) ? 'selected' : ''}`}
                   onClick={() => togglePaper(p.title)}
+                  aria-pressed={selectedPapers.has(p.title)}
                 >
                   {selectedPapers.has(p.title) ? <CheckSquare size={16} className="text-accent" /> : <Square size={16} />}
                   <div className="studio-paper-title">{p.title}</div>
-                </div>
+                </button>
               ))
             )}
           </div>
@@ -109,7 +112,7 @@ export default function ManuscriptStudio({ user, onClose }: { user: any, onClose
 
         <div className="studio-main">
           <div className="studio-controls">
-            <select className="studio-select" value={section} onChange={e => setSection(e.target.value)}>
+            <select aria-label="Manuscript section" className="studio-select" value={section} onChange={e => setSection(e.target.value)}>
               <option value="Introduction">Introduction</option>
               <option value="Literature Review">Literature Review</option>
               <option value="Discussion">Discussion</option>
@@ -118,6 +121,8 @@ export default function ManuscriptStudio({ user, onClose }: { user: any, onClose
           </div>
 
           <textarea 
+            aria-label="Manuscript notes"
+            maxLength={20000}
             className="studio-notes-input"
             placeholder="Paste your rough notes, bullet points, or experimental results here... Archimedes will expand these into a full academic draft with citations."
             value={notes}

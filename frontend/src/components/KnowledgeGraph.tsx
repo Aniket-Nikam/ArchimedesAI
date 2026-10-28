@@ -236,7 +236,7 @@ export default function KnowledgeGraph({ report }: { report: any }) {
       ctx.fillStyle = 'rgba(232, 230, 240, 0.9)';
       ctx.fillText(label || '', node.x, node.y + radius + 3);
     }
-  }, [searchTerm, hoveredNode, selectedNode]);
+  }, [searchTerm, hoveredNode, selectedNode, exploredNodes]);
 
   if (!nodes.length) return null;
 
@@ -254,6 +254,7 @@ export default function KnowledgeGraph({ report }: { report: any }) {
             <input
               type="text"
               placeholder="Search nodes..."
+              aria-label="Search citation graph"
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
             />

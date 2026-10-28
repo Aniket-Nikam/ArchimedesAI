@@ -2,8 +2,11 @@
 Authentication service for Archimedes.
 Handles user registration, login, and password security using bcrypt.
 """
-import re
+
 import logging
+import re
+import sqlite3
+
 import bcrypt
 
 import config
@@ -14,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 class AuthError(Exception):
     """Raised when authentication or validation fails."""
+
     pass
 
 
@@ -26,7 +30,7 @@ def _validate_username(username):
         raise AuthError(f"Username must be at least {config.USERNAME_MIN_LENGTH} characters.")
     if len(username) > config.USERNAME_MAX_LENGTH:
         raise AuthError(f"Username must be at most {config.USERNAME_MAX_LENGTH} characters.")
-    if not re.match(r'^[a-zA-Z0-9_]+$', username):
+    if not re.match(r"^[a-zA-Z0-9_]+$", username):
         raise AuthError("Username can only contain letters, numbers, and underscores.")
     return username
 
@@ -36,7 +40,7 @@ def _validate_email(email):
     if not email or not isinstance(email, str):
         raise AuthError("Email is required.")
     email = email.strip().lower()
-    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
     if not re.match(pattern, email):
         raise AuthError("Please enter a valid email address.")
     return email
@@ -48,6 +52,8 @@ def _validate_password(password):
         raise AuthError("Password is required.")
     if len(password) < config.PASSWORD_MIN_LENGTH:
         raise AuthError(f"Password must be at least {config.PASSWORD_MIN_LENGTH} characters.")
+    if len(password.encode("utf-8")) > 72:
+        raise AuthError("Password must be at most 72 bytes.")
     return password
 
 
@@ -57,8 +63,8 @@ def hash_password(password):
     Returns the hash as a UTF-8 string for database storage.
     """
     salt = bcrypt.gensalt(rounds=config.BCRYPT_ROUNDS)
-    hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
-    return hashed.decode('utf-8')
+    hashed = bcrypt.hashpw(password.encode("utf-8"), salt)
+    return hashed.decode("utf-8")
 
 
 def verify_password(password, password_hash):
@@ -67,10 +73,7 @@ def verify_password(password, password_hash):
     Uses constant-time comparison to prevent timing attacks.
     """
     try:
-        return bcrypt.checkpw(
-            password.encode('utf-8'),
-            password_hash.encode('utf-8')
-        )
+        return bcrypt.checkpw(password.encode("utf-8"), password_hash.encode("utf-8"))
     except Exception:
         return False
 
@@ -100,11 +103,14 @@ def register_user(username, email, password):
 
     # Hash and store
     pw_hash = hash_password(password)
-    cursor.execute(
-        "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)",
-        (username, email, pw_hash)
-    )
-    conn.commit()
+    try:
+        with conn:
+            cursor.execute(
+                "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)",
+                (username, email, pw_hash),
+            )
+    except sqlite3.IntegrityError as exc:
+        raise AuthError("Username or email is already in use.") from exc
 
     user_id = cursor.lastrowid
     logger.info(f"User registered successfully: {username} (id={user_id})")
@@ -126,8 +132,7 @@ def login_user(username, password):
     cursor = conn.cursor()
 
     cursor.execute(
-        "SELECT id, username, email, password_hash FROM users WHERE username = ?",
-        (username,)
+        "SELECT id, username, email, password_hash FROM users WHERE username = ?", (username,)
     )
     row = cursor.fetchone()
 

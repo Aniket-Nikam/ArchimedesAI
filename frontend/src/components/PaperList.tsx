@@ -1,3 +1,4 @@
+import { apiFetch } from '../api';
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { ArrowUpDown, Copy, Check, ExternalLink, Star, AlertTriangle } from 'lucide-react';
 
@@ -34,7 +35,7 @@ export default function PaperList({ report, user }: { report: any, user: any }) 
   // Fetch bookmarks
   useEffect(() => {
     if (!user) return;
-    fetch(`http://localhost:8000/api/bookmarks/?user_id=${user.id}`)
+    apiFetch(`/api/bookmarks/?user_id=${user.id}`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -51,7 +52,7 @@ export default function PaperList({ report, user }: { report: any, user: any }) 
     
     try {
       if (isBookmarked) {
-        await fetch('http://localhost:8000/api/bookmarks/', {
+        await apiFetch('/api/bookmarks/', {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user_id: user.id, paper_title: paper.title })
@@ -62,7 +63,7 @@ export default function PaperList({ report, user }: { report: any, user: any }) 
           return next;
         });
       } else {
-        await fetch('http://localhost:8000/api/bookmarks/', {
+        await apiFetch('/api/bookmarks/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user_id: user.id, paper: paper })
@@ -243,6 +244,9 @@ export default function PaperList({ report, user }: { report: any, user: any }) 
                 </p>
                 <div className="pl-card-footer">
                   <div className="pl-card-badges">
+                    <span className="pl-retraction-status" title={paper.retraction_status?.retraction_reason || 'Not checked'}>
+                      {paper.retraction_status?.is_retracted === true ? 'Retraction flagged' : paper.retraction_status?.status === 'no_notice_found' ? 'No Crossref notice found' : 'Retraction status unknown'}
+                    </span>
                     <span className="pl-source-badge" style={{ color: srcColor, borderColor: srcColor + '40' }}>
                       {paper.source}
                     </span>

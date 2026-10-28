@@ -1,5 +1,5 @@
-﻿import json
-from ai.groq_service import _call_llm, _build_paper_text
+from ai.groq_service import _build_paper_text, _call_llm
+
 
 def generate_manuscript_draft(section, notes, papers):
     """
@@ -10,7 +10,7 @@ def generate_manuscript_draft(section, notes, papers):
         paper_text = "No papers provided. Do not include citations."
     else:
         paper_text = _build_paper_text(papers, max_papers=20)
-        
+
     system_prompt = f"""You are an expert academic writer and researcher. Your task is to draft the {section} section of a scientific manuscript.
 
 You will be provided with:

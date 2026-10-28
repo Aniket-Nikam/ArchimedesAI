@@ -1,16 +1,22 @@
-﻿from fastapi import APIRouter
-from pydantic import BaseModel
-from typing import List, Optional
+from typing import List
+
+from fastapi import APIRouter
+from pydantic import BaseModel, Field
+
 from ai.drafting_service import generate_manuscript_draft
+from services.ai_jobs import ai_job
 
 router = APIRouter()
 
+
 class DraftRequest(BaseModel):
-    section: str
-    notes: str
-    papers: List[dict]
+    section: str = Field(min_length=1, max_length=80)
+    notes: str = Field(min_length=1, max_length=20000)
+    papers: List[dict] = Field(min_length=1, max_length=50)
+
 
 @router.post("/")
-async def create_draft(req: DraftRequest):
-    draft_markdown = generate_manuscript_draft(req.section, req.notes, req.papers)
+def create_draft(req: DraftRequest):
+    with ai_job():
+        draft_markdown = generate_manuscript_draft(req.section, req.notes, req.papers)
     return {"draft": draft_markdown}

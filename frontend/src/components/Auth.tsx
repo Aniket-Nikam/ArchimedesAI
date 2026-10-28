@@ -1,3 +1,4 @@
+import { apiFetch, setCsrfToken } from '../api';
 import { useState } from 'react';
 import { LogIn, UserPlus, User, Mail, Lock, AlertCircle } from 'lucide-react';
 
@@ -7,24 +8,30 @@ export default function Auth({ onLogin }: { onLogin: (user: any) => void }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [pending, setPending] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (pending) return;
+    setPending(true);
     setError('');
     const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
     const payload = isLogin ? { username, password } : { username, email, password };
 
     try {
-      const res = await fetch(`http://localhost:8000${endpoint}`, {
+      const res = await apiFetch(`${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || 'Authentication failed');
+      setCsrfToken(data.csrf_token);
       onLogin(data.user);
     } catch (err: any) {
       setError(err.message);
+    } finally {
+      setPending(false);
     }
   };
 
@@ -38,24 +45,24 @@ export default function Auth({ onLogin }: { onLogin: (user: any) => void }) {
       {/* Left — Branding */}
       <div className="auth-brand">
         <div className="brand-content">
-          <div className="brand-logo">🧬</div>
+          <div className="brand-logo" aria-hidden="true">A.</div>
           <h1 className="brand-title">Archimedes</h1>
           <p className="brand-subtitle">
-            Your AI-powered research companion. Search academic databases, trace citation trails, and synthesize knowledge — all in one place.
+            Start with a question. Build an evidence trail.
           </p>
 
           <div className="brand-features">
             <div className="brand-feature">
               <span className="feature-icon">🔍</span>
-              <span className="feature-text">Search across arXiv, Semantic Scholar, PubMed & Google Scholar</span>
+              <span className="feature-text">Discover papers across arXiv, Semantic Scholar and PubMed</span>
             </div>
             <div className="brand-feature">
               <span className="feature-icon">🔗</span>
-              <span className="feature-text">Automatic citation tracing with 2-level depth exploration</span>
+              <span className="feature-text">Follow citation connections and keep a reading list</span>
             </div>
             <div className="brand-feature">
               <span className="feature-icon">🧠</span>
-              <span className="feature-text">AI-powered synthesis with contradiction & gap analysis</span>
+              <span className="feature-text">Compare findings, methods and gaps with AI assistance</span>
             </div>
           </div>
         </div>
@@ -94,6 +101,9 @@ export default function Auth({ onLogin }: { onLogin: (user: any) => void }) {
             <div className="input-group">
               <input
                 type="text"
+                aria-label="Username"
+                autoComplete="username"
+                maxLength={30}
                 placeholder="Username"
                 value={username}
                 onChange={e => setUsername(e.target.value)}
@@ -106,6 +116,9 @@ export default function Auth({ onLogin }: { onLogin: (user: any) => void }) {
               <div className="input-group">
                 <input
                   type="email"
+                  aria-label="Email"
+                  autoComplete="email"
+                  maxLength={254}
                   placeholder="Email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
@@ -118,6 +131,9 @@ export default function Auth({ onLogin }: { onLogin: (user: any) => void }) {
             <div className="input-group">
               <input
                 type="password"
+                aria-label="Password"
+                autoComplete={isLogin ? 'current-password' : 'new-password'}
+                minLength={isLogin ? undefined : 8}
                 placeholder="Password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
@@ -127,13 +143,13 @@ export default function Auth({ onLogin }: { onLogin: (user: any) => void }) {
             </div>
 
             {error && (
-              <div className="auth-error">
+              <div className="auth-error" role="alert">
                 <AlertCircle size={16} />
                 {error}
               </div>
             )}
 
-            <button type="submit" className="submit-btn">
+            <button type="submit" className="submit-btn" disabled={pending} aria-busy={pending}>
               {isLogin ? (
                 <><LogIn size={18} /> Sign In</>
               ) : (
@@ -141,6 +157,7 @@ export default function Auth({ onLogin }: { onLogin: (user: any) => void }) {
               )}
             </button>
           </form>
+          <p className="auth-fine-print">Your research and reading list stay in your account. AI output is a starting point: always verify the original papers.</p>
         </div>
       </div>
     </div>

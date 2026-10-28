@@ -2,8 +2,10 @@
 Streamlit authentication guards.
 Renders a clean, minimal login/register wall.
 """
+
 import streamlit as st
-from auth.auth_service import register_user, login_user, AuthError
+
+from auth.auth_service import AuthError, login_user, register_user
 
 
 def require_auth():
@@ -25,14 +27,17 @@ def logout():
 def _render_auth_page():
     """Renders the full-page login/register UI — clean and minimal."""
 
-    st.markdown("""
+    st.markdown(
+        """
     <div class="auth-hero">
         <div class="logo">🧬</div>
         <h1>Archimedes</h1>
         <p>Your autonomous research assistant. Search across academic databases, 
         trace citation trails, and get AI-powered synthesis — all in one place.</p>
     </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True,
+    )
 
     # Centered form
     _, col_form, _ = st.columns([1, 2, 1])
@@ -43,12 +48,13 @@ def _render_auth_page():
         with tab_login:
             with st.form("login_form", clear_on_submit=False):
                 login_username = st.text_input(
-                    "Username", placeholder="Your username",
-                    label_visibility="collapsed"
+                    "Username", placeholder="Your username", label_visibility="collapsed"
                 )
                 login_password = st.text_input(
-                    "Password", type="password", placeholder="Password",
-                    label_visibility="collapsed"
+                    "Password",
+                    type="password",
+                    placeholder="Password",
+                    label_visibility="collapsed",
                 )
                 st.markdown("<div style='height: 0.25rem'></div>", unsafe_allow_html=True)
                 login_submitted = st.form_submit_button("Sign In", use_container_width=True)
@@ -66,20 +72,22 @@ def _render_auth_page():
         with tab_register:
             with st.form("register_form", clear_on_submit=False):
                 reg_username = st.text_input(
-                    "Username", placeholder="Choose a username",
-                    label_visibility="collapsed"
+                    "Username", placeholder="Choose a username", label_visibility="collapsed"
                 )
                 reg_email = st.text_input(
-                    "Email", placeholder="you@example.com",
-                    label_visibility="collapsed"
+                    "Email", placeholder="you@example.com", label_visibility="collapsed"
                 )
                 reg_password = st.text_input(
-                    "Password", type="password", placeholder="Password (min 8 chars)",
-                    label_visibility="collapsed"
+                    "Password",
+                    type="password",
+                    placeholder="Password (min 8 chars)",
+                    label_visibility="collapsed",
                 )
                 reg_confirm = st.text_input(
-                    "Confirm", type="password", placeholder="Confirm password",
-                    label_visibility="collapsed"
+                    "Confirm",
+                    type="password",
+                    placeholder="Confirm password",
+                    label_visibility="collapsed",
                 )
                 st.markdown("<div style='height: 0.25rem'></div>", unsafe_allow_html=True)
                 reg_submitted = st.form_submit_button("Create Account", use_container_width=True)

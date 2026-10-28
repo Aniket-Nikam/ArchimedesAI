@@ -1,20 +1,25 @@
-from fastapi import APIRouter, HTTPException
-from fastapi.responses import PlainTextResponse
-from pydantic import BaseModel
 from typing import Literal
 
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import PlainTextResponse
+from pydantic import BaseModel
+
+from auth.sessions import current_user_id
 from services.history_service import get_session_by_id
-from utils.citation_generator import generate_bibtex, generate_csv, generate_apa
+from utils.citation_generator import generate_apa, generate_bibtex, generate_csv, generate_ris
 
 router = APIRouter()
 
+
 class ExportRequest(BaseModel):
     session_id: int
-    user_id: int
-    format: Literal["bibtex", "csv", "apa"]
+    user_id: int | None = None
+    format: Literal["bibtex", "csv", "apa", "ris"]
+
 
 @router.post("/")
-async def export_papers(req: ExportRequest):
+def export_papers(req: ExportRequest, authenticated_user: int = Depends(current_user_id)):
+    req.user_id = authenticated_user
     """Export papers from a research session in BibTeX, CSV, or APA format."""
     session = get_session_by_id(req.session_id, req.user_id)
     if not session:
@@ -22,9 +27,7 @@ async def export_papers(req: ExportRequest):
 
     report = session.get("report", {})
     all_papers = (
-        report.get("seminal", []) +
-        report.get("citations", []) +
-        report.get("citations_depth2", [])
+        report.get("seminal", []) + report.get("citations", []) + report.get("citations_depth2", [])
     )
 
     # Deduplicate by title
@@ -39,19 +42,25 @@ async def export_papers(req: ExportRequest):
     if not unique_papers:
         raise HTTPException(status_code=400, detail="No papers found in this session")
 
+    if req.format == "ris":
+        return PlainTextResponse(
+            generate_ris(unique_papers),
+            media_type="application/x-research-info-systems",
+            headers={"Content-Disposition": "attachment; filename=archimedes_export.ris"},
+        )
     if req.format == "bibtex":
         content = generate_bibtex(unique_papers)
         return PlainTextResponse(
             content=content,
             media_type="application/x-bibtex",
-            headers={"Content-Disposition": f"attachment; filename=archimedes_export.bib"}
+            headers={"Content-Disposition": "attachment; filename=archimedes_export.bib"},
         )
     elif req.format == "csv":
         content = generate_csv(unique_papers)
         return PlainTextResponse(
             content=content,
             media_type="text/csv",
-            headers={"Content-Disposition": f"attachment; filename=archimedes_export.csv"}
+            headers={"Content-Disposition": "attachment; filename=archimedes_export.csv"},
         )
     elif req.format == "apa":
         apa_lines = [generate_apa(p) for p in unique_papers]
@@ -59,5 +68,5 @@ async def export_papers(req: ExportRequest):
         return PlainTextResponse(
             content=content,
             media_type="text/plain",
-            headers={"Content-Disposition": f"attachment; filename=archimedes_export_apa.txt"}
+            headers={"Content-Disposition": "attachment; filename=archimedes_export_apa.txt"},
         )

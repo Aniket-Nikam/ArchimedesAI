@@ -1,3 +1,4 @@
+import { apiFetch } from '../api';
 import { useState, useEffect, useCallback } from 'react';
 import { Star, Trash2, StickyNote, ExternalLink, BookOpen } from 'lucide-react';
 
@@ -9,7 +10,7 @@ export default function Bookmarks({ user, onClose }: { user: any; onClose: () =>
 
   const fetchBookmarks = useCallback(async () => {
     try {
-      const res = await fetch(`http://localhost:8000/api/bookmarks/?user_id=${user.id}`);
+      const res = await apiFetch(`/api/bookmarks/?user_id=${user.id}`);
       if (res.ok) {
         const data = await res.json();
         setBookmarks(data);
@@ -25,7 +26,7 @@ export default function Bookmarks({ user, onClose }: { user: any; onClose: () =>
 
   const removeBookmark = async (paperTitle: string) => {
     try {
-      await fetch('http://localhost:8000/api/bookmarks/', {
+      await apiFetch('/api/bookmarks/', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.id, paper_title: paperTitle }),
@@ -38,7 +39,7 @@ export default function Bookmarks({ user, onClose }: { user: any; onClose: () =>
 
   const saveNotes = async (paperTitle: string) => {
     try {
-      await fetch('http://localhost:8000/api/bookmarks/notes', {
+      await apiFetch('/api/bookmarks/notes', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.id, paper_title: paperTitle, notes: noteText }),

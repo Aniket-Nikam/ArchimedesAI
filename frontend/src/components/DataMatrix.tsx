@@ -1,3 +1,4 @@
+import { apiFetch } from '../api';
 import { useState } from 'react';
 import { Table, Download, Loader, X } from 'lucide-react';
 
@@ -24,7 +25,7 @@ export default function DataMatrix({ report }: { report: any }) {
         return true;
       });
 
-      const res = await fetch('http://localhost:8000/api/extract/', {
+      const res = await apiFetch('/api/extract/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ papers: papers.slice(0, 15) }) // Send top 15

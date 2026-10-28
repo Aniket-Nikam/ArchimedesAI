@@ -2,8 +2,9 @@
 API response caching service using SQLite.
 Caches search results with a 24-hour TTL to avoid redundant API calls.
 """
-import json
+
 import hashlib
+import json
 import logging
 from datetime import datetime, timedelta
 
@@ -29,13 +30,13 @@ def get_cached(query, source):
         conn = get_connection()
         cursor = conn.cursor()
         query_hash = _hash_query(query, source)
-        
+
         cursor.execute(
             "SELECT results_json, created_at FROM api_cache WHERE query_hash = ? AND source = ?",
-            (query_hash, source)
+            (query_hash, source),
         )
         row = cursor.fetchone()
-        
+
         if row:
             created_at = datetime.fromisoformat(row["created_at"])
             if datetime.utcnow() - created_at < timedelta(hours=CACHE_TTL_HOURS):
@@ -45,11 +46,11 @@ def get_cached(query, source):
                 # Stale — delete it
                 cursor.execute(
                     "DELETE FROM api_cache WHERE query_hash = ? AND source = ?",
-                    (query_hash, source)
+                    (query_hash, source),
                 )
                 conn.commit()
                 logger.info(f"Cache STALE for {source}: '{query[:40]}...'")
-        
+
         return None
     except Exception as e:
         logger.error(f"Cache read error: {e}")
@@ -65,11 +66,14 @@ def set_cached(query, source, results):
         cursor = conn.cursor()
         query_hash = _hash_query(query, source)
         results_json = json.dumps(results, default=str)
-        
+
         cursor.execute(
             """INSERT OR REPLACE INTO api_cache (query_hash, source, results_json, created_at)
                VALUES (?, ?, ?, ?)""",
-            (query_hash, source, results_json, datetime.utcnow().isoformat())
+            (query_hash, source, results_json, datetime.utcnow().isoformat()),
+        )
+        cursor.execute(
+            "DELETE FROM api_cache WHERE id IN (SELECT id FROM api_cache ORDER BY created_at DESC LIMIT -1 OFFSET 2000)"
         )
         conn.commit()
         logger.info(f"Cache SET for {source}: '{query[:40]}...' ({len(results)} results)")

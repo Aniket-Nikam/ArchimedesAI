@@ -1,7 +1,9 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { apiFetch } from '../api';
+import { useState, useRef, useEffect, useCallback, lazy, Suspense } from 'react';
 import { Send, ChevronDown, Sparkles, Clock, Download, FileText, Table, BookOpen } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
-import KnowledgeGraph from './KnowledgeGraph';
+import { readEvents } from '../sse';
+const KnowledgeGraph = lazy(() => import('./KnowledgeGraph'));
 import PaperList from './PaperList';
 import Timeline from './Timeline';
 import PdfUpload from './PdfUpload';
@@ -62,6 +64,8 @@ const SYNTHESIS_TABS = [
 ];
 
 export default function Chat({ user, chatHistory, setChatHistory, onNewSession }: any) {
+  const abortRef = useRef<AbortController | null>(null);
+  useEffect(() => () => { abortRef.current?.abort(); }, []);
   const [input, setInput] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [agentLogs, setAgentLogs] = useState<string[]>([]);
@@ -127,109 +131,26 @@ export default function Chat({ user, chatHistory, setChatHistory, onNewSession }
     return synthesis && typeof synthesis === 'object' && !Array.isArray(synthesis);
   };
 
-  // ── Export handler ──
-  const handleExport = async (format: string) => {
-    // For now, generate client-side from report data
-    // In a full implementation, this would call /api/export/
+  const [exportError, setExportError] = useState('');
+  const handleExport = async (format: string, messageIndex: number) => {
     setShowExportMenu(null);
-    
-    // Find the relevant report from chat history
-    const reportMsg = chatHistory.find((m: any) => m.report);
-    if (!reportMsg) return;
-
-    const report = reportMsg.report;
-    const allPapers = [
-      ...(report.seminal || []),
-      ...(report.citations || []),
-      ...(report.citations_depth2 || []),
-    ];
-
-    // Deduplicate
-    const seen = new Set<string>();
-    const papers = allPapers.filter((p: any) => {
-      if (seen.has(p.title)) return false;
-      seen.add(p.title);
-      return true;
-    });
-
-    let content = '';
-    let filename = '';
-    let mimeType = 'text/plain';
-
-    if (format === 'bibtex') {
-      content = papers.map((p: any, i: number) => {
-        const authors = Array.isArray(p.authors) ? p.authors.join(' and ') : 'Unknown';
-        const key = p.authors?.[0]?.split(' ').pop()?.toLowerCase() || `paper${i}`;
-        return `@article{${key}${p.year || ''},\n  title={${p.title}},\n  author={${authors}},\n  year={${p.year || 'n.d.'}}\n}`;
-      }).join('\n\n');
-      filename = 'archimedes_export.bib';
-    } else if (format === 'csv') {
-      content = 'Title,Authors,Year,Source,Citations,Abstract\n';
-      content += papers.map((p: any) => {
-        const authors = Array.isArray(p.authors) ? p.authors.join('; ') : '';
-        const abstract = (p.abstract || '').replace(/"/g, '""');
-        return `"${p.title}","${authors}","${p.year || ''}","${p.source || ''}","${p.citations || 0}","${abstract}"`;
-      }).join('\n');
-      filename = 'archimedes_export.csv';
-      mimeType = 'text/csv';
-    } else if (format === 'apa') {
-      content = papers.map((p: any) => {
-        const authors = p.authors || [];
-        let authorStr = 'Unknown Author';
-        if (Array.isArray(authors) && authors.length > 0) {
-          authorStr = authors.length > 2 ? `${authors[0]} et al.` : authors.join(' & ');
-        }
-        return `${authorStr} (${p.year || 'n.d.'}). ${p.title}. ${p.source || ''}.`;
-      }).join('\n\n');
-      filename = 'archimedes_export_apa.txt';
-    } else if (format === 'ris') {
-      content = papers.map((p: any) => {
-        let ris = 'TY  - JOUR\n';
-        ris += `TI  - ${p.title || 'Unknown Title'}\n`;
-        if (Array.isArray(p.authors)) {
-          p.authors.forEach((a: string) => {
-            ris += `AU  - ${a}\n`;
-          });
-        }
-        if (p.year) ris += `PY  - ${p.year}\n`;
-        if (p.source) ris += `JO  - ${p.source}\n`;
-        if (p.url) ris += `UR  - ${p.url}\n`;
-        if (p.abstract) ris += `AB  - ${p.abstract}\n`;
-        ris += 'ER  - \n';
-        return ris;
-      }).join('\n');
-      filename = 'archimedes_export.ris';
-      mimeType = 'application/x-research-info-systems';
-    } else if (format === 'litreview') {
-      try {
-        const res = await fetch('http://localhost:8000/api/litreview/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ session_id: reportMsg.session_id || Date.now(), user_id: user.id }) // Fallback session id if not set
-        });
-        if (res.ok) {
-          const blobLit = await res.blob();
-          const urlLit = URL.createObjectURL(blobLit);
-          const aLit = document.createElement('a');
-          aLit.href = urlLit;
-          aLit.download = 'literature_review.md';
-          aLit.click();
-          URL.revokeObjectURL(urlLit);
-        }
-      } catch (err) {
-        console.error('Failed to generate lit review:', err);
-      }
-      return;
-    }
-
-    // Download
-    const blob = new Blob([content], { type: mimeType });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.click();
-    URL.revokeObjectURL(url);
+    setExportError('');
+    const sessionId = chatHistory[messageIndex]?.report?.session_id;
+    if (!sessionId) { setExportError('Reload this saved report from history before exporting.'); return; }
+    try {
+      const response = await apiFetch(format === 'litreview' ? '/api/litreview/' : '/api/export/', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: sessionId, format }),
+      });
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      const extensions: Record<string,string> = { bibtex: 'bib', csv: 'csv', apa: 'txt', ris: 'ris', litreview: 'md' };
+      link.download = `archimedes_${sessionId}.${extensions[format]}`;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (error) { setExportError((error as Error).message); }
   };
 
   const submitQuery = async (query: string) => {
@@ -246,63 +167,43 @@ export default function Chat({ user, chatHistory, setChatHistory, onNewSession }
     const lastReportMsg = [...chatHistory].reverse().find(m => m.report);
     const existingReport = lastReportMsg ? lastReportMsg.report : null;
 
+    const controller = new AbortController();
+    abortRef.current = controller;
     try {
-      const response = await fetch('http://localhost:8000/api/research/', {
+      const response = await apiFetch('/api/research/', {
         method: 'POST',
+        signal: controller.signal,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           query: userMsg, 
           user_id: user.id,
-          chat_history: chatHistory,
+          chat_history: chatHistory.slice(-10).map((m: any) => ({ role: m.role, content: m.content })),
           existing_report: existingReport
         }),
       });
 
       if (!response.body) throw new Error('ReadableStream not supported.');
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder('utf-8');
-
       let aiContent = '';
       let reportData = null;
       let isOffTopic = false;
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split('\n');
-
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const dataStr = line.replace('data: ', '').trim();
-            if (!dataStr) continue;
-            try {
-              const parsed = JSON.parse(dataStr);
-              if (parsed.type === 'log') {
-                setAgentLogs(prev => [...prev, parsed.data]);
-              } else if (parsed.type === 'error') {
-                aiContent = parsed.data;
-                // Check if this is an off-topic rejection
-                if (parsed.data.includes('specialized') || parsed.data.includes('research-related')) {
-                  isOffTopic = true;
-                }
-              } else if (parsed.type === 'followup_complete') {
-                aiContent = parsed.data.answer;
-              } else if (parsed.type === 'complete') {
-                reportData = parsed.data;
-                const elapsed = parsed.data.elapsed_seconds
-                  ? ` in **${parsed.data.elapsed_seconds}s**`
-                  : '';
-                aiContent = `Research complete. I found **${parsed.data.total_crawled} papers** across 4 databases with 2 levels of citation tracing for *"${userMsg}"*${elapsed}.`;
-              }
-            } catch (err) {
-              console.error('Error parsing SSE:', err, dataStr);
-            }
-          }
+      let terminal = false;
+      for await (const parsed of readEvents(response.body)) {
+        if (parsed.type === 'log') {
+          setAgentLogs(prev => [...prev.slice(-99), String(parsed.data)]);
+        } else if (parsed.type === 'error') {
+          terminal = true;
+          aiContent = String(parsed.data);
+        } else if (parsed.type === 'followup_complete') {
+          terminal = true;
+          aiContent = parsed.data.answer;
+        } else if (parsed.type === 'complete') {
+          terminal = true;
+          reportData = parsed.data;
+          aiContent = `Research saved. Found **${parsed.data.total_crawled} unique papers** for *"${userMsg}"* in **${parsed.data.elapsed_seconds}s**. Review source coverage and verify the linked evidence below.`;
         }
       }
+      if (!terminal) throw new Error('The connection ended before research completed. Please retry.');
 
       setChatHistory((prev: any[]) => [
         ...prev,
@@ -313,9 +214,10 @@ export default function Chat({ user, chatHistory, setChatHistory, onNewSession }
       console.error(err);
       setChatHistory((prev: any[]) => [
         ...prev,
-        { role: 'assistant', content: `An error occurred while connecting to the server: ${(err as any).message || String(err)}` },
+        { role: 'assistant', content: `${controller.signal.aborted ? 'Research stopped. You can start a new question.' : (err as Error).message}` },
       ]);
     } finally {
+      abortRef.current = null;
       setIsProcessing(false);
       setAgentLogs([]);
     }
@@ -417,14 +319,15 @@ export default function Chat({ user, chatHistory, setChatHistory, onNewSession }
 
   return (
     <div className="chat-container">
+      {exportError && <div className="workspace-notice" role="alert">{exportError}<button onClick={() => setExportError('')} aria-label="Dismiss export error">×</button></div>}
       {chatHistory.length === 0 ? (
         /* ── Empty State ── */
         <div className="chat-empty">
-          <div className="empty-logo">🧬</div>
+          <div className="empty-logo" aria-hidden="true">A.</div>
           <h2 className="empty-greeting">
-            Hello, {user.username} <span className="wave-emoji">👋</span>
+            Follow a better question.
           </h2>
-          <p className="empty-subtitle">What would you like to research today?</p>
+          <p className="empty-subtitle">Discover papers, connect the evidence, and make room for your next idea.</p>
 
           <div className="suggestion-grid">
             {SUGGESTIONS.map((s, i) => (
@@ -518,24 +421,24 @@ export default function Chat({ user, chatHistory, setChatHistory, onNewSession }
                               </button>
                               {showExportMenu === msgIdx && (
                                 <div className="export-menu">
-                                  <button onClick={() => handleExport('bibtex')}>
+                                  <button onClick={() => handleExport('bibtex', msgIdx)}>
                                     <FileText size={14} />
                                     BibTeX (.bib)
                                   </button>
-                                  <button onClick={() => handleExport('csv')}>
+                                  <button onClick={() => handleExport('csv', msgIdx)}>
                                     <Table size={14} />
                                     CSV (.csv)
                                   </button>
-                                  <button onClick={() => handleExport('apa')}>
+                                  <button onClick={() => handleExport('apa', msgIdx)}>
                                     <BookOpen size={14} />
                                     APA (.txt)
                                   </button>
-                                  <button onClick={() => handleExport('ris')}>
+                                  <button onClick={() => handleExport('ris', msgIdx)}>
                                     <FileText size={14} />
                                     Zotero/EndNote (.ris)
                                   </button>
                                   <div className="export-menu-divider" style={{ borderTop: '1px solid var(--border)', margin: '4px 0' }} />
-                                  <button onClick={() => handleExport('litreview')}>
+                                  <button onClick={() => handleExport('litreview', msgIdx)}>
                                     <Sparkles size={14} />
                                     Lit Review (.md)
                                   </button>
@@ -545,11 +448,19 @@ export default function Chat({ user, chatHistory, setChatHistory, onNewSession }
                           </div>
                         </div>
 
+                        <div className="source-coverage" aria-label="Source coverage">
+                          {(msg.report.source_status || []).map((source: any) => (
+                            <span key={source.source} className={source.status === 'results' ? 'source-ok' : 'source-warning'}>
+                              {source.source}: {source.status === 'results' ? `${source.count} results` : source.status.replaceAll('_', ' ')}
+                            </span>
+                          ))}
+                          <p>Retraction metadata is limited. An unknown status does not establish that a paper is safe.</p>
+                        </div>
                         {/* AI Synthesis */}
                         {msg.report.ai_synthesis && renderSynthesis(msg.report.ai_synthesis, msgIdx)}
 
                         {/* Knowledge Graph */}
-                        <KnowledgeGraph report={msg.report} />
+                        <Suspense fallback={<p className="workspace-caption">Loading citation graph…</p>}><KnowledgeGraph report={msg.report} /></Suspense>
 
                         {/* Data Extraction Matrix */}
                         <DataMatrix report={msg.report} />
@@ -627,20 +538,24 @@ export default function Chat({ user, chatHistory, setChatHistory, onNewSession }
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
+            aria-label="Research question"
+            maxLength={1000}
             placeholder="Ask a research question..."
             disabled={isProcessing}
             rows={1}
           />
           <button
             type="submit"
+            aria-label="Start research"
             disabled={!input.trim() || isProcessing}
             className="send-btn"
           >
             <Send size={18} />
           </button>
         </form>
+        {isProcessing && <button type="button" className="stop-research" onClick={() => abortRef.current?.abort()}>Stop research</button>}
         <div className="input-footer">
-          Archimedes searches academic databases. Ask research questions only.
+          AI can make mistakes. Verify findings against the original papers.
         </div>
       </div>
     </div>

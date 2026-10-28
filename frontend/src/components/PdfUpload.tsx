@@ -1,3 +1,4 @@
+import { apiFetch } from '../api';
 import { useState, useCallback } from 'react';
 import { UploadCloud, FileText, XCircle, X, ChevronDown, ChevronUp } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
@@ -43,7 +44,7 @@ export default function PdfUpload({ user, onComplete }: { user: any, onComplete:
     formData.append('user_id', String(user.id));
 
     try {
-      const res = await fetch('http://localhost:8000/api/upload/', {
+      const res = await apiFetch('/api/upload/', {
         method: 'POST',
         body: formData,
       });

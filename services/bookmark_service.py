@@ -1,8 +1,10 @@
 """
 Bookmark service for saving and managing paper bookmarks per user.
 """
+
 import json
 import logging
+
 from db.database import get_connection
 
 logger = logging.getLogger(__name__)
@@ -16,7 +18,7 @@ def add_bookmark(user_id, paper, notes=""):
     try:
         cursor.execute(
             "INSERT OR REPLACE INTO bookmarks (user_id, paper_title, paper_json, notes) VALUES (?, ?, ?, ?)",
-            (user_id, paper.get("title", ""), paper_json, notes)
+            (user_id, paper.get("title", ""), paper_json, notes),
         )
         conn.commit()
         logger.info(f"Bookmark added: user={user_id}, paper='{paper.get('title', '')[:40]}'")
@@ -31,8 +33,7 @@ def remove_bookmark(user_id, paper_title):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "DELETE FROM bookmarks WHERE user_id = ? AND paper_title = ?",
-        (user_id, paper_title)
+        "DELETE FROM bookmarks WHERE user_id = ? AND paper_title = ?", (user_id, paper_title)
     )
     conn.commit()
     return cursor.rowcount > 0
@@ -44,7 +45,7 @@ def get_bookmarks(user_id):
     cursor = conn.cursor()
     cursor.execute(
         "SELECT id, paper_title, paper_json, notes, created_at FROM bookmarks WHERE user_id = ? ORDER BY created_at DESC",
-        (user_id,)
+        (user_id,),
     )
     rows = cursor.fetchall()
     result = []
@@ -60,8 +61,7 @@ def is_bookmarked(user_id, paper_title):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT id FROM bookmarks WHERE user_id = ? AND paper_title = ?",
-        (user_id, paper_title)
+        "SELECT id FROM bookmarks WHERE user_id = ? AND paper_title = ?", (user_id, paper_title)
     )
     return cursor.fetchone() is not None
 
@@ -72,7 +72,7 @@ def update_bookmark_notes(user_id, paper_title, notes):
     cursor = conn.cursor()
     cursor.execute(
         "UPDATE bookmarks SET notes = ? WHERE user_id = ? AND paper_title = ?",
-        (notes, user_id, paper_title)
+        (notes, user_id, paper_title),
     )
     conn.commit()
     return cursor.rowcount > 0

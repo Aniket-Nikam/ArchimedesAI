@@ -2,10 +2,12 @@
 Thread-safe SQLite database manager for Archimedes.
 Uses threading.local() for connection-per-thread safety.
 """
+
+import logging
+import os
 import sqlite3
 import threading
-import os
-import logging
+from pathlib import Path
 
 import config
 
@@ -25,6 +27,7 @@ def get_connection():
         _local.connection.row_factory = sqlite3.Row
         _local.connection.execute("PRAGMA journal_mode=WAL")
         _local.connection.execute("PRAGMA foreign_keys=ON")
+        _local.connection.execute("PRAGMA busy_timeout=10000")
     return _local.connection
 
 
@@ -128,10 +131,14 @@ def init_db():
 
     # Add project_id column to research_sessions if it doesn't exist
     # (for existing databases that already have the table)
-    try:
-        cursor.execute("ALTER TABLE research_sessions ADD COLUMN project_id INTEGER REFERENCES projects(id) ON DELETE SET NULL")
-    except sqlite3.OperationalError:
-        pass  # Column already exists
+    if "project_id" not in {
+        row["name"] for row in cursor.execute("PRAGMA table_info(research_sessions)")
+    }:
+        cursor.execute(
+            "ALTER TABLE research_sessions ADD COLUMN project_id INTEGER REFERENCES projects(id) ON DELETE SET NULL"
+        )
 
     conn.commit()
+    for migration in sorted((Path(__file__).parent / "migrations").glob("*.up.sql")):
+        conn.executescript(migration.read_text())
     logger.info("Database initialized successfully.")

@@ -1,0 +1,2 @@
+# Optional, experimental Google Scholar adapter. Off by default.
+scholarly>=1.7,<2

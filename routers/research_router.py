@@ -1,243 +1,289 @@
-from fastapi import APIRouter, Request
-from pydantic import BaseModel
-from sse_starlette.sse import EventSourceResponse
-from typing import List, Optional
-import json
+"""Bounded research pipeline with cancellation, honest source coverage and saved IDs."""
+
 import asyncio
+import json
+import logging
+import queue
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import TimeoutError as FutureTimeout
+from typing import Literal
 
+from fastapi import APIRouter, Depends, HTTPException, Request
+from pydantic import BaseModel, Field
+from sse_starlette.sse import EventSourceResponse
+
+import config
 from ai.groq_service import (
-    extract_topics, generate_structured_synthesis, is_academic_query,
-    classify_followup, answer_followup
+    answer_followup,
+    classify_followup,
+    extract_topics,
+    generate_structured_synthesis,
 )
-from api.arxiv_client import search_arxiv, get_arxiv_id, extract_references, search_reference_on_arxiv
-from api.semantic_scholar_client import search_semantic_scholar, get_citations
+from api.arxiv_client import search_arxiv
 from api.pubmed_client import search_pubmed
-from api.google_scholar_client import search_google_scholar
 from api.retraction_checker import check_papers_retraction
+from api.semantic_scholar_client import get_citations, search_semantic_scholar
+from auth.sessions import current_user_id
+from db.database import close_connection
 from services.history_service import save_research_session
-import logging
-
-logger = logging.getLogger(__name__)
+from services.paper_utils import unique_papers
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
+_slots = threading.BoundedSemaphore(config.MAX_CONCURRENT_RESEARCH)
+_users: set[int] = set()
+_lock = threading.Lock()
+_providers = ThreadPoolExecutor(max_workers=6, thread_name_prefix="academic-source")
+_provider_slots = threading.BoundedSemaphore(8)
 
 
 class ChatMessage(BaseModel):
-    role: str
-    content: str
+    role: Literal["user", "assistant"]
+    content: str = Field(max_length=20000)
+
 
 class ResearchRequest(BaseModel):
-    query: str
-    user_id: int
-    chat_history: Optional[List[ChatMessage]] = None
-    existing_report: Optional[dict] = None
+    query: str = Field(min_length=3, max_length=1000)
+    user_id: int | None = None  # Legacy client field, never used as identity.
+    chat_history: list[ChatMessage] = Field(default_factory=list, max_length=20)
+    existing_report: dict | None = None
 
-import queue
-import threading
+
+def _submit_provider(function, *args):
+    if not _provider_slots.acquire(blocking=False):
+        raise RuntimeError("Academic sources are busy. Please retry shortly.")
+
+    def run():
+        try:
+            return function(*args)
+        finally:
+            close_connection()
+
+    try:
+        future = _providers.submit(run)
+    except Exception:
+        _provider_slots.release()
+        raise
+    future.add_done_callback(lambda _: _provider_slots.release())
+    return future
+
 
 @router.post("/")
-async def start_research(req: ResearchRequest, request: Request):
-    logger.info(f"Received research request: {req.query}")
-    q = queue.Queue()
+async def start_research(
+    req: ResearchRequest, request: Request, user_id: int = Depends(current_user_id)
+):
+    if not config.GROQ_API_KEY:
+        raise HTTPException(
+            503,
+            "AI research is currently unavailable. Ask the workspace administrator to enable it.",
+        )
+    if not req.query.strip():
+        raise HTTPException(422, "Enter a research question.")
+    with _lock:
+        if user_id in _users:
+            raise HTTPException(409, "A research job is already running for your account.")
+        if not _slots.acquire(blocking=False):
+            raise HTTPException(
+                429,
+                "Research capacity is full. Please retry shortly.",
+                headers={"Retry-After": "10"},
+            )
+        _users.add(user_id)
+    events: queue.Queue = queue.Queue(maxsize=128)
+    stopped = threading.Event()
+    deadline = time.monotonic() + config.RESEARCH_TIMEOUT_SECONDS
 
-    def background_task():
-        def make_event(msg_type, data):
-            q.put({
-                "event": "message",
-                "data": json.dumps({"type": msg_type, "data": data})
-            })
+    def checkpoint():
+        if stopped.is_set():
+            raise InterruptedError("Research stopped.")
+        if time.monotonic() >= deadline:
+            raise TimeoutError("Research timed out. Try a narrower question.")
 
+    def emit(kind, data):
+        checkpoint()
         try:
-            query = req.query
-            start_time = time.time()
-            
-            # Build chat history
-            chat_history = []
-            if req.chat_history:
-                chat_history = [{"role": m.role, "content": m.content} for m in req.chat_history]
-            chat_history.append({"role": "user", "content": query})
+            events.put_nowait(
+                {"event": "message", "data": json.dumps({"type": kind, "data": data})}
+            )
+        except queue.Full:
+            raise RuntimeError("Research client is too slow. Please retry.")
 
-            make_event("log", "Checking query intent...")
-            if not is_academic_query(query):
-                make_event("error", "I'm a specialized autonomous academic research agent. Please ask me a research-related question.")
+    def work():
+        started = time.monotonic()
+        try:
+            history = [m.model_dump() for m in req.chat_history[-10:]]
+            history.append({"role": "user", "content": req.query})
+            if req.existing_report and classify_followup(req.query, True) in {
+                "followup",
+                "comparison",
+            }:
+                emit("log", "Comparing your question with the existing evidence…")
+                answer = answer_followup(req.query, req.existing_report, history)
+                emit(
+                    "followup_complete",
+                    {"answer": answer, "elapsed_seconds": round(time.monotonic() - started, 1)},
+                )
                 return
+            emit("log", "Preparing academic search terms…")
+            search = extract_topics(history)
+            checkpoint()
+            sources = [
+                (search_semantic_scholar, 8, "Semantic Scholar"),
+                (search_arxiv, 5, "arXiv"),
+                (search_pubmed, 5, "PubMed"),
+            ]
+            if config.ENABLE_GOOGLE_SCHOLAR:
+                from api.google_scholar_client import search_google_scholar
 
-            # ── Check if this is a follow-up ──
-            has_report = req.existing_report is not None
-            intent = classify_followup(query, has_report)
-            
-            if intent in ("followup", "comparison") and req.existing_report:
-                make_event("log", f"Processing as {intent} question...")
-                make_event("log", "Analyzing existing research data...")
-                
-                followup_answer = answer_followup(query, req.existing_report, chat_history)
-                
-                elapsed_seconds = round(time.time() - start_time, 1)
-                make_event("log", f"Done in {elapsed_seconds}s.")
-                
-                make_event("followup_complete", {
-                    "answer": followup_answer,
-                    "intent": intent,
-                    "elapsed_seconds": elapsed_seconds,
-                })
-                return
-
-            # ── Full research pipeline ──
-            make_event("log", "Extracting research keywords from your query...")
-            search_query = extract_topics(chat_history)
-            make_event("log", f"Keywords: {search_query}")
-
-            # Parallel search across all 4 databases
-            make_event("log", "Searching Semantic Scholar, arXiv, PubMed, Google Scholar in parallel...")
-            
-            seminal_ss = []
-            seminal_arx = []
-            seminal_pubmed = []
-            seminal_gs = []
-
-            with ThreadPoolExecutor(max_workers=4) as executor:
-                futures = {
-                    executor.submit(search_semantic_scholar, search_query, 8): "ss",
-                    executor.submit(search_arxiv, search_query, 5): "arx",
-                    executor.submit(search_pubmed, search_query, 5): "pubmed",
-                    executor.submit(search_google_scholar, search_query, 4): "gs",
-                }
-                for future in as_completed(futures):
-                    source = futures[future]
+                sources.append((search_google_scholar, 4, "Google Scholar"))
+            emit("log", "Searching academic sources in parallel…")
+            futures = {}
+            coverage = []
+            for function, limit, name in sources:
+                try:
+                    futures[_submit_provider(function, search, limit)] = name
+                except RuntimeError:
+                    coverage.append({"source": name, "status": "busy", "count": 0})
+            papers = []
+            ss_papers = []
+            try:
+                for future in as_completed(
+                    futures, timeout=min(40, max(1, deadline - time.monotonic()))
+                ):
+                    checkpoint()
+                    name = futures[future]
                     try:
                         result = future.result()
-                        if source == "ss":
-                            seminal_ss = result
-                        elif source == "arx":
-                            seminal_arx = result
-                        elif source == "pubmed":
-                            seminal_pubmed = result
-                        elif source == "gs":
-                            seminal_gs = result
-                        make_event("log", f"  ✓ {source.upper()} returned {len(result)} papers")
-                    except Exception as e:
-                        make_event("log", f"  ✗ {source.upper()} failed: {str(e)[:80]}")
-
-            seminal_papers = seminal_ss + seminal_arx + seminal_pubmed + seminal_gs
-            make_event("log", f"Found {len(seminal_papers)} papers across 4 databases.")
-
-            citation_results = []
-            crawled_count = len(seminal_papers)
-            depth2_citations = []
-
-            if seminal_ss:
-                target_id = seminal_ss[0]["id"]
-                make_event("log", f"Tracing citations for: {seminal_ss[0]['title'][:50]}...")
-                ss_citations = get_citations(target_id, limit=8)
-                for c in ss_citations:
-                    c["source"] = "Semantic Scholar"
-                    c["cited_by"] = target_id
-                citation_results.extend(ss_citations)
-                crawled_count += len(ss_citations)
-
-            if seminal_arx:
-                arxpath = seminal_arx[0].get("url", "")
-                arx_id = get_arxiv_id(arxpath)
-                if arx_id:
-                    make_event("log", "Extracting PDF references from arXiv...")
-                    refs = extract_references(arx_id, limit=6)
-                    for ref_text in refs:
-                        ref_paper = search_reference_on_arxiv(ref_text)
-                        if ref_paper:
-                            ref_paper["cited_by"] = seminal_arx[0].get("id", arx_id)
-                            citation_results.append(ref_paper)
-                            crawled_count += 1
-
-            make_event("log", f"Depth-1 complete - {len(citation_results)} citations found.")
-
-            ss_d1_with_ids = [c for c in citation_results if c.get("id") and c.get("source") == "Semantic Scholar"]
-            if ss_d1_with_ids:
-                d2_target = ss_d1_with_ids[0]
-                make_event("log", "Going deeper - tracing citations of citations...")
-                d2_raw = get_citations(d2_target["id"], limit=6)
-                for c in d2_raw:
-                    c["source"] = "Semantic Scholar (D2)"
-                    c["cited_by"] = d2_target["id"]
-                    depth2_citations.append(c)
-                    crawled_count += 1
-
-                arx_d1_papers = [c for c in citation_results if "arXiv" in c.get("source", "")]
-                if arx_d1_papers:
-                    d2_arxpath = arx_d1_papers[0].get("url", "")
-                    d2_arx_id = get_arxiv_id(d2_arxpath)
-                    if d2_arx_id:
-                        d2_refs = extract_references(d2_arx_id, limit=4)
-                        for ref_text in d2_refs:
-                            d2_ref_paper = search_reference_on_arxiv(ref_text)
-                            if d2_ref_paper:
-                                d2_ref_paper["source"] = "arXiv (D2)"
-                                d2_ref_paper["cited_by"] = arx_d1_papers[0].get("id", d2_arx_id)
-                                depth2_citations.append(d2_ref_paper)
-                                crawled_count += 1
-
-            make_event("log", f"Depth-2 complete - {len(depth2_citations)} additional papers.")
-
-            # ── Retraction check ──
-            all_papers = seminal_papers + citation_results + depth2_citations
-            make_event("log", "Checking for retracted papers...")
-            try:
-                check_papers_retraction(all_papers, max_checks=15)
-                retracted = [p for p in all_papers if p.get("retraction_status", {}).get("is_retracted")]
-                if retracted:
-                    make_event("log", f"  ⚠️ {len(retracted)} retracted paper(s) detected!")
-                else:
-                    make_event("log", "  ✓ No retractions detected.")
-            except Exception as e:
-                make_event("log", f"  Retraction check skipped: {str(e)[:60]}")
-
-            make_event("log", "Starting Multi-Agent Peer Review Synthesis...")
-            
-            def synthesis_progress_callback(msg):
-                make_event("log", f"🤖 {msg}")
-
-            ai_synthesis = generate_structured_synthesis(
-                all_papers, 
-                chat_history, 
-                progress_callback=synthesis_progress_callback
+                        coverage.append(
+                            {
+                                "source": name,
+                                "status": "results" if result else "empty_or_unavailable",
+                                "count": len(result),
+                            }
+                        )
+                        papers.extend(result)
+                        if name == "Semantic Scholar":
+                            ss_papers = result
+                        emit("log", f"{name}: {len(result)} results")
+                    except Exception:
+                        coverage.append({"source": name, "status": "unavailable", "count": 0})
+                        emit("log", f"{name} is unavailable for this search.")
+            except FutureTimeout:
+                for future, name in futures.items():
+                    if not any(c["source"] == name for c in coverage):
+                        future.cancel()
+                        coverage.append({"source": name, "status": "timed_out", "count": 0})
+            checkpoint()
+            seen = set()
+            seminal = unique_papers(papers, seen)
+            if not seminal:
+                raise ValueError(
+                    "No papers returned. Sources may be unavailable; try a more specific question."
+                )
+            citations, depth2 = [], []
+            if ss_papers and ss_papers[0].get("id"):
+                emit("log", "Following citation links (up to two levels)…")
+                parent = ss_papers[0]["id"]
+                raw = get_citations(parent, limit=8)
+                for paper in raw:
+                    paper.update(source="Semantic Scholar", cited_by=parent)
+                citations = unique_papers(raw, seen)
+                checkpoint()
+                if citations and citations[0].get("id"):
+                    parent = citations[0]["id"]
+                    raw = get_citations(parent, limit=6)
+                    for paper in raw:
+                        paper.update(source="Semantic Scholar (D2)", cited_by=parent)
+                    depth2 = unique_papers(raw, seen)
+            checkpoint()
+            all_papers = seminal + citations + depth2
+            emit("log", "Checking available DOI retraction metadata…")
+            # A small fixed budget; unchecked and failed checks stay explicitly unknown.
+            check_papers_retraction(all_papers, max_checks=3)
+            checkpoint()
+            emit("log", "Synthesizing evidence. Verify generated claims against the linked papers.")
+            synthesis = generate_structured_synthesis(
+                all_papers, history, progress_callback=lambda msg: emit("log", msg)
             )
-
-            elapsed_seconds = round(time.time() - start_time, 1)
-            make_event("log", f"Done - {crawled_count} papers analyzed in {elapsed_seconds}s.")
-
-            report_payload = {
-                "query": query,
-                "total_crawled": crawled_count,
-                "seminal": seminal_papers,
-                "citations": citation_results,
-                "citations_depth2": depth2_citations,
-                "ai_synthesis": ai_synthesis,
-                "elapsed_seconds": elapsed_seconds,
+            checkpoint()
+            if (
+                not isinstance(synthesis, dict)
+                or not isinstance(synthesis.get("overview"), str)
+                or not synthesis["overview"].strip()
+            ):
+                raise RuntimeError("The AI provider could not produce a synthesis. Please retry.")
+            payload = {
+                "query": req.query,
+                "seminal": seminal,
+                "citations": citations,
+                "citations_depth2": depth2,
+                "total_crawled": len(all_papers),
+                "ai_synthesis": synthesis,
+                "source_status": coverage,
+                "elapsed_seconds": round(time.monotonic() - started, 1),
             }
-
-            save_research_session(req.user_id, query, report_payload)
-            make_event("complete", report_payload)
-
-        except Exception as e:
-            make_event("error", f"An error occurred: {str(e)}")
+            payload["session_id"] = save_research_session(user_id, req.query, payload)
+            emit("complete", payload)
+        except InterruptedError:
+            pass
+        except Exception as exc:
+            logger.exception("Research job failed")
+            if not stopped.is_set():
+                try:
+                    events.put_nowait(
+                        {
+                            "event": "message",
+                            "data": json.dumps(
+                                {
+                                    "type": "error",
+                                    "data": str(exc)
+                                    if isinstance(exc, (ValueError, TimeoutError))
+                                    else "Research could not finish. Check source availability and AI configuration, then retry.",
+                                }
+                            ),
+                        }
+                    )
+                except queue.Full:
+                    pass
         finally:
-            q.put(None)
-
-    threading.Thread(target=background_task, daemon=True).start()
-
-    async def event_generator():
-        while True:
-            if await request.is_disconnected():
-                break
+            close_connection()
+            with _lock:
+                _users.discard(user_id)
+                _slots.release()
             try:
-                item = await asyncio.to_thread(q.get, True, 1.0)
-                if item is None:
-                    break
-                yield item
-            except queue.Empty:
-                continue
-            except asyncio.CancelledError:
-                break
+                events.put_nowait(None)
+            except queue.Full:
+                stopped.set()
 
-    return EventSourceResponse(event_generator())
+    threading.Thread(target=work, daemon=True, name=f"research-{user_id}").start()
+
+    async def stream():
+        try:
+            while not stopped.is_set():
+                if await request.is_disconnected():
+                    break
+                if time.monotonic() >= deadline:
+                    yield {
+                        "event": "message",
+                        "data": json.dumps(
+                            {
+                                "type": "error",
+                                "data": "Research timed out. Try a narrower question.",
+                            }
+                        ),
+                    }
+                    break
+                try:
+                    item = await asyncio.to_thread(events.get, True, 0.25)
+                    if item is None:
+                        break
+                    yield item
+                except queue.Empty:
+                    continue
+        finally:
+            # In-flight HTTP requests finish with their own timeout; no subsequent stage runs.
+            stopped.set()
+
+    return EventSourceResponse(stream(), ping=15)

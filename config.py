@@ -12,12 +12,10 @@ GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 FALLBACK_MODELS = [
     "llama-3.3-70b-versatile",
     "llama-3.1-8b-instant",
-    "compound-beta",
-    "compound-beta-mini",
 ]
 
 # --- Database ---
-DATABASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+DATABASE_DIR = os.environ.get("ARCHIMEDES_DATA_DIR", os.path.join(os.path.dirname(os.path.abspath(__file__)), "data"))
 DATABASE_PATH = os.path.join(DATABASE_DIR, "archimedes.db")
 
 # --- Security ---
@@ -28,3 +26,11 @@ BCRYPT_ROUNDS = 12
 USERNAME_MIN_LENGTH = 3
 USERNAME_MAX_LENGTH = 30
 PASSWORD_MIN_LENGTH = 8
+
+SESSION_TTL_SECONDS = int(os.environ.get("SESSION_TTL_SECONDS", "86400"))
+COOKIE_SECURE = os.environ.get("COOKIE_SECURE", "0") == "1"
+RESEARCH_TIMEOUT_SECONDS = int(os.environ.get("RESEARCH_TIMEOUT_SECONDS", "180"))
+MAX_CONCURRENT_RESEARCH = int(os.environ.get("MAX_CONCURRENT_RESEARCH", "2"))
+ENABLE_GOOGLE_SCHOLAR = os.environ.get("ENABLE_GOOGLE_SCHOLAR", "0") == "1"
+if os.environ.get("GROQ_MODELS"):
+    FALLBACK_MODELS = [m.strip() for m in os.environ["GROQ_MODELS"].split(",") if m.strip()]

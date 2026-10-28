@@ -1,8 +1,9 @@
 """
 Project/workspace service for organizing research sessions.
 """
-import json
+
 import logging
+
 from db.database import get_connection
 
 logger = logging.getLogger(__name__)
@@ -14,7 +15,7 @@ def create_project(user_id, name, description=""):
     cursor = conn.cursor()
     cursor.execute(
         "INSERT INTO projects (user_id, name, description) VALUES (?, ?, ?)",
-        (user_id, name, description)
+        (user_id, name, description),
     )
     conn.commit()
     project_id = cursor.lastrowid
@@ -27,21 +28,13 @@ def get_projects(user_id):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT id, name, description, created_at FROM projects WHERE user_id = ? ORDER BY created_at DESC",
-        (user_id,)
+        """SELECT p.id, p.name, p.description, p.created_at, COUNT(s.id) AS session_count
+           FROM projects p LEFT JOIN research_sessions s
+             ON s.project_id = p.id AND s.user_id = p.user_id
+           WHERE p.user_id = ? GROUP BY p.id ORDER BY p.created_at DESC, p.id DESC""",
+        (user_id,),
     )
-    rows = cursor.fetchall()
-    projects = []
-    for row in rows:
-        project = dict(row)
-        # Count sessions in this project
-        cursor.execute(
-            "SELECT COUNT(*) as count FROM research_sessions WHERE project_id = ? AND user_id = ?",
-            (project["id"], user_id)
-        )
-        project["session_count"] = cursor.fetchone()["count"]
-        projects.append(project)
-    return projects
+    return [dict(row) for row in cursor.fetchall()]
 
 
 def update_project(user_id, project_id, name=None, description=None):
@@ -50,13 +43,12 @@ def update_project(user_id, project_id, name=None, description=None):
     cursor = conn.cursor()
     if name is not None:
         cursor.execute(
-            "UPDATE projects SET name = ? WHERE id = ? AND user_id = ?",
-            (name, project_id, user_id)
+            "UPDATE projects SET name = ? WHERE id = ? AND user_id = ?", (name, project_id, user_id)
         )
     if description is not None:
         cursor.execute(
             "UPDATE projects SET description = ? WHERE id = ? AND user_id = ?",
-            (description, project_id, user_id)
+            (description, project_id, user_id),
         )
     conn.commit()
     return cursor.rowcount > 0
@@ -69,12 +61,9 @@ def delete_project(user_id, project_id):
     # Unlink sessions first
     cursor.execute(
         "UPDATE research_sessions SET project_id = NULL WHERE project_id = ? AND user_id = ?",
-        (project_id, user_id)
+        (project_id, user_id),
     )
-    cursor.execute(
-        "DELETE FROM projects WHERE id = ? AND user_id = ?",
-        (project_id, user_id)
-    )
+    cursor.execute("DELETE FROM projects WHERE id = ? AND user_id = ?", (project_id, user_id))
     conn.commit()
     return cursor.rowcount > 0
 
@@ -84,8 +73,8 @@ def assign_session_to_project(user_id, session_id, project_id):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "UPDATE research_sessions SET project_id = ? WHERE id = ? AND user_id = ?",
-        (project_id, session_id, user_id)
+        "UPDATE research_sessions SET project_id = ? WHERE id = ? AND user_id = ? AND EXISTS (SELECT 1 FROM projects WHERE id = ? AND user_id = ?)",
+        (project_id, session_id, user_id, project_id, user_id),
     )
     conn.commit()
     return cursor.rowcount > 0
@@ -97,6 +86,6 @@ def get_project_sessions(user_id, project_id):
     cursor = conn.cursor()
     cursor.execute(
         "SELECT id, query, created_at FROM research_sessions WHERE project_id = ? AND user_id = ? ORDER BY created_at DESC",
-        (project_id, user_id)
+        (project_id, user_id),
     )
     return [dict(row) for row in cursor.fetchall()]
